@@ -9,7 +9,11 @@ const hostingPlansSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    quantity: {
+    account: {
+        type: Number,
+        required: true
+    },
+    capacity: {
         type: Number,
         required: true
     },
