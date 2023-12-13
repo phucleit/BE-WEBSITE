@@ -5,26 +5,22 @@ const customerSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    gender: {
+    email: {
         type: String,
+        required: true
     },
-    birthday: {
+    gender: {
         type: String,
     },
     idNumber: {
         type: String,
+        required: true
     },
     phone: {
         type: String,
-        required: true,
+        required: true
     },
     address: {
-        type: String,
-    },
-    frontView: {
-        type: String,
-    },
-    backView: {
         type: String,
     },
     createdAt: {
