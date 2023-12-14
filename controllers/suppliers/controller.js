@@ -75,10 +75,10 @@ const supplierController = {
 
   deleteSupplier: async(req, res) => {
     try {
-      await DomainPlans.updateMany({supplier: req.params.id}, {supplier: null});
-      await EmailPlans.updateMany({supplier: req.params.id}, {supplier: null});
-      await HostingPlans.updateMany({supplier: req.params.id}, {supplier: null});
-      await SslPlans.updateMany({supplier: req.params.id}, {supplier: null});
+      await DomainPlans.updateMany({supplier_id: req.params.id}, {supplier_id: null});
+      await EmailPlans.updateMany({supplier_id: req.params.id}, {supplier_id: null});
+      await HostingPlans.updateMany({supplier_id: req.params.id}, {supplier_id: null});
+      await SslPlans.updateMany({supplier_id: req.params.id}, {supplier_id: null});
       await Supplier.findByIdAndDelete(req.params.id);
       res.status(200).json("Deleted successfully");
     } catch(err) {
