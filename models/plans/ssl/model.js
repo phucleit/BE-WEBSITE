@@ -12,7 +12,7 @@ const sslPlansSchema = new mongoose.Schema({
     feature: {
         type: String,
     },
-    supplier: {
+    supplier_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Suppliers"
     },

@@ -9,7 +9,7 @@ const domainPlansSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    supplier: {
+    supplier_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Suppliers"
     },

@@ -1,15 +1,10 @@
 const { DomainPlans } = require("../../../models/plans/domain/model");
-const { Supplier } = require("../../../models/suppliers/model");
 
 const domainPlansController = {
     addDomainPlans: async(req, res) => {
         try {
             const newDomainPlans = new DomainPlans(req.body);
             const saveDomainPlans = await newDomainPlans.save();
-            if (req.body.supplier) {
-                const supplier = Supplier.findById(req.body.supplier);
-                await supplier.updateOne({$push: {domainPlans: saveDomainPlans._id}});
-            }
             res.status(200).json(saveDomainPlans);
         } catch(err) {
             res.status(500).json(err);
@@ -18,7 +13,7 @@ const domainPlansController = {
 
     getDomainPlans: async(req, res) => {
         try {
-            const domainPlans = await DomainPlans.find().sort({"createdAt": -1}).populate('supplier', 'name company');
+            const domainPlans = await DomainPlans.find().sort({"createdAt": -1}).populate('supplier_id', 'name company');
             res.status(200).json(domainPlans);
         } catch(err) {
             res.status(500).json(err);
@@ -27,7 +22,7 @@ const domainPlansController = {
 
     getDetailDomainPlans: async(req, res) => {
         try {
-            const domainPlans = await DomainPlans.findById(req.params.id).populate('supplier', 'name company phone address');
+            const domainPlans = await DomainPlans.findById(req.params.id).populate('supplier_id', 'name company phone address');
             res.status(200).json(domainPlans);
         } catch(err) {
             res.status(500).json(err);
@@ -36,7 +31,6 @@ const domainPlansController = {
 
     deleteDomainPlans: async(req, res) => {
         try {
-            await Supplier.updateMany({domainPlans: req.params.id}, {$pull: {domainPlans: req.params.id}})
             await DomainPlans.findByIdAndDelete(req.params.id);
             res.status(200).json("Deleted successfully!");
         } catch(err) {

@@ -4,6 +4,8 @@ const { EmailPlans } = require("../../models/plans/email/model");
 const { HostingPlans } = require("../../models/plans/hosting/model");
 const { SslPlans } = require("../../models/plans/ssl/model");
 
+const { ObjectId } = require('mongoose').Types;
+
 const supplierController = {
   addSupplier: async(req, res) => {
     try {
@@ -26,10 +28,48 @@ const supplierController = {
 
   getDetailSupplier: async(req, res) => {
     try {
-      const supplier = await Supplier.findById(req.params.id).populate("domainPlans").populate("emailPlans").populate("hostingPlans").populate("sslPlans");
+      const supplier = await Supplier.aggregate([
+        {
+          $match: {
+            _id: new ObjectId(req.params.id),
+          },
+        },
+        {
+          $lookup: {
+            from: "domainplans",
+            localField: "_id",
+            foreignField: "supplier_id",
+            as: "domainPlans"
+          }
+        },
+        {
+          $lookup: {
+            from: "emailplans",
+            localField: "_id",
+            foreignField: "supplier_id",
+            as: "emailPlans"
+          }
+        },
+        {
+          $lookup: {
+            from: "hostingplans",
+            localField: "_id",
+            foreignField: "supplier_id",
+            as: "hostingPlans"
+          }
+        },
+        {
+          $lookup: {
+            from: "sslplans",
+            localField: "_id",
+            foreignField: "supplier_id",
+            as: "sslPlans"
+          }
+        }
+      ]);
       res.status(200).json(supplier);
     } catch(err) {
-        res.status(500).json(err);
+      res.status(500).json(err);
     }
   },
 

@@ -15,30 +15,6 @@ const supplierSchema = new mongoose.Schema({
   address: {
     type: String,
   },
-  domainPlans: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "DomainPlans"
-    }
-  ],
-  emailPlans: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "EmailPlans"
-    }
-  ],
-  hostingPlans: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "HostingPlans"
-    }
-  ],
-  sslPlans: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "SslPlans"
-    }
-  ],
   createdAt: {
     type: Date,
     default: Date.now

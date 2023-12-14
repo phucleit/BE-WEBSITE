@@ -1,15 +1,10 @@
 const { SslPlans } = require("../../../models/plans/ssl/model");
-const { Supplier } = require("../../../models/suppliers/model");
 
 const sslPlansController = {
     addSslPlans: async(req, res) => {
         try {
             const newSslPlans = new SslPlans(req.body);
             const saveSslPlans = await newSslPlans.save();
-            if (req.body.supplier) {
-                const supplier = Supplier.findById(req.body.supplier);
-                await supplier.updateOne({$push: {sslPlans: saveSslPlans._id}});
-            }
             res.status(200).json(saveSslPlans);
         } catch(err) {
             res.status(500).json(err);
@@ -18,7 +13,7 @@ const sslPlansController = {
 
     getSslPlans: async(req, res) => {
         try {
-            const sslPlans = await SslPlans.find().sort({"createdAt": -1}).populate('supplier', 'name company');
+            const sslPlans = await SslPlans.find().sort({"createdAt": -1}).populate('supplier_id', 'name company');
             res.status(200).json(sslPlans);
         } catch(err) {
             res.status(500).json(err);
@@ -27,7 +22,7 @@ const sslPlansController = {
 
     getDetailSslPlans: async(req, res) => {
         try {
-            const sslPlans = await SslPlans.findById(req.params.id).populate('supplier', 'name company phone address');
+            const sslPlans = await SslPlans.findById(req.params.id).populate('supplier_id', 'name company phone address');
             res.status(200).json(sslPlans);
         } catch(err) {
             res.status(500).json(err);
@@ -36,7 +31,6 @@ const sslPlansController = {
 
     deleteSslPlans: async(req, res) => {
         try {
-            await Supplier.updateMany({sslPlans: req.params.id}, {$pull: {sslPlans: req.params.id}})
             await SslPlans.findByIdAndDelete(req.params.id);
             res.status(200).json("Deleted successfully!");
         } catch(err) {
