@@ -10,6 +10,7 @@ const domainPlansRoutes = require("./routes/plans/domain/domain");
 const emailPlansRoutes = require("./routes/plans/email/email");
 const hostingPlansRoutes = require("./routes/plans/hosting/hosting");
 const sslPlansRoutes = require("./routes/plans/ssl/ssl");
+const contentPlansRoutes = require("./routes/plans/content/content");
 const customerRoutes = require("./routes/customers/customer");
 const supplierRoutes = require("./routes/suppliers/supplier");
 
@@ -33,6 +34,7 @@ app.use("/v1/plans/domain", domainPlansRoutes);
 app.use("/v1/plans/email", emailPlansRoutes);
 app.use("/v1/plans/hosting", hostingPlansRoutes);
 app.use("/v1/plans/ssl", sslPlansRoutes);
+app.use("/v1/plans/content", contentPlansRoutes);
 
 // khách hàng
 app.use("/v1/customer", customerRoutes);
