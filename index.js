@@ -6,13 +6,21 @@ var bodyParser = require('body-parser');
 var morgan = require("morgan");
 const dotenv = require("dotenv");
 
+// gói dịch vụ
 const domainPlansRoutes = require("./routes/plans/domain/domain");
 const emailPlansRoutes = require("./routes/plans/email/email");
 const hostingPlansRoutes = require("./routes/plans/hosting/hosting");
 const sslPlansRoutes = require("./routes/plans/ssl/ssl");
 const contentPlansRoutes = require("./routes/plans/content/content");
+
+// khách hàng
 const customerRoutes = require("./routes/customers/customer");
+
+// nhà cung cấp
 const supplierRoutes = require("./routes/suppliers/supplier");
+
+// dịch vụ
+const domainServicesRoutes = require("./routes/services/domain/domain");
 
 dotenv.config();
 // connect database
@@ -41,6 +49,9 @@ app.use("/v1/customer", customerRoutes);
 
 // nhà cung cấp
 app.use("/v1/supplier", supplierRoutes);
+
+// dịch vụ
+app.use("/v1/services/domain", domainServicesRoutes);
 
 app.listen(8000, () => {
     console.log("Server is running...");
