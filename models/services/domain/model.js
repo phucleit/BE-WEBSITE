@@ -9,13 +9,20 @@ const domainServicesSchema = new mongoose.Schema({
       type: Number,
       required: true
     },
+    supplier_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Suppliers"
+    },
     domain_plan_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "DomainPlans"
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "DomainPlans"
     },
     customer_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Customers"
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Customers"
+    },
+    status: {
+      type: Number
     },
     createdAt: {
       type: Date,
