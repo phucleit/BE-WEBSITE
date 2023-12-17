@@ -6,5 +6,7 @@ router.get("/", domainServicesController.getDomainServices);
 router.get("/:id", domainServicesController.getDetailDomainServices);
 router.delete("/:id", domainServicesController.deleteDomainServices);
 router.put("/:id", domainServicesController.updateDomainServices);
+router.get("/expired/all", domainServicesController.getDomainServicesExpired);
+router.get("/expiring/all", domainServicesController.getDomainServicesExpiring);
 
 module.exports = router;
