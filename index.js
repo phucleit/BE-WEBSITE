@@ -21,6 +21,7 @@ const supplierRoutes = require("./routes/suppliers/supplier");
 
 // dịch vụ
 const domainServicesRoutes = require("./routes/services/domain/domain");
+const hostingServicesRoutes = require("./routes/services/hosting/hosting");
 
 dotenv.config();
 // connect database
@@ -52,6 +53,7 @@ app.use("/v1/supplier", supplierRoutes);
 
 // dịch vụ
 app.use("/v1/services/domain", domainServicesRoutes);
+app.use("/v1/services/hosting", hostingServicesRoutes);
 
 app.listen(8000, () => {
     console.log("Server is running...");
