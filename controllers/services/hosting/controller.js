@@ -62,7 +62,14 @@ const hostingServicesController = {
 
   getDetailHostingServices: async(req, res) => {
     try {
-      
+      const hostingServices = await HostingServices.findById(req.params.id)
+        .populate('domain_service_id')
+        .populate('hosting_plan_id')
+        .populate('customer_id', 'fullname gender email phone')
+        .populate('domain_plan_id', 'name')
+        .populate('domain_supplier_id', 'name company')
+        .populate('hosting_supplier_id', 'name company');
+      res.status(200).json(hostingServices);
     } catch(err) {
       res.status(500).json(err);
     }
@@ -79,7 +86,13 @@ const hostingServicesController = {
 
   updateHostingServices: async(req, res) => {
     try {
-      
+      const hostingServices = await HostingServices.findById(req.params.id);
+      if (req.body.periods) {
+        const expiredAt = hostingServices.expiredAt.setFullYear(hostingServices.expiredAt.getFullYear() + req.body.periods);
+        await hostingServices.updateOne({$set: {expiredAt: expiredAt, status: 1}});
+        res.status(200).json("Updated successfully!");
+      }
+      await hostingServices.updateOne({$set: req.body});
     } catch(err) {
       res.status(500).json(err);
     }
@@ -87,7 +100,44 @@ const hostingServicesController = {
 
   getHostingServicesExpired: async(req, res) => {
     try {
+      var currentDate = new Date();
+      var hostingServicesExpired = await HostingServices.find(
+        {
+          expiredAt: {$lte: currentDate}
+        }
+      );
+
+      for (const item of hostingServicesExpired) {
+        try {
+          hostingServicesExpired = await HostingServices.findByIdAndUpdate(
+            item._id,
+            {
+              $set: {
+                status: 3
+              }
+            },
+            { new: true }
+          );
+        } catch (error) {
+          res.status(500).json(error);
+        }
+      }
+
+      hostingServicesExpired = await HostingServices
+        .find(
+          {
+            expiredAt: {$lte: currentDate}
+          }
+        )
+        .sort({"createdAt": -1})
+        .populate('domain_service_id')
+        .populate('hosting_plan_id')
+        .populate('customer_id', 'fullname gender email phone')
+        .populate('domain_plan_id', 'name')
+        .populate('domain_supplier_id', 'name company')
+        .populate('hosting_supplier_id', 'name company');
       
+      res.status(200).json(hostingServicesExpired);
     } catch(err) {
       res.status(500).json(err);
     }
@@ -95,7 +145,51 @@ const hostingServicesController = {
 
   getHostingServicesExpiring: async(req, res) => {
     try {
+      var currentDate = new Date();
+      var dateExpired = dayjs(currentDate).add(30, 'day');
+      var hostingServicesExpiring = await HostingServices.find(
+        {
+          expiredAt: {
+            $gte: dayjs(currentDate).startOf('day').toDate(),
+            $lte: dayjs(dateExpired).endOf('day').toDate()
+          }
+        }
+      );
+
+      for (const item of hostingServicesExpiring) {
+        try {
+          hostingServicesExpiring = await HostingServices.findByIdAndUpdate(
+            item._id,
+            {
+              $set: {
+                status: 2
+              }
+            },
+            { new: true }
+          );
+        } catch (error) {
+          res.status(500).json(error);
+        }
+      }
+
+      hostingServicesExpiring = await HostingServices
+        .find(
+          {
+            expiredAt: {
+              $gte: dayjs(currentDate).startOf('day').toDate(),
+              $lte: dayjs(dateExpired).endOf('day').toDate()
+            }
+          }
+        )
+        .sort({"createdAt": -1})
+        .populate('domain_service_id')
+        .populate('hosting_plan_id')
+        .populate('customer_id', 'fullname gender email phone')
+        .populate('domain_plan_id', 'name')
+        .populate('domain_supplier_id', 'name company')
+        .populate('hosting_supplier_id', 'name company');
       
+      res.status(200).json(hostingServicesExpiring);
     } catch(err) {
       res.status(500).json(err);
     }
