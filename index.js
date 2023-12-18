@@ -24,6 +24,7 @@ const domainServicesRoutes = require("./routes/services/domain/domain");
 const hostingServicesRoutes = require("./routes/services/hosting/hosting");
 const emailServicesRoutes = require("./routes/services/email/email");
 const sslServicesRoutes = require("./routes/services/ssl/ssl");
+const contentServicesRoutes = require("./routes/services/content/content");
 
 dotenv.config();
 // connect database
@@ -58,6 +59,7 @@ app.use("/v1/services/domain", domainServicesRoutes);
 app.use("/v1/services/hosting", hostingServicesRoutes);
 app.use("/v1/services/email", emailServicesRoutes);
 app.use("/v1/services/ssl", sslServicesRoutes);
+app.use("/v1/services/content", contentServicesRoutes);
 
 app.listen(8000, () => {
     console.log("Server is running...");
