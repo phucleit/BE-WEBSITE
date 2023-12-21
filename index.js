@@ -26,6 +26,9 @@ const emailServicesRoutes = require("./routes/services/email/email");
 const sslServicesRoutes = require("./routes/services/ssl/ssl");
 const contentServicesRoutes = require("./routes/services/content/content");
 
+// hợp đồng
+const contractRoutes = require("./routes/contracts/contracts");
+
 dotenv.config();
 // connect database
 mongoose
@@ -60,6 +63,9 @@ app.use("/v1/services/hosting", hostingServicesRoutes);
 app.use("/v1/services/email", emailServicesRoutes);
 app.use("/v1/services/ssl", sslServicesRoutes);
 app.use("/v1/services/content", contentServicesRoutes);
+
+// hợp đồng
+app.use("/v1/contracts", contractRoutes);
 
 app.listen(8000, () => {
     console.log("Server is running...");
