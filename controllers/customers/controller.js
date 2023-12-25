@@ -210,6 +210,41 @@ const customerController = {
           }
         },
 
+        // websiteservices
+        {
+          $lookup: {
+            from: "websiteservices",
+            localField: "_id",
+            foreignField: "customer_id",
+            as: "website_services"
+          }
+        },
+        { $unwind: { path: '$website_services', preserveNullAndEmptyArrays: true } },
+        {
+          $lookup: {
+            from: 'domainservices',
+            localField: 'website_services.domain_service_id',
+            foreignField: '_id',
+            as: 'website_services.domain_service'
+          }
+        },
+        {
+          $lookup: {
+            from: 'domainplans',
+            localField: 'website_services.domain_plan_id',
+            foreignField: '_id',
+            as: 'website_services.domain_plan'
+          }
+        },
+        {
+          $lookup: {
+            from: 'suppliers',
+            localField: 'website_services.domain_supplier_id',
+            foreignField: '_id',
+            as: 'website_services.domain_supplier'
+          }
+        },
+
         // contentservices
         {
           $lookup: {
@@ -245,6 +280,7 @@ const customerController = {
             hosting_services: { $addToSet: '$hosting_services' },
             email_services: { $addToSet: '$email_services' },
             ssl_services: { $addToSet: '$ssl_services' },
+            website_services: { $addToSet: '$website_services' },
             content_services: { $addToSet: '$content_services' },
           }
         },
