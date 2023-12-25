@@ -23,6 +23,9 @@ const contractSchema = new mongoose.Schema({
   status: {
     type: Number
   },
+  note: {
+    type: String
+  },
   createdAt: {
     type: Date,
     default: Date.now
