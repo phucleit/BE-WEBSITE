@@ -9,7 +9,16 @@ const supplierSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  tax_code: {
+    type: String,
+  },
   phone: {
+    type: Number,
+  },
+  name_support: {
+    type: String,
+  },
+  phone_support: {
     type: Number,
   },
   address: {
