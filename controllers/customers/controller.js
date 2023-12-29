@@ -1,3 +1,4 @@
+const fs = require('fs');
 const { Customer } = require("../../models/customers/model");
 
 const { ObjectId } = require('mongoose').Types;
@@ -6,6 +7,26 @@ const customerController = {
   addCustomer: async(req, res) => {
     try {
       const newCustomer = new Customer(req.body);
+      if (req.files.image_front_view) {
+        let imagesBuffer = [];
+        req.files.image_front_view.forEach(function (file) {
+          const imageBuffer = fs.readFileSync(file.path);
+          const base64Image = imageBuffer.toString('base64');
+          imagesBuffer.push(base64Image);
+        });
+        newCustomer.image_front_view = imagesBuffer;
+      }
+
+      if (req.files.image_back_view) {
+        let imagesBuffer = [];
+        req.files.image_back_view.forEach(function (file) {
+            const imageBuffer = fs.readFileSync(file.path);
+            const base64Image = imageBuffer.toString('base64');
+            imagesBuffer.push(base64Image);
+        });
+        newCustomer.image_back_view = imagesBuffer;
+      }
+
       const saveCustomer = await newCustomer.save();
       res.status(200).json(saveCustomer);
     } catch(err) {
@@ -274,6 +295,14 @@ const customerController = {
             idNumber: { $first: '$idNumber' },
             phone: { $first: '$phone' },
             address: { $first: '$address' },
+            company: { $first: '$company' },
+            tax_code: { $first: '$tax_code' },
+            address_company: { $first: '$address_company' },
+            representative: { $first: '$representative' },
+            representative_hotline: { $first: '$representative_hotline' },
+            mail_vat: { $first: '$mail_vat' },
+            image_front_view: { $first: '$image_front_view' },
+            image_back_view: { $first: '$image_back_view' },
             createdAt: { $first: '$createdAt' },
             __v: { $first: '$__v' },
             domain_services: { $addToSet: '$domain_services' },
@@ -304,9 +333,33 @@ const customerController = {
   updateCustomer: async(req, res) => {
     try {
       const customer = await Customer.findById(req.params.id);
+
+      if (req.files.image_front_view) {
+        let imagesBuffer = [];
+        req.files.image_front_view.forEach(function (file) {
+          const imageBuffer = fs.readFileSync(file.path);
+          const base64Image = imageBuffer.toString('base64');
+          imagesBuffer.push(base64Image);
+        });
+        customer.image_front_view = imagesBuffer;
+        await customer.updateOne({$set: {image_front_view: imagesBuffer}});
+      }
+    
+      if (req.files.image_back_view) {
+        let imagesBuffer = [];
+        req.files.image_back_view.forEach(function (file) {
+          const imageBuffer = fs.readFileSync(file.path);
+          const base64Image = imageBuffer.toString('base64');
+          imagesBuffer.push(base64Image);
+        });
+        customer.image_back_view = imagesBuffer;
+        await customer.updateOne({$set: {image_back_view: imagesBuffer}});
+      }
+
       await customer.updateOne({$set: req.body});
       res.status(200).json("Updated successfully");
     } catch(err) {
+      console.log(err);
       res.status(500).json(err);
     }
   }
