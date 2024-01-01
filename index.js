@@ -30,6 +30,9 @@ const websiteServicesRoutes = require("./routes/services/website/website");
 // hợp đồng
 const contractRoutes = require("./routes/contracts/contracts");
 
+// user
+const userRoutes = require("./routes/users/user");
+
 dotenv.config();
 // connect database
 mongoose
@@ -76,6 +79,9 @@ app.use("/v1/services/website", websiteServicesRoutes);
 
 // hợp đồng
 app.use("/v1/contracts", contractRoutes);
+
+// users
+app.use("/v1/users", userRoutes);
 
 app.listen(8000, () => {
     console.log("Server is running...");

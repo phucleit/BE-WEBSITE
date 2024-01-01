@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const contractSchema = new mongoose.Schema({
   contract_code: {
     type: String,
-    require: true
+    required: true
   },
   customer_id: {
     type: mongoose.Schema.Types.ObjectId,
