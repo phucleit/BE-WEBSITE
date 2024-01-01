@@ -47,13 +47,17 @@ mongoose
 app.use(bodyParser.json({limit: "500mb"}));
 app.use(bodyParser.urlencoded({extended:true, limit:'500mb'})); 
 
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+}));
+
 app.use(morgan("common"));
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});
+// app.use(function(req, res, next) {
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//     next();
+// });
 app.use('/uploads', express.static('uploads'));
 
 // các gói dịch vụ
