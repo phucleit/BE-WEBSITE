@@ -25,6 +25,8 @@ const contractController = {
         }
 
         const saveContract = await newContract.save();
+        // Set Cache-Control headers to disable caching
+        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
         res.status(200).json(saveContract);
       }
     } catch(err) {
@@ -36,6 +38,7 @@ const contractController = {
   getContract: async(req, res) => {
     try {
       const contract = await Contracts.find().sort({"createdAt": -1}).populate('customer_id');
+      
       res.status(200).json(contract);
     } catch(err) {
       res.status(500).json(err);
@@ -45,6 +48,7 @@ const contractController = {
   getDetailContract: async(req, res) => {
     try {
       const contract = await Contracts.findById(req.params.id).populate('customer_id');
+      
       res.status(200).json(contract);
     } catch(err) {
       res.status(500).json(err);
@@ -54,6 +58,7 @@ const contractController = {
   deleteContract: async(req, res) => {
     try {
       await Contracts.findByIdAndDelete(req.params.id);
+      
       res.status(200).json("Deleted successfully!");
     } catch(err) {
       res.status(500).json(err);
@@ -64,6 +69,7 @@ const contractController = {
     try {
       const contract = await Contracts.findById(req.params.id);
       await contract.updateOne({$set: req.body});
+      
       res.status(200).json("Updated successfully!");
     } catch(err) {
       res.status(500).json(err);

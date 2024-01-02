@@ -5,6 +5,7 @@ const sslPlansController = {
         try {
             const newSslPlans = new SslPlans(req.body);
             const saveSslPlans = await newSslPlans.save();
+            
             res.status(200).json(saveSslPlans);
         } catch(err) {
             res.status(500).json(err);
@@ -14,6 +15,7 @@ const sslPlansController = {
     getSslPlans: async(req, res) => {
         try {
             const sslPlans = await SslPlans.find().sort({"createdAt": -1}).populate('supplier_id', 'name company');
+            
             res.status(200).json(sslPlans);
         } catch(err) {
             res.status(500).json(err);
@@ -23,6 +25,7 @@ const sslPlansController = {
     getDetailSslPlans: async(req, res) => {
         try {
             const sslPlans = await SslPlans.findById(req.params.id).populate('supplier_id', 'name company phone address');
+            
             res.status(200).json(sslPlans);
         } catch(err) {
             res.status(500).json(err);
@@ -32,6 +35,7 @@ const sslPlansController = {
     deleteSslPlans: async(req, res) => {
         try {
             await SslPlans.findByIdAndDelete(req.params.id);
+            
             res.status(200).json("Deleted successfully!");
         } catch(err) {
             res.status(500).json(err);
@@ -42,6 +46,7 @@ const sslPlansController = {
         try {
             const sslPlans = await SslPlans.findById(req.params.id);
             await sslPlans.updateOne({$set: req.body});
+            
             res.status(200).json("Updated successfully");
         } catch(err) {
             res.status(500).json(err);

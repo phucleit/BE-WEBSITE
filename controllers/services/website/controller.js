@@ -6,6 +6,7 @@ const websiteServicesController = {
       const newWebsite = new WebsiteServices(req.body);
       newWebsite.status = 1;
       const saveWebsiteServices = await newWebsite.save();
+      
       res.status(200).json(saveWebsiteServices);
     } catch(err) {
       res.status(500).json(err);
@@ -46,6 +47,7 @@ const websiteServicesController = {
         .populate('domain_plan_id', 'name')
         .populate('domain_supplier_id', 'name company')
       
+      
       res.status(200).json(websiteServices);
     } catch(err) {
       res.status(500).json(err);
@@ -58,7 +60,9 @@ const websiteServicesController = {
         .populate('domain_service_id')
         .populate('customer_id', 'fullname gender email phone')
         .populate('domain_plan_id', 'name')
-        .populate('domain_supplier_id', 'name company')
+        .populate('domain_supplier_id', 'name company');
+
+      
       res.status(200).json(websiteServices);
     } catch(err) {
       res.status(500).json(err);
@@ -68,6 +72,7 @@ const websiteServicesController = {
   deleteWebsiteServices: async(req, res) => {
     try {
       await WebsiteServices.findByIdAndDelete(req.params.id);
+      
       res.status(200).json("Deleted successfully!");
     } catch(err) {
       res.status(500).json(err);
@@ -78,6 +83,7 @@ const websiteServicesController = {
     try {
       const websiteServices = await WebsiteServices.findById(req.params.id);
       await websiteServices.updateOne({$set: req.body});
+      
       res.status(200).json("Updated successfully");
     } catch(err) {
       res.status(500).json(err);
@@ -95,7 +101,8 @@ const websiteServicesController = {
       .populate('domain_service_id')
       .populate('customer_id', 'fullname gender email phone')
       .populate('domain_plan_id', 'name')
-      .populate('domain_supplier_id', 'name company')
+      .populate('domain_supplier_id', 'name company');
+    
       
       res.status(200).json(websiteServicesClosed);
     } catch(err) {

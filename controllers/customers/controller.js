@@ -28,6 +28,7 @@ const customerController = {
       }
 
       const saveCustomer = await newCustomer.save();
+      
       res.status(200).json(saveCustomer);
     } catch(err) {
       res.status(500).json(err);
@@ -37,6 +38,7 @@ const customerController = {
   getCustomer: async(req, res) => {
     try {
       const customers = await Customer.find().sort({"createdAt": -1});
+      
       res.status(200).json(customers);
     } catch(err) {
       res.status(500).json(err);
@@ -314,6 +316,7 @@ const customerController = {
           }
         },
       ]);
+      
       res.status(200).json(customer);
     } catch(err) {
       console.log(err);
@@ -324,6 +327,7 @@ const customerController = {
   deleteCustomer: async(req, res) => {
     try {
       const customer = await Customer.findByIdAndDelete(req.params.id);
+      
       res.status(200).json(customer);
     } catch(err) {
       res.status(500).json(err);
@@ -357,6 +361,7 @@ const customerController = {
       }
 
       await customer.updateOne({$set: req.body});
+      
       res.status(200).json("Updated successfully");
     } catch(err) {
       console.log(err);

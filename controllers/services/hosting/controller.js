@@ -10,6 +10,7 @@ const hostingServicesController = {
       newHostingServices.expiredAt.setFullYear(newHostingServices.expiredAt.getFullYear() + req.body.periods);
       newHostingServices.status = 1;
       const saveHostingServices = await newHostingServices.save();
+      
       res.status(200).json(saveHostingServices);
     } catch(err) {
       res.status(500).json(err);
@@ -54,6 +55,7 @@ const hostingServicesController = {
         .populate('domain_supplier_id', 'name company')
         .populate('hosting_supplier_id', 'name company');
       
+      
       res.status(200).json(hostingServices);
     } catch(err) {
       res.status(500).json(err);
@@ -69,6 +71,8 @@ const hostingServicesController = {
         .populate('domain_plan_id', 'name')
         .populate('domain_supplier_id', 'name company')
         .populate('hosting_supplier_id', 'name company');
+      
+      
       res.status(200).json(hostingServices);
     } catch(err) {
       res.status(500).json(err);
@@ -78,6 +82,7 @@ const hostingServicesController = {
   deleteHostingServices: async(req, res) => {
     try {
       await HostingServices.findByIdAndDelete(req.params.id);
+      
       res.status(200).json("Deleted successfully!");
     } catch(err) {
       res.status(500).json(err);
@@ -92,6 +97,7 @@ const hostingServicesController = {
         await hostingServices.updateOne({$set: {expiredAt: expiredAt, status: 1}});
         res.status(200).json("Updated successfully!");
       }
+      
       await hostingServices.updateOne({$set: req.body});
     } catch(err) {
       res.status(500).json(err);
@@ -136,6 +142,7 @@ const hostingServicesController = {
         .populate('domain_plan_id', 'name')
         .populate('domain_supplier_id', 'name company')
         .populate('hosting_supplier_id', 'name company');
+      
       
       res.status(200).json(hostingServicesExpired);
     } catch(err) {
@@ -188,6 +195,7 @@ const hostingServicesController = {
         .populate('domain_plan_id', 'name')
         .populate('domain_supplier_id', 'name company')
         .populate('hosting_supplier_id', 'name company');
+      
       
       res.status(200).json(hostingServicesExpiring);
     } catch(err) {

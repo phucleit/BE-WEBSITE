@@ -10,6 +10,7 @@ const domainServicesController = {
       newDomainServices.expiredAt.setFullYear(newDomainServices.expiredAt.getFullYear() + req.body.periods);
       newDomainServices.status = 1;
       const saveDomainServices = await newDomainServices.save();
+      
       res.status(200).json(saveDomainServices);
     } catch(err) {
       res.status(500).json(err);
@@ -42,6 +43,7 @@ const domainServicesController = {
         .populate('customer_id', 'fullname gender email phone')
         .populate('supplier_id', 'name company');
       
+      
       res.status(200).json(domainServices);
     } catch(err) {
       res.status(500).json(err);
@@ -54,6 +56,8 @@ const domainServicesController = {
         .populate('domain_plan_id', 'name price')
         .populate('customer_id', 'fullname gender email phone')
         .populate('supplier_id', 'name company');
+      
+      
       res.status(200).json(domainServices);
     } catch(err) {
       res.status(500).json(err);
@@ -63,6 +67,7 @@ const domainServicesController = {
   deleteDomainServices: async(req, res) => {
     try {
       await DomainServices.findByIdAndDelete(req.params.id);
+      
       res.status(200).json("Deleted successfully!");
     } catch(err) {
       res.status(500).json(err);
@@ -77,6 +82,7 @@ const domainServicesController = {
         await domainServices.updateOne({$set: {expiredAt: expiredAt, status: 1}});
       }
       await domainServices.updateOne({$set: req.body});
+      
       res.status(200).json("Updated successfully!");
     } catch(err) {
       res.status(500).json(err);
@@ -118,6 +124,7 @@ const domainServicesController = {
         .populate('domain_plan_id')
         .populate('customer_id', 'fullname gender email phone')
         .populate('supplier_id', 'name company');
+      
       
       res.status(200).json(domainServicesExpired);
     } catch(err) {
@@ -167,6 +174,7 @@ const domainServicesController = {
         .populate('domain_plan_id')
         .populate('customer_id', 'fullname gender email phone')
         .populate('supplier_id', 'name company');
+      
       
       res.status(200).json(domainServicesExpiring);
     } catch(err) {
