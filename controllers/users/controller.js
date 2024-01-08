@@ -6,9 +6,9 @@ const { Users } = require("../../models/users/model");
 const userController = {
   addUser: async(req, res) => {
     try {
-      const {username, email, password} = req.body;
+      const {display_name, username, email, password} = req.body;
       const hashedPassword = bcryptjs.hashSync(password, 10);
-      const newUser = await Users({username, email, password: hashedPassword });
+      const newUser = await Users({display_name, username, email, password: hashedPassword });
       const saveUser = await newUser.save();
       
       res.status(200).json(saveUser);
@@ -29,9 +29,17 @@ const userController = {
       const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET);
       const { password: pass, ...rest } = validUser._doc;
       res.cookie('access_token', token, {httpOnly: true}).status(200).json(rest);
-      
     } catch(err) {
       res.status(500).json(err);
+    }
+  },
+
+  logout: async (req, res) => {
+    try {
+      res.cookie('access_token', '', { httpOnly: true, expires: new Date(0) });  
+      res.status(200).json({ message: 'Logout successful' });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
     }
   },
 
