@@ -287,6 +287,17 @@ const customerController = {
           }
         },
 
+        // toplistservices
+        {
+          $lookup: {
+            from: "toplistservices",
+            localField: "_id",
+            foreignField: "customer_id",
+            as: "toplist_services"
+          }
+        },
+        { $unwind: { path: '$toplist_services', preserveNullAndEmptyArrays: true } },
+
         // group
         {
           $group: {
@@ -313,6 +324,7 @@ const customerController = {
             ssl_services: { $addToSet: '$ssl_services' },
             website_services: { $addToSet: '$website_services' },
             content_services: { $addToSet: '$content_services' },
+            toplist_services: { $addToSet: '$toplist_services' },
           }
         },
       ]);
