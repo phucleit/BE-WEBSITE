@@ -6,7 +6,7 @@ const sslServicesController = {
   addSslServices: async(req, res) => {
     try {
       const newSslServices = new SslServices(req.body);
-      newSslServices.expiredAt = new Date(newSslServices.createdAt);
+      newSslServices.expiredAt = new Date(newSslServices.registeredAt);
       newSslServices.expiredAt.setFullYear(newSslServices.expiredAt.getFullYear() + req.body.periods);
       newSslServices.status = 1;
       const saveSslServices = await newSslServices.save();

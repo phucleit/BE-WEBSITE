@@ -28,6 +28,9 @@ const domainServicesSchema = new mongoose.Schema({
       type: Date,
       default: Date.now
     },
+    registeredAt: {
+      type: Date
+    },
     expiredAt: {
       type: Date
     },

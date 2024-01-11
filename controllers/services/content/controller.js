@@ -6,7 +6,7 @@ const contentServicesController = {
   addContentServices: async(req, res) => {
     try {
       const newContentServices = new ContentServices(req.body);
-      newContentServices.expiredAt = new Date(newContentServices.createdAt);
+      newContentServices.expiredAt = new Date(newContentServices.registeredAt);
       newContentServices.expiredAt.setFullYear(newContentServices.expiredAt.getFullYear() + req.body.periods);
       newContentServices.status = 1;
       const saveContentServices = await newContentServices.save();

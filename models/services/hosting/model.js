@@ -24,6 +24,9 @@ const hostingServicesSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
+  registeredAt: {
+    type: Date
+  },
   expiredAt: {
     type: Date
   },

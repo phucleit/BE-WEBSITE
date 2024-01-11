@@ -6,7 +6,7 @@ const domainServicesController = {
   addDomainServices: async(req, res) => {
     try {
       const newDomainServices = new DomainServices(req.body);
-      newDomainServices.expiredAt = new Date(newDomainServices.createdAt);
+      newDomainServices.expiredAt = new Date(newDomainServices.registeredAt);
       newDomainServices.expiredAt.setFullYear(newDomainServices.expiredAt.getFullYear() + req.body.periods);
       newDomainServices.status = 1;
       const saveDomainServices = await newDomainServices.save();

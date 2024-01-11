@@ -6,7 +6,7 @@ const emailServicesController = {
   addEmailServices: async(req, res) => {
     try {
       const newEmailServices = new EmailServices(req.body);
-      newEmailServices.expiredAt = new Date(newEmailServices.createdAt);
+      newEmailServices.expiredAt = new Date(newEmailServices.registeredAt);
       newEmailServices.expiredAt.setFullYear(newEmailServices.expiredAt.getFullYear() + req.body.periods);
       newEmailServices.status = 1;
       const saveEmailServices = await newEmailServices.save();
