@@ -93,6 +93,7 @@ app.use("/v1/contracts", contractRoutes);
 // users
 app.use("/v1/users", userRoutes);
 
-app.listen(8000, () => {
+const PORT = process.env.PORT || 3123;
+app.listen(PORT, () => {
     console.log("Server is running...");
 })
