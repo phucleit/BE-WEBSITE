@@ -53,6 +53,7 @@ const customerController = {
             _id: new ObjectId(req.params.id),
           },
         },
+
         //domainservices
         {
           $lookup: {
@@ -63,6 +64,11 @@ const customerController = {
           }
         },
         { $unwind: { path: '$domain_services', preserveNullAndEmptyArrays: true } },
+        {
+          $sort: {
+            'domain_services.createdAt': -1,
+          },
+        },
         {
           $lookup: {
             from: 'domainplans',
@@ -79,6 +85,28 @@ const customerController = {
             as: 'domain_services.supplier'
           }
         },
+        {
+          $group: {
+            _id: '$_id',
+            fullname: { $first: '$fullname' },
+            email: { $first: '$email' },
+            gender: { $first: '$gender' },
+            idNumber: { $first: '$idNumber' },
+            phone: { $first: '$phone' },
+            address: { $first: '$address' },
+            company: { $first: '$company' },
+            tax_code: { $first: '$tax_code' },
+            address_company: { $first: '$address_company' },
+            representative: { $first: '$representative' },
+            representative_hotline: { $first: '$representative_hotline' },
+            mail_vat: { $first: '$mail_vat' },
+            image_front_view: { $first: '$image_front_view' },
+            image_back_view: { $first: '$image_back_view' },
+            createdAt: { $first: '$createdAt' },
+            __v: { $first: '$__v' },
+            domain_services: { $push: '$domain_services' },
+          }
+        },
 
         // hostingservices
         {
@@ -90,6 +118,11 @@ const customerController = {
           }
         },
         { $unwind: { path: '$hosting_services', preserveNullAndEmptyArrays: true } },
+        {
+          $sort: {
+            'hosting_services.createdAt': -1,
+          },
+        },
         {
           $lookup: {
             from: 'domainservices',
@@ -130,6 +163,29 @@ const customerController = {
             as: 'hosting_services.hosting_supplier'
           }
         },
+        {
+          $group: {
+            _id: '$_id',
+            fullname: { $first: '$fullname' },
+            email: { $first: '$email' },
+            gender: { $first: '$gender' },
+            idNumber: { $first: '$idNumber' },
+            phone: { $first: '$phone' },
+            address: { $first: '$address' },
+            company: { $first: '$company' },
+            tax_code: { $first: '$tax_code' },
+            address_company: { $first: '$address_company' },
+            representative: { $first: '$representative' },
+            representative_hotline: { $first: '$representative_hotline' },
+            mail_vat: { $first: '$mail_vat' },
+            image_front_view: { $first: '$image_front_view' },
+            image_back_view: { $first: '$image_back_view' },
+            createdAt: { $first: '$createdAt' },
+            __v: { $first: '$__v' },
+            domain_services: { $first: '$domain_services' },
+            hosting_services: { $push: '$hosting_services' },
+          }
+        },
 
         // emailservices
         {
@@ -141,6 +197,11 @@ const customerController = {
           }
         },
         { $unwind: { path: '$email_services', preserveNullAndEmptyArrays: true } },
+        {
+          $sort: {
+            'email_services.createdAt': -1,
+          },
+        },
         {
           $lookup: {
             from: 'domainservices',
@@ -181,6 +242,30 @@ const customerController = {
             as: 'email_services.email_supplier'
           }
         },
+        {
+          $group: {
+            _id: '$_id',
+            fullname: { $first: '$fullname' },
+            email: { $first: '$email' },
+            gender: { $first: '$gender' },
+            idNumber: { $first: '$idNumber' },
+            phone: { $first: '$phone' },
+            address: { $first: '$address' },
+            company: { $first: '$company' },
+            tax_code: { $first: '$tax_code' },
+            address_company: { $first: '$address_company' },
+            representative: { $first: '$representative' },
+            representative_hotline: { $first: '$representative_hotline' },
+            mail_vat: { $first: '$mail_vat' },
+            image_front_view: { $first: '$image_front_view' },
+            image_back_view: { $first: '$image_back_view' },
+            createdAt: { $first: '$createdAt' },
+            __v: { $first: '$__v' },
+            domain_services: { $first: '$domain_services' },
+            hosting_services: { $first: '$hosting_services' },
+            email_services: { $push: '$email_services' },
+          }
+        },
         
         // sslservices
         {
@@ -192,6 +277,11 @@ const customerController = {
           }
         },
         { $unwind: { path: '$ssl_services', preserveNullAndEmptyArrays: true } },
+        {
+          $sort: {
+            'ssl_services.createdAt': -1,
+          },
+        },
         {
           $lookup: {
             from: 'domainservices',
@@ -232,6 +322,31 @@ const customerController = {
             as: 'ssl_services.ssl_supplier'
           }
         },
+        {
+          $group: {
+            _id: '$_id',
+            fullname: { $first: '$fullname' },
+            email: { $first: '$email' },
+            gender: { $first: '$gender' },
+            idNumber: { $first: '$idNumber' },
+            phone: { $first: '$phone' },
+            address: { $first: '$address' },
+            company: { $first: '$company' },
+            tax_code: { $first: '$tax_code' },
+            address_company: { $first: '$address_company' },
+            representative: { $first: '$representative' },
+            representative_hotline: { $first: '$representative_hotline' },
+            mail_vat: { $first: '$mail_vat' },
+            image_front_view: { $first: '$image_front_view' },
+            image_back_view: { $first: '$image_back_view' },
+            createdAt: { $first: '$createdAt' },
+            __v: { $first: '$__v' },
+            domain_services: { $first: '$domain_services' },
+            hosting_services: { $first: '$hosting_services' },
+            email_services: { $first: '$email_services' },
+            ssl_services: { $push: '$ssl_services' },
+          }
+        },
 
         // websiteservices
         {
@@ -243,6 +358,11 @@ const customerController = {
           }
         },
         { $unwind: { path: '$website_services', preserveNullAndEmptyArrays: true } },
+        {
+          $sort: {
+            'website_services.createdAt': -1,
+          },
+        },
         {
           $lookup: {
             from: 'domainservices',
@@ -267,38 +387,6 @@ const customerController = {
             as: 'website_services.domain_supplier'
           }
         },
-
-        // contentservices
-        {
-          $lookup: {
-            from: "contentservices",
-            localField: "_id",
-            foreignField: "customer_id",
-            as: "content_services"
-          }
-        },
-        { $unwind: { path: '$content_services', preserveNullAndEmptyArrays: true } },
-        {
-          $lookup: {
-            from: 'contentplans',
-            localField: 'content_services.content_plan_id',
-            foreignField: '_id',
-            as: 'content_services.content_plan'
-          }
-        },
-
-        // toplistservices
-        {
-          $lookup: {
-            from: "toplistservices",
-            localField: "_id",
-            foreignField: "customer_id",
-            as: "toplist_services"
-          }
-        },
-        { $unwind: { path: '$toplist_services', preserveNullAndEmptyArrays: true } },
-
-        // group
         {
           $group: {
             _id: '$_id',
@@ -318,13 +406,106 @@ const customerController = {
             image_back_view: { $first: '$image_back_view' },
             createdAt: { $first: '$createdAt' },
             __v: { $first: '$__v' },
-            domain_services: { $addToSet: '$domain_services' },
-            hosting_services: { $addToSet: '$hosting_services' },
-            email_services: { $addToSet: '$email_services' },
-            ssl_services: { $addToSet: '$ssl_services' },
-            website_services: { $addToSet: '$website_services' },
-            content_services: { $addToSet: '$content_services' },
-            toplist_services: { $addToSet: '$toplist_services' },
+            domain_services: { $first: '$domain_services' },
+            hosting_services: { $first: '$hosting_services' },
+            email_services: { $first: '$email_services' },
+            ssl_services: { $first: '$ssl_services' },
+            website_services: { $push: '$website_services' },
+          }
+        },
+
+        // contentservices
+        {
+          $lookup: {
+            from: "contentservices",
+            localField: "_id",
+            foreignField: "customer_id",
+            as: "content_services"
+          }
+        },
+        { $unwind: { path: '$content_services', preserveNullAndEmptyArrays: true } },
+        {
+          $sort: {
+            'content_services.createdAt': -1,
+          },
+        },
+        {
+          $lookup: {
+            from: 'contentplans',
+            localField: 'content_services.content_plan_id',
+            foreignField: '_id',
+            as: 'content_services.content_plan'
+          }
+        },
+        {
+          $group: {
+            _id: '$_id',
+            fullname: { $first: '$fullname' },
+            email: { $first: '$email' },
+            gender: { $first: '$gender' },
+            idNumber: { $first: '$idNumber' },
+            phone: { $first: '$phone' },
+            address: { $first: '$address' },
+            company: { $first: '$company' },
+            tax_code: { $first: '$tax_code' },
+            address_company: { $first: '$address_company' },
+            representative: { $first: '$representative' },
+            representative_hotline: { $first: '$representative_hotline' },
+            mail_vat: { $first: '$mail_vat' },
+            image_front_view: { $first: '$image_front_view' },
+            image_back_view: { $first: '$image_back_view' },
+            createdAt: { $first: '$createdAt' },
+            __v: { $first: '$__v' },
+            domain_services: { $first: '$domain_services' },
+            hosting_services: { $first: '$hosting_services' },
+            email_services: { $first: '$email_services' },
+            ssl_services: { $first: '$ssl_services' },
+            website_services: { $first: '$website_services' },
+            content_services: { $push: '$content_services' },
+          }
+        },
+
+        // toplistservices
+        {
+          $lookup: {
+            from: "toplistservices",
+            localField: "_id",
+            foreignField: "customer_id",
+            as: "toplist_services"
+          }
+        },
+        { $unwind: { path: '$toplist_services', preserveNullAndEmptyArrays: true } },
+        {
+          $sort: {
+            'toplist_services.createdAt': -1,
+          },
+        },
+        {
+          $group: {
+            _id: '$_id',
+            fullname: { $first: '$fullname' },
+            email: { $first: '$email' },
+            gender: { $first: '$gender' },
+            idNumber: { $first: '$idNumber' },
+            phone: { $first: '$phone' },
+            address: { $first: '$address' },
+            company: { $first: '$company' },
+            tax_code: { $first: '$tax_code' },
+            address_company: { $first: '$address_company' },
+            representative: { $first: '$representative' },
+            representative_hotline: { $first: '$representative_hotline' },
+            mail_vat: { $first: '$mail_vat' },
+            image_front_view: { $first: '$image_front_view' },
+            image_back_view: { $first: '$image_back_view' },
+            createdAt: { $first: '$createdAt' },
+            __v: { $first: '$__v' },
+            domain_services: { $first: '$domain_services' },
+            hosting_services: { $first: '$hosting_services' },
+            email_services: { $first: '$email_services' },
+            ssl_services: { $first: '$ssl_services' },
+            website_services: { $first: '$website_services' },
+            content_services: { $first: '$content_services' },
+            toplist_services: { $push: '$toplist_services' },
           }
         },
       ]);

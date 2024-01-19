@@ -53,7 +53,8 @@ const toplistServiceController = {
     try {
       const toplistService = await ToplistServices.findById(req.params.id);
       if (req.body.periods) {
-        const expiredAt = toplistService.expiredAt.setFullYear(toplistService.expiredAt.getFullYear() + req.body.periods);
+        const currentDate = new Date();
+        const expiredAt = currentDate.setFullYear(currentDate.getFullYear() + req.body.periods);
         await toplistService.updateOne({$set: {expiredAt: expiredAt, status: 1}});
       }
       await toplistService.updateOne({$set: req.body});

@@ -25,8 +25,6 @@ const contractController = {
         }
 
         const saveContract = await newContract.save();
-        // Set Cache-Control headers to disable caching
-        res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
         res.status(200).json(saveContract);
       }
     } catch(err) {

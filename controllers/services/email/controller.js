@@ -93,7 +93,8 @@ const emailServicesController = {
     try {
       const emailServices = await EmailServices.findById(req.params.id);
       if (req.body.periods) {
-        const expiredAt = emailServices.expiredAt.setFullYear(emailServices.expiredAt.getFullYear() + req.body.periods);
+        const currentDate = new Date();
+        const expiredAt = currentDate.setFullYear(currentDate.getFullYear() + req.body.periods);
         await emailServices.updateOne({$set: {expiredAt: expiredAt, status: 1}});
         res.status(200).json("Updated successfully!");
       }

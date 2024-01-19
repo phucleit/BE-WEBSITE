@@ -93,7 +93,8 @@ const sslServicesController = {
     try {
       const sslServices = await SslServices.findById(req.params.id);
       if (req.body.periods) {
-        const expiredAt = sslServices.expiredAt.setFullYear(sslServices.expiredAt.getFullYear() + req.body.periods);
+        const currentDate = new Date();
+        const expiredAt = currentDate.setFullYear(currentDate.getFullYear() + req.body.periods);
         await sslServices.updateOne({$set: {expiredAt: expiredAt, status: 1}});
         res.status(200).json("Updated successfully!");
       }

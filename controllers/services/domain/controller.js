@@ -78,7 +78,8 @@ const domainServicesController = {
     try {
       const domainServices = await DomainServices.findById(req.params.id);
       if (req.body.periods) {
-        const expiredAt = domainServices.expiredAt.setFullYear(domainServices.expiredAt.getFullYear() + req.body.periods);
+        const currentDate = new Date();
+        const expiredAt = currentDate.setFullYear(currentDate.getFullYear() + req.body.periods);
         await domainServices.updateOne({$set: {expiredAt: expiredAt, status: 1}});
       }
       await domainServices.updateOne({$set: req.body});

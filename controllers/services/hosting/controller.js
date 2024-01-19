@@ -93,7 +93,8 @@ const hostingServicesController = {
     try {
       const hostingServices = await HostingServices.findById(req.params.id);
       if (req.body.periods) {
-        const expiredAt = hostingServices.expiredAt.setFullYear(hostingServices.expiredAt.getFullYear() + req.body.periods);
+        const currentDate = new Date();
+        const expiredAt = currentDate.setFullYear(currentDate.getFullYear() + req.body.periods);
         await hostingServices.updateOne({$set: {expiredAt: expiredAt, status: 1}});
         res.status(200).json("Updated successfully!");
       }

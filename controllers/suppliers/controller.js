@@ -36,6 +36,8 @@ const supplierController = {
             _id: new ObjectId(req.params.id),
           },
         },
+
+        // domainplans
         {
           $lookup: {
             from: "domainplans",
@@ -45,6 +47,31 @@ const supplierController = {
           }
         },
         {
+          $unwind: { path: "$domainPlans", preserveNullAndEmptyArrays: true },
+        },
+        {
+          $sort: {
+            'domainPlans.createdAt': -1,
+          },
+        },
+        {
+          $group: {
+            _id: "$_id",
+            name: { $first: "$name" },
+            company: { $first: "$company" },
+            tax_code: { $first: "$tax_code" },
+            phone: { $first: "$phone" },
+            name_support: { $first: "$name_support" },
+            phone_support: { $first: "$phone_support" },
+            address: { $first: "$address" },
+            createdAt: { $first: "$createdAt" },
+            __v: { $first: "$__v" },
+            domainPlans: { $push: "$domainPlans" },
+          },
+        },
+
+        // emailplans
+        {
           $lookup: {
             from: "emailplans",
             localField: "_id",
@@ -52,6 +79,32 @@ const supplierController = {
             as: "emailPlans"
           }
         },
+        {
+          $unwind: { path: "$emailPlans", preserveNullAndEmptyArrays: true },
+        },
+        {
+          $sort: {
+            'emailPlans.createdAt': -1,
+          },
+        },
+        {
+          $group: {
+            _id: "$_id",
+            name: { $first: "$name" },
+            company: { $first: "$company" },
+            tax_code: { $first: "$tax_code" },
+            phone: { $first: "$phone" },
+            name_support: { $first: "$name_support" },
+            phone_support: { $first: "$phone_support" },
+            address: { $first: "$address" },
+            createdAt: { $first: "$createdAt" },
+            __v: { $first: "$__v" },
+            domainPlans: { $first: "$domainPlans" },
+            emailPlans: { $push: "$emailPlans" },
+          },
+        },
+
+        // hostingPlans
         {
           $lookup: {
             from: "hostingplans",
@@ -61,13 +114,66 @@ const supplierController = {
           }
         },
         {
+          $unwind: { path: "$hostingPlans", preserveNullAndEmptyArrays: true },
+        },
+        {
+          $sort: {
+            'hostingPlans.createdAt': -1,
+          },
+        },
+        {
+          $group: {
+            _id: "$_id",
+            name: { $first: "$name" },
+            company: { $first: "$company" },
+            tax_code: { $first: "$tax_code" },
+            phone: { $first: "$phone" },
+            name_support: { $first: "$name_support" },
+            phone_support: { $first: "$phone_support" },
+            address: { $first: "$address" },
+            createdAt: { $first: "$createdAt" },
+            __v: { $first: "$__v" },
+            domainPlans: { $first: "$domainPlans" },
+            emailPlans: { $first: "$emailPlans" },
+            hostingPlans: { $push: "$hostingPlans" },
+          },
+        },
+
+        // sslPlans
+        {
           $lookup: {
             from: "sslplans",
             localField: "_id",
             foreignField: "supplier_id",
             as: "sslPlans"
           }
-        }
+        },
+        {
+          $unwind: { path: "$sslPlans", preserveNullAndEmptyArrays: true },
+        },
+        {
+          $sort: {
+            'sslPlans.createdAt': -1,
+          },
+        },
+        {
+          $group: {
+            _id: "$_id",
+            name: { $first: "$name" },
+            company: { $first: "$company" },
+            tax_code: { $first: "$tax_code" },
+            phone: { $first: "$phone" },
+            name_support: { $first: "$name_support" },
+            phone_support: { $first: "$phone_support" },
+            address: { $first: "$address" },
+            createdAt: { $first: "$createdAt" },
+            __v: { $first: "$__v" },
+            domainPlans: { $first: "$domainPlans" },
+            emailPlans: { $first: "$emailPlans" },
+            hostingPlans: { $first: "$hostingPlans" },
+            sslPlans: { $push: "$sslPlans" },
+          },
+        },
       ]);
       
       res.status(200).json(supplier);

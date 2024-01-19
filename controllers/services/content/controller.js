@@ -10,8 +10,6 @@ const contentServicesController = {
       newContentServices.expiredAt.setFullYear(newContentServices.expiredAt.getFullYear() + req.body.periods);
       newContentServices.status = 1;
       const saveContentServices = await newContentServices.save();
-      // Set Cache-Control headers to disable caching
-      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
       res.status(200).json(saveContentServices);
     } catch(err) {
       res.status(500).json(err);
@@ -21,8 +19,6 @@ const contentServicesController = {
   getContentServices: async(req, res) => {
     try {
       const contentServices = await ContentServices.find().sort({"createdAt": -1}).populate('content_plan_id').populate('customer_id', 'fullname gender email phone');
-      // Set Cache-Control headers to disable caching
-      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
       res.status(200).json(contentServices);
     } catch(err) {
       res.status(500).json(err);
@@ -32,8 +28,6 @@ const contentServicesController = {
   getDetailContentServices: async(req, res) => {
     try {
       const contentServices = await ContentServices.findById(req.params.id).sort({"createdAt": -1}).populate('content_plan_id').populate('customer_id', 'fullname gender email phone');
-      // Set Cache-Control headers to disable caching
-      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
       res.status(200).json(contentServices);
     } catch(err) {
       res.status(500).json(err);
@@ -43,8 +37,6 @@ const contentServicesController = {
   deleteContentServices: async(req, res) => {
     try {
       await ContentServices.findByIdAndDelete(req.params.id);
-      // Set Cache-Control headers to disable caching
-      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
       res.status(200).json("Deleted successfully!");
     } catch(err) {
       res.status(500).json(err);
@@ -55,13 +47,13 @@ const contentServicesController = {
     try {
       const contentServices = await ContentServices.findById(req.params.id);
       if (req.body.periods) {
-        const expiredAt = contentServices.expiredAt.setFullYear(contentServices.expiredAt.getFullYear() + req.body.periods);
+        const currentDate = new Date();
+        const expiredAt = currentDate.setFullYear(currentDate.getFullYear() + req.body.periods);
         await contentServices.updateOne({$set: {expiredAt: expiredAt, status: 1}});
         res.status(200).json("Updated successfully!");
       }
       await contentServices.updateOne({$set: req.body});
-      // Set Cache-Control headers to disable caching
-      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      
       res.status(200).json("Updated successfully");
     } catch(err) {
       res.status(500).json(err);
@@ -103,8 +95,6 @@ const contentServicesController = {
         .populate('content_plan_id')
         .populate('customer_id', 'fullname gender email phone')
       
-      // Set Cache-Control headers to disable caching
-      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
       res.status(200).json(contentServicesExpired);
     } catch(err) {
       res.status(500).json(err);
@@ -153,8 +143,6 @@ const contentServicesController = {
         .populate('content_plan_id')
         .populate('customer_id', 'fullname gender email phone')
       
-      // Set Cache-Control headers to disable caching
-      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
       res.status(200).json(contentServicesExpiring);
     } catch(err) {
       res.status(500).json(err);
