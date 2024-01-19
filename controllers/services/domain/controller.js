@@ -53,7 +53,7 @@ const domainServicesController = {
   getDetailDomainServices: async(req, res) => {
     try {
       const domainServices = await DomainServices.findById(req.params.id)
-        .populate('domain_plan_id', 'name price')
+        .populate('domain_plan_id')
         .populate('customer_id', 'fullname gender email phone')
         .populate('supplier_id', 'name company');
       

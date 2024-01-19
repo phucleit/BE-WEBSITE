@@ -51,7 +51,7 @@ const emailServicesController = {
         .populate('domain_service_id')
         .populate('email_plan_id')
         .populate('customer_id', 'fullname gender email phone')
-        .populate('domain_plan_id', 'name')
+        .populate('domain_plan_id')
         .populate('domain_supplier_id', 'name company')
         .populate('email_supplier_id', 'name company');
       
@@ -68,7 +68,7 @@ const emailServicesController = {
         .populate('domain_service_id')
         .populate('email_plan_id')
         .populate('customer_id', 'fullname gender email phone')
-        .populate('domain_plan_id', 'name')
+        .populate('domain_plan_id')
         .populate('domain_supplier_id', 'name company')
         .populate('email_supplier_id', 'name company');
       
@@ -141,7 +141,7 @@ const emailServicesController = {
         .populate('domain_service_id')
         .populate('email_plan_id')
         .populate('customer_id', 'fullname gender email phone')
-        .populate('domain_plan_id', 'name')
+        .populate('domain_plan_id')
         .populate('domain_supplier_id', 'name company')
         .populate('email_supplier_id', 'name company');
       
@@ -194,7 +194,7 @@ const emailServicesController = {
         .populate('domain_service_id')
         .populate('email_plan_id')
         .populate('customer_id', 'fullname gender email phone')
-        .populate('domain_plan_id', 'name')
+        .populate('domain_plan_id')
         .populate('domain_supplier_id', 'name company')
         .populate('email_supplier_id', 'name company');
       
