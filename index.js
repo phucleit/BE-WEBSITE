@@ -48,19 +48,14 @@ mongoose
 app.use(bodyParser.json({limit: "500mb"}));
 app.use(bodyParser.urlencoded({extended:true, limit:'500mb'})); 
 
-app.use(cors({
-    origin: 'http://localhost:3006',
-    credentials: true,
-}));
+const corsOptions = {
+	origin: 'http://localhost:3006',
+	methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+	credentials: true,
+	optionsSuccessStatus: 204,
+};	
 
-// const corsOptions = {
-//     origin: 'http://localhost:3000/',
-//     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-//     credentials: true,
-//     optionsSuccessStatus: 204,
-// };
-  
-// app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 
 app.use(morgan("common"));
 app.use('/uploads', express.static('uploads'));
