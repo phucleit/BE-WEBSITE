@@ -13,13 +13,14 @@ const supplierSchema = new mongoose.Schema({
     type: String,
   },
   phone: {
-    type: Number,
+    type: String,
+    required: true,
   },
   name_support: {
     type: String,
   },
   phone_support: {
-    type: Number,
+    type: String,
   },
   address: {
     type: String,
