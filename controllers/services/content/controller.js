@@ -7,7 +7,7 @@ const contentServicesController = {
     try {
       const newContentServices = new ContentServices(req.body);
       newContentServices.expiredAt = new Date(newContentServices.registeredAt);
-      newContentServices.expiredAt.setFullYear(newContentServices.expiredAt.getFullYear() + req.body.periods);
+      newContentServices.expiredAt.setMonth(newContentServices.expiredAt.getMonth() + req.body.periods);
       newContentServices.status = 1;
       const saveContentServices = await newContentServices.save();
       res.status(200).json(saveContentServices);
@@ -48,7 +48,7 @@ const contentServicesController = {
       const contentServices = await ContentServices.findById(req.params.id);
       if (req.body.periods) {
         const currentDate = new Date();
-        const expiredAt = currentDate.setFullYear(currentDate.getFullYear() + req.body.periods);
+        const expiredAt = currentDate.setMonth(currentDate.getMonth() + req.body.periods);
         await contentServices.updateOne({$set: {expiredAt: expiredAt, status: 1}});
         res.status(200).json("Updated successfully!");
       }
