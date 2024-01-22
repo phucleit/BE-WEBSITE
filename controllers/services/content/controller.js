@@ -52,9 +52,8 @@ const contentServicesController = {
         await contentServices.updateOne({$set: {expiredAt: expiredAt, status: 1}});
         res.status(200).json("Updated successfully!");
       }
-      await contentServices.updateOne({$set: req.body});
-      
-      res.status(200).json("Updated successfully");
+      // await contentServices.updateOne({$set: req.body});
+      // res.status(200).json("Updated successfully");
     } catch(err) {
       res.status(500).json(err);
     }
