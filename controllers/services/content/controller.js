@@ -49,7 +49,7 @@ const contentServicesController = {
       if (req.body.periods) {
         const currentDate = new Date();
         const expiredAt = currentDate.setMonth(currentDate.getMonth() + req.body.periods);
-        await contentServices.updateOne({$set: {expiredAt: expiredAt, status: 1}});
+        await contentServices.updateOne({$set: {expiredAt: expiredAt, periods: req.body.periods, status: 1}});
         res.status(200).json("Updated successfully!");
       }
       // await contentServices.updateOne({$set: req.body});
