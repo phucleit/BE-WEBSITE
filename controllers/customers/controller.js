@@ -47,14 +47,22 @@ const customerController = {
 
   getDetailCustomer: async(req, res) => {
     try {
-      const customer = await Customer.aggregate([
+      const customers = await Customer.findById(req.params.id);
+      res.status(200).json(customers);
+    } catch(err) {
+      res.status(500).json(err);
+    }
+  },
+
+  getDomainServiceByCustomerId: async(req, res) => {
+    try {
+      const domainServiceByCustomerId = await Customer.aggregate([
         {
           $match: {
             _id: new ObjectId(req.params.id),
           },
         },
 
-        //domainservices
         {
           $lookup: {
             from: "domainservices",
@@ -63,52 +71,51 @@ const customerController = {
             as: "domain_services"
           }
         },
-        { $unwind: { path: '$domain_services', preserveNullAndEmptyArrays: true } },
+        { $unwind: { path: "$domain_services", preserveNullAndEmptyArrays: true } },
         {
           $sort: {
-            'domain_services.createdAt': -1,
+            "domain_services.createdAt": -1,
           },
         },
         {
           $lookup: {
-            from: 'domainplans',
-            localField: 'domain_services.domain_plan_id',
-            foreignField: '_id',
-            as: 'domain_services.domain_plan'
+            from: "domainplans",
+            localField: "domain_services.domain_plan_id",
+            foreignField: "_id",
+            as: "domain_services.domain_plan"
           }
         },
         {
           $lookup: {
-            from: 'suppliers',
-            localField: 'domain_services.supplier_id',
-            foreignField: '_id',
-            as: 'domain_services.supplier'
+            from: "suppliers",
+            localField: "domain_services.supplier_id",
+            foreignField: "_id",
+            as: "domain_services.supplier"
           }
         },
         {
           $group: {
-            _id: '$_id',
-            fullname: { $first: '$fullname' },
-            email: { $first: '$email' },
-            gender: { $first: '$gender' },
-            idNumber: { $first: '$idNumber' },
-            phone: { $first: '$phone' },
-            address: { $first: '$address' },
-            company: { $first: '$company' },
-            tax_code: { $first: '$tax_code' },
-            address_company: { $first: '$address_company' },
-            representative: { $first: '$representative' },
-            representative_hotline: { $first: '$representative_hotline' },
-            mail_vat: { $first: '$mail_vat' },
-            image_front_view: { $first: '$image_front_view' },
-            image_back_view: { $first: '$image_back_view' },
-            createdAt: { $first: '$createdAt' },
-            __v: { $first: '$__v' },
-            domain_services: { $push: '$domain_services' },
+            _id: "$_id",
+            domain_services: { $push: "$domain_services" },
           }
         },
+      ]);
+      
+      res.status(200).json(domainServiceByCustomerId);
+    } catch(err) {
+      res.status(500).json(err);
+    }
+  },
 
-        // hostingservices
+  getHostingServiceByCustomerId: async(req, res) => {
+    try {
+      const hostingServiceByCustomerId = await Customer.aggregate([
+        {
+          $match: {
+            _id: new ObjectId(req.params.id),
+          },
+        },
+
         {
           $lookup: {
             from: "hostingservices",
@@ -165,29 +172,27 @@ const customerController = {
         },
         {
           $group: {
-            _id: '$_id',
-            fullname: { $first: '$fullname' },
-            email: { $first: '$email' },
-            gender: { $first: '$gender' },
-            idNumber: { $first: '$idNumber' },
-            phone: { $first: '$phone' },
-            address: { $first: '$address' },
-            company: { $first: '$company' },
-            tax_code: { $first: '$tax_code' },
-            address_company: { $first: '$address_company' },
-            representative: { $first: '$representative' },
-            representative_hotline: { $first: '$representative_hotline' },
-            mail_vat: { $first: '$mail_vat' },
-            image_front_view: { $first: '$image_front_view' },
-            image_back_view: { $first: '$image_back_view' },
-            createdAt: { $first: '$createdAt' },
-            __v: { $first: '$__v' },
-            domain_services: { $first: '$domain_services' },
-            hosting_services: { $push: '$hosting_services' },
+            _id: "$_id",
+            hosting_services: { $push: "$hosting_services" },
           }
         },
+      ]);
+      
+      res.status(200).json(hostingServiceByCustomerId);
+    } catch(err) {
+      res.status(500).json(err);
+    }
+  },
 
-        // emailservices
+  getEmailServiceByCustomerId: async(req, res) => {
+    try {
+      const emailServiceByCustomerId = await Customer.aggregate([
+        {
+          $match: {
+            _id: new ObjectId(req.params.id),
+          },
+        },
+
         {
           $lookup: {
             from: "emailservices",
@@ -244,30 +249,27 @@ const customerController = {
         },
         {
           $group: {
-            _id: '$_id',
-            fullname: { $first: '$fullname' },
-            email: { $first: '$email' },
-            gender: { $first: '$gender' },
-            idNumber: { $first: '$idNumber' },
-            phone: { $first: '$phone' },
-            address: { $first: '$address' },
-            company: { $first: '$company' },
-            tax_code: { $first: '$tax_code' },
-            address_company: { $first: '$address_company' },
-            representative: { $first: '$representative' },
-            representative_hotline: { $first: '$representative_hotline' },
-            mail_vat: { $first: '$mail_vat' },
-            image_front_view: { $first: '$image_front_view' },
-            image_back_view: { $first: '$image_back_view' },
-            createdAt: { $first: '$createdAt' },
-            __v: { $first: '$__v' },
-            domain_services: { $first: '$domain_services' },
-            hosting_services: { $first: '$hosting_services' },
-            email_services: { $push: '$email_services' },
+            _id: "$_id",
+            email_services: { $push: "$email_services" },
           }
         },
-        
-        // sslservices
+      ]);
+      
+      res.status(200).json(emailServiceByCustomerId);
+    } catch(err) {
+      res.status(500).json(err);
+    }
+  },
+
+  getSslServiceByCustomerId: async(req, res) => {
+    try {
+      const sslServiceByCustomerId = await Customer.aggregate([
+        {
+          $match: {
+            _id: new ObjectId(req.params.id),
+          },
+        },
+
         {
           $lookup: {
             from: "sslservices",
@@ -324,31 +326,27 @@ const customerController = {
         },
         {
           $group: {
-            _id: '$_id',
-            fullname: { $first: '$fullname' },
-            email: { $first: '$email' },
-            gender: { $first: '$gender' },
-            idNumber: { $first: '$idNumber' },
-            phone: { $first: '$phone' },
-            address: { $first: '$address' },
-            company: { $first: '$company' },
-            tax_code: { $first: '$tax_code' },
-            address_company: { $first: '$address_company' },
-            representative: { $first: '$representative' },
-            representative_hotline: { $first: '$representative_hotline' },
-            mail_vat: { $first: '$mail_vat' },
-            image_front_view: { $first: '$image_front_view' },
-            image_back_view: { $first: '$image_back_view' },
-            createdAt: { $first: '$createdAt' },
-            __v: { $first: '$__v' },
-            domain_services: { $first: '$domain_services' },
-            hosting_services: { $first: '$hosting_services' },
-            email_services: { $first: '$email_services' },
-            ssl_services: { $push: '$ssl_services' },
+            _id: "$_id",
+            ssl_services: { $push: "$ssl_services" },
           }
         },
+      ]);
+      
+      res.status(200).json(sslServiceByCustomerId);
+    } catch(err) {
+      res.status(500).json(err);
+    }
+  },
 
-        // websiteservices
+  getWebsiteServiceByCustomerId: async(req, res) => {
+    try {
+      const websiteServiceByCustomerId = await Customer.aggregate([
+        {
+          $match: {
+            _id: new ObjectId(req.params.id),
+          },
+        },
+
         {
           $lookup: {
             from: "websiteservices",
@@ -389,32 +387,27 @@ const customerController = {
         },
         {
           $group: {
-            _id: '$_id',
-            fullname: { $first: '$fullname' },
-            email: { $first: '$email' },
-            gender: { $first: '$gender' },
-            idNumber: { $first: '$idNumber' },
-            phone: { $first: '$phone' },
-            address: { $first: '$address' },
-            company: { $first: '$company' },
-            tax_code: { $first: '$tax_code' },
-            address_company: { $first: '$address_company' },
-            representative: { $first: '$representative' },
-            representative_hotline: { $first: '$representative_hotline' },
-            mail_vat: { $first: '$mail_vat' },
-            image_front_view: { $first: '$image_front_view' },
-            image_back_view: { $first: '$image_back_view' },
-            createdAt: { $first: '$createdAt' },
-            __v: { $first: '$__v' },
-            domain_services: { $first: '$domain_services' },
-            hosting_services: { $first: '$hosting_services' },
-            email_services: { $first: '$email_services' },
-            ssl_services: { $first: '$ssl_services' },
-            website_services: { $push: '$website_services' },
+            _id: "$_id",
+            website_services: { $push: "$website_services" },
           }
         },
+      ]);
+      
+      res.status(200).json(websiteServiceByCustomerId);
+    } catch(err) {
+      res.status(500).json(err);
+    }
+  },
 
-        // contentservices
+  getContentServiceByCustomerId: async(req, res) => {
+    try {
+      const contentServiceByCustomerId = await Customer.aggregate([
+        {
+          $match: {
+            _id: new ObjectId(req.params.id),
+          },
+        },
+
         {
           $lookup: {
             from: "contentservices",
@@ -439,33 +432,27 @@ const customerController = {
         },
         {
           $group: {
-            _id: '$_id',
-            fullname: { $first: '$fullname' },
-            email: { $first: '$email' },
-            gender: { $first: '$gender' },
-            idNumber: { $first: '$idNumber' },
-            phone: { $first: '$phone' },
-            address: { $first: '$address' },
-            company: { $first: '$company' },
-            tax_code: { $first: '$tax_code' },
-            address_company: { $first: '$address_company' },
-            representative: { $first: '$representative' },
-            representative_hotline: { $first: '$representative_hotline' },
-            mail_vat: { $first: '$mail_vat' },
-            image_front_view: { $first: '$image_front_view' },
-            image_back_view: { $first: '$image_back_view' },
-            createdAt: { $first: '$createdAt' },
-            __v: { $first: '$__v' },
-            domain_services: { $first: '$domain_services' },
-            hosting_services: { $first: '$hosting_services' },
-            email_services: { $first: '$email_services' },
-            ssl_services: { $first: '$ssl_services' },
-            website_services: { $first: '$website_services' },
-            content_services: { $push: '$content_services' },
+            _id: "$_id",
+            content_services: { $push: "$domain_services" },
           }
         },
+      ]);
+      
+      res.status(200).json(contentServiceByCustomerId);
+    } catch(err) {
+      res.status(500).json(err);
+    }
+  },
 
-        // toplistservices
+  getToplistServiceByCustomerId: async(req, res) => {
+    try {
+      const toplistServiceByCustomerId = await Customer.aggregate([
+        {
+          $match: {
+            _id: new ObjectId(req.params.id),
+          },
+        },
+
         {
           $lookup: {
             from: "toplistservices",
@@ -482,37 +469,83 @@ const customerController = {
         },
         {
           $group: {
-            _id: '$_id',
-            fullname: { $first: '$fullname' },
-            email: { $first: '$email' },
-            gender: { $first: '$gender' },
-            idNumber: { $first: '$idNumber' },
-            phone: { $first: '$phone' },
-            address: { $first: '$address' },
-            company: { $first: '$company' },
-            tax_code: { $first: '$tax_code' },
-            address_company: { $first: '$address_company' },
-            representative: { $first: '$representative' },
-            representative_hotline: { $first: '$representative_hotline' },
-            mail_vat: { $first: '$mail_vat' },
-            image_front_view: { $first: '$image_front_view' },
-            image_back_view: { $first: '$image_back_view' },
-            createdAt: { $first: '$createdAt' },
-            __v: { $first: '$__v' },
-            domain_services: { $first: '$domain_services' },
-            hosting_services: { $first: '$hosting_services' },
-            email_services: { $first: '$email_services' },
-            ssl_services: { $first: '$ssl_services' },
-            website_services: { $first: '$website_services' },
-            content_services: { $first: '$content_services' },
-            toplist_services: { $push: '$toplist_services' },
+            _id: "$_id",
+            toplist_services: { $push: "$toplist_services" },
           }
         },
       ]);
       
-      res.status(200).json(customer);
+      res.status(200).json(toplistServiceByCustomerId);
     } catch(err) {
-      console.log(err);
+      res.status(500).json(err);
+    }
+  },
+
+  getMaintenanceServiceByCustomerId: async(req, res) => {
+    try {
+      const maintenanceServiceByCustomerId = await Customer.aggregate([
+        {
+          $match: {
+            _id: new ObjectId(req.params.id),
+          },
+        },
+
+        {
+          $lookup: {
+            from: "maintenanceservices",
+            localField: "_id",
+            foreignField: "customer_id",
+            as: "maintenance_services"
+          }
+        },
+        { $unwind: { path: '$maintenance_services', preserveNullAndEmptyArrays: true } },
+        {
+          $sort: {
+            'maintenance_services.createdAt': -1,
+          },
+        },
+        {
+          $lookup: {
+            from: 'domainservices',
+            localField: 'maintenance_services.domain_service_id',
+            foreignField: '_id',
+            as: 'maintenance_services.domain_service'
+          }
+        },
+        {
+          $lookup: {
+            from: 'domainplans',
+            localField: 'maintenance_services.domain_plan_id',
+            foreignField: '_id',
+            as: 'maintenance_services.domain_plan'
+          }
+        },
+        {
+          $lookup: {
+            from: 'suppliers',
+            localField: 'maintenance_services.domain_supplier_id',
+            foreignField: '_id',
+            as: 'maintenance_services.domain_supplier'
+          }
+        },
+        {
+          $lookup: {
+            from: 'maintenanceplans',
+            localField: 'maintenance_services.maintenance_plan_id',
+            foreignField: '_id',
+            as: 'maintenance_services.maintenance_plan'
+          }
+        },
+        {
+          $group: {
+            _id: "$_id",
+            maintenance_services: { $push: "$maintenance_services" },
+          }
+        },
+      ]);
+      
+      res.status(200).json(maintenanceServiceByCustomerId);
+    } catch(err) {
       res.status(500).json(err);
     }
   },
@@ -557,7 +590,6 @@ const customerController = {
       
       res.status(200).json("Updated successfully");
     } catch(err) {
-      console.log(err);
       res.status(500).json(err);
     }
   }
