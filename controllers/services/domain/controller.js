@@ -82,6 +82,9 @@ const domainServicesController = {
         const expiredAt = currentDate.setFullYear(currentDate.getFullYear() + req.body.periods);
         await domainServices.updateOne({$set: {expiredAt: expiredAt, status: 1}});
       }
+      if (req.body.before_payment) {
+        await domainServices.updateOne({$set: {before_payment: true}});
+      }
       await domainServices.updateOne({$set: req.body});
       
       res.status(200).json("Updated successfully!");

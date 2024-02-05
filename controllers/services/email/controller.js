@@ -96,11 +96,14 @@ const emailServicesController = {
         const currentDate = new Date();
         const expiredAt = currentDate.setFullYear(currentDate.getFullYear() + req.body.periods);
         await emailServices.updateOne({$set: {expiredAt: expiredAt, status: 1}});
-        res.status(200).json("Updated successfully!");
       }
 
+      if (req.body.before_payment) {
+        await emailServices.updateOne({$set: {before_payment: true}});
+      }
       
       await emailServices.updateOne({$set: req.body});
+      res.status(200).json("Updated successfully!");
     } catch(err) {
       res.status(500).json(err);
     }

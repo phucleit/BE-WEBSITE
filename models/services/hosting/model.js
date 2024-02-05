@@ -20,6 +20,10 @@ const hostingServicesSchema = new mongoose.Schema({
   status: {
     type: Number
   },
+  before_payment: {
+    type: Boolean,
+    default: false
+  },
   createdAt: {
     type: Date,
     default: Date.now
