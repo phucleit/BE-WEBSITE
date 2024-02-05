@@ -148,7 +148,6 @@ const emailServicesController = {
         .populate('domain_supplier_id', 'name company')
         .populate('email_supplier_id', 'name company');
       
-      
       res.status(200).json(emailServicesExpired);
     } catch(err) {
       res.status(500).json(err);
@@ -201,8 +200,30 @@ const emailServicesController = {
         .populate('domain_supplier_id', 'name company')
         .populate('email_supplier_id', 'name company');
       
-      
       res.status(200).json(emailServicesExpiring);
+    } catch(err) {
+      res.status(500).json(err);
+    }
+  },
+
+  getEmailServicesBeforePayment: async(req, res) => {
+    try {
+      const emailServicesBeforePayment = await EmailServices
+        .find(
+          {
+            before_payment: true
+          }
+        )
+        .sort({"createdAt": -1})
+        .populate('domain_service_id')
+        .populate('email_plan_id')
+        .populate('customer_id', 'fullname gender email phone')
+        .populate('domain_plan_id')
+        .populate('domain_supplier_id', 'name company')
+        .populate('email_supplier_id', 'name company');
+      
+      
+      res.status(200).json(emailServicesBeforePayment);
     } catch(err) {
       res.status(500).json(err);
     }

@@ -8,5 +8,6 @@ router.delete("/:id", hostingServicesController.deleteHostingServices);
 router.put("/:id", hostingServicesController.updateHostingServices);
 router.get("/expired/all", hostingServicesController.getHostingServicesExpired);
 router.get("/expiring/all", hostingServicesController.getHostingServicesExpiring);
+router.get("/before-payment/all", hostingServicesController.getHostingServicesBeforePayment);
 
 module.exports = router;

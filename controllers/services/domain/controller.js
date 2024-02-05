@@ -129,7 +129,6 @@ const domainServicesController = {
         .populate('customer_id', 'fullname gender email phone')
         .populate('supplier_id', 'name company');
       
-      
       res.status(200).json(domainServicesExpired);
     } catch(err) {
       res.status(500).json(err);
@@ -179,8 +178,27 @@ const domainServicesController = {
         .populate('customer_id', 'fullname gender email phone')
         .populate('supplier_id', 'name company');
       
-      
       res.status(200).json(domainServicesExpiring);
+    } catch(err) {
+      res.status(500).json(err);
+    }
+  },
+
+  getDomainServicesBeforePayment: async(req, res) => {
+    try {
+      const domainServicesBeforePayment = await DomainServices
+        .find(
+          {
+            before_payment: true
+          }
+        )
+        .sort({"createdAt": -1})
+        .populate('domain_plan_id')
+        .populate('customer_id', 'fullname gender email phone')
+        .populate('supplier_id', 'name company');
+      
+      
+      res.status(200).json(domainServicesBeforePayment);
     } catch(err) {
       res.status(500).json(err);
     }

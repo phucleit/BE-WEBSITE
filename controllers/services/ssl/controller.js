@@ -148,7 +148,6 @@ const sslServicesController = {
         .populate('domain_supplier_id', 'name company')
         .populate('ssl_supplier_id', 'name company');
       
-      
       res.status(200).json(sslServicesExpired);
     } catch(err) {
       res.status(500).json(err);
@@ -201,8 +200,29 @@ const sslServicesController = {
         .populate('domain_supplier_id', 'name company')
         .populate('ssl_supplier_id', 'name company');
       
-      
       res.status(200).json(sslServicesExpiring);
+    } catch(err) {
+      res.status(500).json(err);
+    }
+  },
+
+  getSslServicesBeforePayment: async(req, res) => {
+    try {
+      const sslServicesBeforePayment = await SslServices
+        .find(
+          {
+            before_payment: true
+          }
+        )
+        .sort({"createdAt": -1})
+        .populate('domain_service_id')
+        .populate('ssl_plan_id')
+        .populate('customer_id', 'fullname gender email phone')
+        .populate('domain_plan_id')
+        .populate('domain_supplier_id', 'name company')
+        .populate('ssl_supplier_id', 'name company');
+      
+      res.status(200).json(sslServicesBeforePayment);
     } catch(err) {
       res.status(500).json(err);
     }

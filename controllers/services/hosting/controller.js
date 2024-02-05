@@ -148,7 +148,6 @@ const hostingServicesController = {
         .populate('domain_supplier_id', 'name company')
         .populate('hosting_supplier_id', 'name company');
       
-      
       res.status(200).json(hostingServicesExpired);
     } catch(err) {
       res.status(500).json(err);
@@ -201,8 +200,29 @@ const hostingServicesController = {
         .populate('domain_supplier_id', 'name company')
         .populate('hosting_supplier_id', 'name company');
       
-      
       res.status(200).json(hostingServicesExpiring);
+    } catch(err) {
+      res.status(500).json(err);
+    }
+  },
+
+  getHostingServicesBeforePayment: async(req, res) => {
+    try {
+      const hostingServicesBeforePayment = await HostingServices
+        .find(
+          {
+            before_payment: true
+          }
+        )
+        .sort({"createdAt": -1})
+        .populate('domain_service_id')
+        .populate('hosting_plan_id')
+        .populate('customer_id', 'fullname gender email phone')
+        .populate('domain_plan_id')
+        .populate('domain_supplier_id', 'name company')
+        .populate('hosting_supplier_id', 'name company');
+      
+      res.status(200).json(hostingServicesBeforePayment);
     } catch(err) {
       res.status(500).json(err);
     }

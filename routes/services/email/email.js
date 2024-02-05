@@ -8,5 +8,6 @@ router.delete("/:id", emailServicesController.deleteEmailServices);
 router.put("/:id", emailServicesController.updateEmailServices);
 router.get("/expired/all", emailServicesController.getEmailServicesExpired);
 router.get("/expiring/all", emailServicesController.getEmailServicesExpiring);
+router.get("/before-payment/all", emailServicesController.getEmailServicesBeforePayment);
 
 module.exports = router;
