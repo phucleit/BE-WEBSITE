@@ -19,6 +19,7 @@ const customerRoutes = require("./routes/customers/customer");
 
 // nhà cung cấp
 const supplierRoutes = require("./routes/suppliers/supplier");
+const mobileNetworkRoutes = require("./routes/suppliers/mobile-network");
 
 // dịch vụ
 const domainServicesRoutes = require("./routes/services/domain/domain");
@@ -76,6 +77,7 @@ app.use("/v1/customer", customerRoutes);
 
 // nhà cung cấp
 app.use("/v1/supplier", supplierRoutes);
+app.use("/v1/mobile-network", mobileNetworkRoutes);
 
 // dịch vụ
 app.use("/v1/services/domain", domainServicesRoutes);

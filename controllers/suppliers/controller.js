@@ -16,7 +16,7 @@ const supplierController = {
     } catch(err) {
       res.status(500).json(err);
     }
-},
+  },
 
   getSupplier: async(req, res) => {
     try {
