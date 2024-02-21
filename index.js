@@ -31,6 +31,7 @@ const contentServicesRoutes = require("./routes/services/content/content");
 const websiteServicesRoutes = require("./routes/services/website/website");
 const toplistServicesRoutes = require("./routes/services/toplist/toplist");
 const maintenanceServicesRoutes = require("./routes/services/maintenance/maintenance");
+const mobileNetworkServicesRoutes = require("./routes/services/mobile-network/mobileNetwork");
 
 // hợp đồng
 const contractRoutes = require("./routes/contracts/contracts");
@@ -90,6 +91,7 @@ app.use("/v1/services/content", contentServicesRoutes);
 app.use("/v1/services/website", websiteServicesRoutes);
 app.use("/v1/services/toplist", toplistServicesRoutes);
 app.use("/v1/services/maintenance", maintenanceServicesRoutes);
+app.use("/v1/services/mobile-network", mobileNetworkServicesRoutes);
 
 // hợp đồng
 app.use("/v1/contracts", contractRoutes);
