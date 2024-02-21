@@ -13,6 +13,7 @@ const hostingPlansRoutes = require("./routes/plans/hosting/hosting");
 const sslPlansRoutes = require("./routes/plans/ssl/ssl");
 const contentPlansRoutes = require("./routes/plans/content/content");
 const maintenancePlansRoutes = require("./routes/plans/maintenance/maintenance");
+const mobileNetworkPlansRoutes = require("./routes/plans/mobile-network/mobileNetwork");
 
 // khách hàng
 const customerRoutes = require("./routes/customers/customer");
@@ -71,6 +72,7 @@ app.use("/v1/plans/ssl", sslPlansRoutes);
 app.use("/v1/plans/content", contentPlansRoutes);
 app.use("/v1/plans/content", contentPlansRoutes);
 app.use("/v1/plans/maintenance", maintenancePlansRoutes);
+app.use("/v1/plans/mobile-network", mobileNetworkPlansRoutes);
 
 // khách hàng
 app.use("/v1/customer", customerRoutes);
