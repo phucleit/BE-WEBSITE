@@ -38,6 +38,7 @@ const contractRoutes = require("./routes/contracts/contracts");
 
 // user
 const userRoutes = require("./routes/users/user");
+const groupUserRoutes = require("./routes/group-user/group-user");
 
 dotenv.config();
 // connect database
@@ -98,6 +99,7 @@ app.use("/v1/contracts", contractRoutes);
 
 // users
 app.use("/v1/users", userRoutes);
+app.use("/v1/group-user", groupUserRoutes);
 
 const PORT = process.env.PORT || 3123;
 app.listen(PORT, () => {
