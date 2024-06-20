@@ -1,4 +1,4 @@
-const { ContentPlans } = require("../../../models/plans/content/model");
+const ContentPlans = require("../../../models/plans/content/model");
 
 const contentPlansController = {
     addContentPlans: async(req, res) => {

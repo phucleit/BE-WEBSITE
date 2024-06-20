@@ -1,6 +1,4 @@
-const { GroupUsers } = require("../../models/group-user/model");
-
-// const { ObjectId } = require('mongoose').Types;
+const GroupUsers = require("../../models/group-user/model");
 
 const groupUserController = {
   getGroupUser: async(req, res) => {
@@ -8,6 +6,7 @@ const groupUserController = {
       const groupUser = await GroupUsers.find().sort({"createdAt": -1});
       res.status(200).json(groupUser);
     } catch(err) {
+      console.error(err)
       res.status(500).json(err);
     }
   },

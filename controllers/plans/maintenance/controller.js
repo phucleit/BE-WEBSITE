@@ -1,4 +1,4 @@
-const { MaintenancePlans } = require("../../../models/plans/maintenance/model");
+const MaintenancePlans = require("../../../models/plans/maintenance/model");
 
 const maintenancePlansController = {
   addMaintenancePlans: async(req, res) => {

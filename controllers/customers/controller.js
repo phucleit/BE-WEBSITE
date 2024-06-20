@@ -1,12 +1,50 @@
 const fs = require('fs');
-const { Customer } = require("../../models/customers/model");
+const Customer = require("../../models/customers/model");
 
 const { ObjectId } = require('mongoose').Types;
 
 const customerController = {
   addCustomer: async(req, res) => {
     try {
-      const newCustomer = new Customer(req.body);
+      console.log(req.body)
+      const {
+        fullname,
+        email,
+        gender,
+        idNumber,
+        phone,
+        address,
+        company,
+        tax_code,
+        address_company,
+        representative,
+        representative_hotline,
+        mail_vat,
+      } = req.body
+
+      const count = await Customer.countDocuments({
+        $or:[
+          {phone:phone},
+          {email:email}
+        ]
+      })
+      if(count > 0 ) throw new Error(`So DT hoac email da dc dang ky`)
+      const newCustomer = new Customer({
+        fullname:fullname,
+        email:email,
+        gender:gender,
+        idNumber:idNumber,
+        phone:phone,
+        address:address,
+        company:company,
+        tax_code:tax_code,
+        address_company:address_company,
+        representative:representative,
+        representative_hotline:representative_hotline,
+        mail_vat:mail_vat,
+      });
+
+
       if (req.files.image_front_view) {
         let imagesBuffer = [];
         req.files.image_front_view.forEach(function (file) {
@@ -31,7 +69,8 @@ const customerController = {
       
       res.status(200).json(saveCustomer);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      res.status(500).send(err.message);
     }
   },
 
@@ -401,46 +440,89 @@ const customerController = {
 
   getContentServiceByCustomerId: async(req, res) => {
     try {
-      const contentServiceByCustomerId = await Customer.aggregate([
-        {
-          $match: {
-            _id: new ObjectId(req.params.id),
-          },
-        },
+      // const contentServiceByCustomerId = await Customer.aggregate([
+      //   {
+      //     $match: {
+      //       _id: new ObjectId(req.params.id),
+      //     },
+      //   },
 
-        {
-          $lookup: {
-            from: "contentservices",
-            localField: "_id",
-            foreignField: "customer_id",
-            as: "content_services"
-          }
-        },
-        { $unwind: { path: '$content_services', preserveNullAndEmptyArrays: true } },
-        {
-          $sort: {
-            'content_services.createdAt': -1,
-          },
-        },
-        {
-          $lookup: {
-            from: 'contentplans',
-            localField: 'content_services.content_plan_id',
-            foreignField: '_id',
-            as: 'content_services.content_plan'
-          }
-        },
-        {
-          $group: {
-            _id: "$_id",
-            content_services: { $push: "$domain_services" },
-          }
-        },
-      ]);
+      //   {
+      //     $lookup: {
+      //       from: "contentservices",
+      //       localField: "_id",
+      //       foreignField: "customer_id",
+      //       as: "content_services"
+      //     }
+      //   },
+      //   { $unwind: { path: '$content_services', preserveNullAndEmptyArrays: true } },
+      //   {
+      //     $sort: {
+      //       'content_services.createdAt': -1,
+      //     },
+      //   },
+      //   {
+      //     $lookup: {
+      //       from: 'contentplans',
+      //       localField: 'content_services.content_plan_id',
+      //       foreignField: '_id',
+      //       as: 'content_services.content_plan'
+      //     }
+      //   },
+      //   {
+      //     $group: {
+      //       _id: "$_id",
+      //       content_services: { $push: "$domain_services" },
+      //     }
+      //   },
+      // ]);
       
-      res.status(200).json(contentServiceByCustomerId);
+      
+      let {offset, limit, search} = req.query
+      if(!offset){
+        offset = 0
+      }
+      if(!limit) limit = 10
+
+      const {id} = req.params
+      if(!ObjectId.isValid(id)) throw new Error(`Khong timf thay du lieu`)
+
+      let query = {}
+      if(ObjectId.isValid(id)){
+        query = {
+          _id:id
+        }
+        
+      }
+      if(search){
+        query = {
+          ...query,
+          $or:[
+            {fullname:{$regex:".*"+search+".*", $options:"i"}},
+            {phone:{$regex:".*"+search+".*", $options:"i"}},
+            {email:{$regex:".*"+search+".*", $options:"i"}},
+          ]
+        }
+      }
+        const [
+            data,
+            count
+        ] = await Promise.all([
+            Customer.find(query).populate(['data_service']),
+            Customer.countDocuments(query),
+
+        ])
+     
+
+
+      return res.json({
+        data, 
+        count,
+        total_page: (offset/limit)+1,
+        length: data.length
+      });
     } catch(err) {
-      res.status(500).json(err);
+      return res.status(500).json(err);
     }
   },
 
@@ -483,66 +565,78 @@ const customerController = {
 
   getMaintenanceServiceByCustomerId: async(req, res) => {
     try {
-      const maintenanceServiceByCustomerId = await Customer.aggregate([
-        {
-          $match: {
-            _id: new ObjectId(req.params.id),
-          },
-        },
 
-        {
-          $lookup: {
-            from: "maintenanceservices",
-            localField: "_id",
-            foreignField: "customer_id",
-            as: "maintenance_services"
-          }
-        },
-        { $unwind: { path: '$maintenance_services', preserveNullAndEmptyArrays: true } },
-        {
-          $sort: {
-            'maintenance_services.createdAt': -1,
-          },
-        },
-        {
-          $lookup: {
-            from: 'domainservices',
-            localField: 'maintenance_services.domain_service_id',
-            foreignField: '_id',
-            as: 'maintenance_services.domain_service'
-          }
-        },
-        {
-          $lookup: {
-            from: 'domainplans',
-            localField: 'maintenance_services.domain_plan_id',
-            foreignField: '_id',
-            as: 'maintenance_services.domain_plan'
-          }
-        },
-        {
-          $lookup: {
-            from: 'suppliers',
-            localField: 'maintenance_services.domain_supplier_id',
-            foreignField: '_id',
-            as: 'maintenance_services.domain_supplier'
-          }
-        },
-        {
-          $lookup: {
-            from: 'maintenanceplans',
-            localField: 'maintenance_services.maintenance_plan_id',
-            foreignField: '_id',
-            as: 'maintenance_services.maintenance_plan'
-          }
-        },
-        {
-          $group: {
-            _id: "$_id",
-            maintenance_services: { $push: "$maintenance_services" },
-          }
-        },
-      ]);
+      let {offset, limit} = req.query
+      if(!offset){
+        offset = 0
+      }
+      if(!limit) limit = 10
+
+      const {id} = req.params
+      if(!ObjectId.isValid(id)) throw new Error(`Không tìm thấy dữ liệu!`)
+
+      const data = await Customer.find({_id:id}).populate(['data_service'])
+      console.log(data)
+      // const maintenanceServiceByCustomerId = await Customer.aggregate([
+      //   {
+      //     $match: {
+      //       _id: new ObjectId(id),
+      //     },
+      //   },
+
+      //   {
+      //     $lookup: {
+      //       from: "maintenanceservices",
+      //       localField: "_id",
+      //       foreignField: "customer_id",
+      //       as: "maintenance_services"
+      //     }
+      //   },
+      //   { $unwind: { path: '$maintenance_services', preserveNullAndEmptyArrays: true } },
+      //   {
+      //     $sort: {
+      //       'maintenance_services.createdAt': -1,
+      //     },
+      //   },
+      //   {
+      //     $lookup: {
+      //       from: 'domainservices',
+      //       localField: 'maintenance_services.domain_service_id',
+      //       foreignField: '_id',
+      //       as: 'maintenance_services.domain_service'
+      //     }
+      //   },
+      //   {
+      //     $lookup: {
+      //       from: 'domainplans',
+      //       localField: 'maintenance_services.domain_plan_id',
+      //       foreignField: '_id',
+      //       as: 'maintenance_services.domain_plan'
+      //     }
+      //   },
+      //   {
+      //     $lookup: {
+      //       from: 'suppliers',
+      //       localField: 'maintenance_services.domain_supplier_id',
+      //       foreignField: '_id',
+      //       as: 'maintenance_services.domain_supplier'
+      //     }
+      //   },
+      //   {
+      //     $lookup: {
+      //       from: 'maintenanceplans',
+      //       localField: 'maintenance_services.maintenance_plan_id',
+      //       foreignField: '_id',
+      //       as: 'maintenance_services.maintenance_plan'
+      //     }
+      //   },
+      //   {
+      //     $group: {
+      //       _id: "$_id",
+      //       maintenance_services: { $push: "$maintenance_services" },
+      //     }
+      //   },
+      // ]);
       
       res.status(200).json(maintenanceServiceByCustomerId);
     } catch(err) {

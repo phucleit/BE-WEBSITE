@@ -1,6 +1,6 @@
 const dayjs = require('dayjs');
 
-const { ToplistServices } = require("../../../models/services/toplist/model");
+const ToplistServices = require("../../../models/services/toplist/model");
 
 const toplistServiceController = {
   addToplistService: async(req, res) => {

@@ -1,6 +1,6 @@
 const dayjs = require('dayjs');
 
-const { DomainServices } = require("../../../models/services/domain/model");
+const DomainServices = require("../../../models/services/domain/model");
 
 const domainServicesController = {
   addDomainServices: async(req, res) => {

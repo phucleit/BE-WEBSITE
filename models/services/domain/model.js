@@ -28,17 +28,14 @@ const domainServicesSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  createdAt: {
+  registeredAt: {
     type: Date,
     default: Date.now
-  },
-  registeredAt: {
-    type: Date
   },
   expiredAt: {
     type: Date
   },
-});
+}, {timestamps: true});
 
 let DomainServices = mongoose.model("DomainServices", domainServicesSchema);
-module.exports = {DomainServices};
+module.exports = DomainServices;

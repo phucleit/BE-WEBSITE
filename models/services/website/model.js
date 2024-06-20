@@ -16,10 +16,6 @@ const websiteServicesSchema = new mongoose.Schema({
   status: {
     type: Number
   },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  },
   domain_plan_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "DomainPlans"
@@ -28,7 +24,7 @@ const websiteServicesSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Suppliers"
   },
-});
+}, {timestamps: true});
 
 let WebsiteServices = mongoose.model("WebsiteServices", websiteServicesSchema);
-module.exports = {WebsiteServices};
+module.exports = WebsiteServices;

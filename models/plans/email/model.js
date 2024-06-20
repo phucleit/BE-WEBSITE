@@ -3,33 +3,34 @@ const mongoose = require("mongoose");
 const emailPlansSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
+    index: true
   },
   import_price: {
     type: Number,
-    required: true
+    required: true,
+    index: true
   },
   price: {
     type: Number,
-    required: true
+    required: true,
+    index: true
   },
   account: {
     type: Number,
-    required: true
+    required: true,
+    index: true
   },
   capacity: {
     type: Number,
-    required: true
+    required: true,
+    index: true
   },
   supplier_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Suppliers"
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  },
-});
+  }
+}, {timestamps: true});
 
 let EmailPlans = mongoose.model("EmailPlans", emailPlansSchema);
-module.exports = {EmailPlans};
+module.exports = EmailPlans;

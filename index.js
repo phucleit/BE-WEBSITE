@@ -1,10 +1,10 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
-const mongoose = require("mongoose");
 var bodyParser = require('body-parser');
 var morgan = require("morgan");
 const dotenv = require("dotenv");
+const connectDB = require('./connectDB');
 
 // gói dịch vụ
 const domainPlansRoutes = require("./routes/plans/domain/domain");
@@ -41,15 +41,6 @@ const userRoutes = require("./routes/users/user");
 const groupUserRoutes = require("./routes/group-user/group-user");
 
 dotenv.config();
-// connect database
-mongoose
-    .connect(process.env.MONGO_URL)
-    .then(() => {
-        console.log("Connected to MongoDB");
-    })
-    .catch((err) => {
-        console.log(err);
-    });
 
 app.use(bodyParser.json({limit: "500mb"}));
 app.use(bodyParser.urlencoded({extended:true, limit:'500mb'})); 
@@ -59,7 +50,9 @@ const corsOptions = {
 	methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
 	credentials: true,
 	optionsSuccessStatus: 204,
-};	
+};
+
+const {check_token_api} = require('./middleware/middleware_role')
 
 app.use(cors(corsOptions));
 
@@ -99,9 +92,9 @@ app.use("/v1/contracts", contractRoutes);
 
 // users
 app.use("/v1/users", userRoutes);
-app.use("/v1/group-user", groupUserRoutes);
+app.use("/v1/group-user", check_token_api, groupUserRoutes);
 
 const PORT = process.env.PORT || 3123;
 app.listen(PORT, () => {
-    console.log("Server is running...");
-});
+    console.log(`Server is running... ${PORT}`);});
+

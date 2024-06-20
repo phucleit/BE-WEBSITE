@@ -1,6 +1,6 @@
 const dayjs = require('dayjs');
 
-const { EmailServices } = require("../../../models/services/email/model");
+const EmailServices = require("../../../models/services/email/model");
 
 const emailServicesController = {
   addEmailServices: async(req, res) => {

@@ -12,12 +12,8 @@ const groupUserSchema = new mongoose.Schema({
   group: {
     type: Object,
     required: true
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  },
-});
+  }
+}, {timestamps: true});
 
-let GroupUsers = mongoose.model("GroupUserss", groupUserSchema);
-module.exports = {GroupUsers};
+let GroupUsers = mongoose.model("GroupUsers", groupUserSchema);
+module.exports = GroupUsers;

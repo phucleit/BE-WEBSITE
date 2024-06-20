@@ -1,4 +1,4 @@
-const { DomainPlans } = require("../../../models/plans/domain/model");
+const DomainPlans = require("../../../models/plans/domain/model");
 
 const domainPlansController = {
     addDomainPlans: async(req, res) => {

@@ -3,19 +3,23 @@ const mongoose = require("mongoose");
 const mobileNetworkPlansSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
+    index: true
   },
   capacity: {
     type: Number,
-    required: true
+    required: true,
+    index: true
   },
   importPrice: {
     type: Number,
-    required: true
+    required: true,
+    index: true
   },
   price: {
     type: Number,
-    required: true
+    required: true,
+    index: true
   },
   content: {
     type: String
@@ -26,12 +30,8 @@ const mobileNetworkPlansSchema = new mongoose.Schema({
   supplierMobileNetworkId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "MobileNetworks"
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  },
-});
+  }
+}, {timestamps: true});
 
 let MobileNetworkPlans = mongoose.model("MobileNetworkPlans", mobileNetworkPlansSchema);
-module.exports = {MobileNetworkPlans};
+module.exports = MobileNetworkPlans;

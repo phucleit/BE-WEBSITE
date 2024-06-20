@@ -1,6 +1,6 @@
 const dayjs = require('dayjs');
 
-const { SslServices } = require("../../../models/services/ssl/model");
+const SslServices = require("../../../models/services/ssl/model");
 
 const sslServicesController = {
   addSslServices: async(req, res) => {

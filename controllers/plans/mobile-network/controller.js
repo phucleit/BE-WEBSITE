@@ -1,4 +1,4 @@
-const { MobileNetworkPlans } = require("../../../models/plans/mobile-network/model");
+const MobileNetworkPlans = require("../../../models/plans/mobile-network/model");
 
 const mobileNetworkPlansController = {
   getMobileNetworkPlans: async(req, res) => {

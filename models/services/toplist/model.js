@@ -24,17 +24,14 @@ const toplistServicesSchema = new mongoose.Schema({
   status: {
     type: Number
   },
-  createdAt: {
+  registeredAt: {
     type: Date,
     default: Date.now
-  },
-  registeredAt: {
-    type: Date
   },
   expiredAt: {
     type: Date
   },
-});
+}, {timestamps: true});
 
 let ToplistServices = mongoose.model("ToplistServices", toplistServicesSchema);
-module.exports = {ToplistServices};
+module.exports = ToplistServices;

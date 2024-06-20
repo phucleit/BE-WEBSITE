@@ -1,6 +1,6 @@
 const dayjs = require('dayjs');
 
-const { HostingServices } = require("../../../models/services/hosting/model");
+const HostingServices = require("../../../models/services/hosting/model");
 
 const hostingServicesController = {
   addHostingServices: async(req, res) => {

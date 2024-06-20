@@ -24,12 +24,9 @@ const hostingServicesSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  createdAt: {
+  registeredAt: {
     type: Date,
     default: Date.now
-  },
-  registeredAt: {
-    type: Date
   },
   expiredAt: {
     type: Date
@@ -46,7 +43,7 @@ const hostingServicesSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Suppliers"
   },
-});
+}, {timestamps: true});
 
 let HostingServices = mongoose.model("HostingServices", hostingServicesSchema);
-module.exports = {HostingServices};
+module.exports = HostingServices;

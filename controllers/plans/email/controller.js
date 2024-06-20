@@ -1,4 +1,4 @@
-const { EmailPlans } = require("../../../models/plans/email/model");
+const EmailPlans = require("../../../models/plans/email/model");
 
 const emailPlansController = {
     addEmailPlans: async(req, res) => {

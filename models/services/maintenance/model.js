@@ -23,12 +23,9 @@ const maintenanceServicesSchema = new mongoose.Schema({
   status: {
     type: Number
   },
-  createdAt: {
+  registeredAt: {
     type: Date,
     default: Date.now
-  },
-  registeredAt: {
-    type: Date
   },
   expiredAt: {
     type: Date
@@ -41,7 +38,7 @@ const maintenanceServicesSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Suppliers"
   },
-});
+}, {timestamps: true});
 
 let MaintenanceServices = mongoose.model("MaintenanceServices", maintenanceServicesSchema);
-module.exports = {MaintenanceServices};
+module.exports = MaintenanceServices;

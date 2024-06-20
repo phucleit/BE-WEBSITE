@@ -1,6 +1,6 @@
 const dayjs = require('dayjs');
 
-const { MaintenanceServices } = require("../../../models/services/maintenance/model");
+const MaintenanceServices = require("../../../models/services/maintenance/model");
 
 const maintenanceServicesController = {
   addMaintenanceServices: async(req, res) => {

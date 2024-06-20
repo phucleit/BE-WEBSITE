@@ -1,6 +1,6 @@
 const dayjs = require('dayjs');
 
-const { MobileNetworkServices } = require("../../../models/services/mobile-network/model");
+const MobileNetworkServices = require("../../../models/services/mobile-network/model");
 
 const mobileNetworkServicesController = {
   getMobileNetworkServices: async(req, res) => {

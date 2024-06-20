@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const sha512  = require("js-sha512");
 
 const userchema = new mongoose.Schema({
   display_name: {
@@ -18,12 +19,21 @@ const userchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  },
-});
+  }
+}, {timestamps: true});
 
-let Users = mongoose.model("Users", userchema);
-module.exports = {Users};
+const Users = mongoose.model("Users", userchema);
+module.exports = Users;
+
+const init = async () =>{
+  const count = await Users.estimatedDocumentCount()
+  if(count == 0){
+    await new Users({
+      display_name: "IT Vũng Tàu",
+      username: "itvt",
+      password: sha512('1'),
+      email: "cuongthinhitv@gmail.com"
+    }).save()
+  }
+}
+init()

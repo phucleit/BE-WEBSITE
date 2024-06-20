@@ -1,4 +1,4 @@
-const { HostingPlans } = require("../../../models/plans/hosting/model");
+const HostingPlans = require("../../../models/plans/hosting/model");
 
 const hostingPlansController = {
     addHostingPlans: async(req, res) => {

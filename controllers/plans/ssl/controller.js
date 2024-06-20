@@ -1,4 +1,4 @@
-const { SslPlans } = require("../../../models/plans/ssl/model");
+const SslPlans = require("../../../models/plans/ssl/model");
 
 const sslPlansController = {
     addSslPlans: async(req, res) => {

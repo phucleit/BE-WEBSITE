@@ -1,4 +1,4 @@
-const { WebsiteServices } = require("../../../models/services/website/model");
+const WebsiteServices = require("../../../models/services/website/model");
 
 const websiteServicesController = {
   addWebsiteServices: async(req, res) => {

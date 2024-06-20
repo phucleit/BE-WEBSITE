@@ -12,4 +12,4 @@ const mobileNetworkSchema = new mongoose.Schema({
 });
 
 let MobileNetwork = mongoose.model("MobileNetworks", mobileNetworkSchema);
-module.exports = {MobileNetwork};
+module.exports = MobileNetwork;

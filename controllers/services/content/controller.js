@@ -1,6 +1,6 @@
 const dayjs = require('dayjs');
 
-const { ContentServices } = require("../../../models/services/content/model");
+const ContentServices = require("../../../models/services/content/model");
 
 const contentServicesController = {
   addContentServices: async(req, res) => {
@@ -10,9 +10,11 @@ const contentServicesController = {
       newContentServices.expiredAt.setMonth(newContentServices.expiredAt.getMonth() + req.body.periods);
       newContentServices.status = 1;
       const saveContentServices = await newContentServices.save();
-      res.status(200).json(saveContentServices);
+      return res.status(200).json(saveContentServices);
+      
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err)
+      return res.status(500).send(err.message);
     }
   },
 

@@ -1,13 +1,15 @@
 const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const { Users } = require("../../models/users/model");
+const Users = require("../../models/users/model");
+const sha512 = require('js-sha512');
+const ModelToken = require('../../models/users/token');
 
 const userController = {
   addUser: async(req, res) => {
     try {
       const {display_name, username, email, password} = req.body;
-      const hashedPassword = bcryptjs.hashSync(password, 10);
+      const hashedPassword = sha512(password);
       const newUser = await Users({display_name, username, email, password: hashedPassword });
       const saveUser = await newUser.save();
       
@@ -20,17 +22,21 @@ const userController = {
   signIn: async(req, res) => {
     try {
       const {username, password} = req.body;
+      const validUser = await Users.findOne({username}).lean();
+      if (!validUser) throw new Error('Tài khoản không tồn tại! Vui lòng nhập lại thông tin!')
 
-      const validUser = await Users.findOne({username});
-      if (!validUser) return res.status(404).json('User not found!');
-
-      const validPassword = bcryptjs.compareSync(password, validUser.password);
-      if (! validPassword) return res.status(401).json('Wrong credentials!');
-      const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET);
-      const { password: pass, ...rest } = validUser._doc;
-      res.cookie('access_token', token, {httpOnly: true}).status(200).json(rest);
-    } catch(err) {
-      res.status(500).json(err);
+      const validPassword = sha512(password);
+      if (validPassword != validUser.password) throw new Error(`Tên đăng nhập hoặc mật khẩu không đúng! Vui lòng nhập lại thông tin!`)
+      if (!validPassword) throw new Error('Mật khẩu không đúng! Vui lòng nhập mật khẩu!');
+      const token = jwt.sign({ ...validUser }, process.env.JWT_SECRET);
+      await new ModelToken({
+        user_id: validUser._id,
+        token: token
+      }).save();
+      return res.json({token});
+    } catch(error) {
+      console.error(error)
+      return res.status(400).send(error.message)
     }
   },
 

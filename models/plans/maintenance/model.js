@@ -14,12 +14,8 @@ const maintenancePlansSchema = new mongoose.Schema({
   },
   note: {
     type: String,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  },
-});
+  }
+}, {timestamps: true});
 
 let MaintenancePlans = mongoose.model("MaintenancePlans", maintenancePlansSchema);
-module.exports = {MaintenancePlans};
+module.exports = MaintenancePlans;

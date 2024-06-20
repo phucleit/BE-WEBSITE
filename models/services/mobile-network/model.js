@@ -20,17 +20,14 @@ const mobileNetworkServicesSchema = new mongoose.Schema({
   status: {
     type: Number
   },
-  createdAt: {
+  registeredAt: {
     type: Date,
     default: Date.now
-  },
-  registeredAt: {
-    type: Date
   },
   expiredAt: {
     type: Date
   },
-});
+}, {timestamps: true});
 
 let MobileNetworkServices = mongoose.model("MobileNetworkServices", mobileNetworkServicesSchema);
-module.exports = {MobileNetworkServices};
+module.exports = MobileNetworkServices;

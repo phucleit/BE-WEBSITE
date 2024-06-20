@@ -16,17 +16,14 @@ const contentServicesSchema = new mongoose.Schema({
   status: {
     type: Number
   },
-  createdAt: {
+  registeredAt: {
     type: Date,
     default: Date.now
-  },
-  registeredAt: {
-    type: Date
   },
   expiredAt: {
     type: Date
   },
-});
+}, {timestamps: true});
 
 let ContentServices = mongoose.model("ContentServices", contentServicesSchema);
-module.exports = {ContentServices};
+module.exports = ContentServices;

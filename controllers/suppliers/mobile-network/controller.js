@@ -1,4 +1,4 @@
-const { MobileNetwork } = require("../../../models/suppliers/mobile-network/model");
+const MobileNetwork = require("../../../models/suppliers/mobile-network/model");
 
 const mobileNetworkController = {
   getMobileNetwork: async(req, res) => {

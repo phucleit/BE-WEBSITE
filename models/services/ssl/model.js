@@ -24,12 +24,9 @@ const sslServicesSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  createdAt: {
+  registeredAt: {
     type: Date,
     default: Date.now
-  },
-  registeredAt: {
-    type: Date
   },
   expiredAt: {
     type: Date
@@ -46,7 +43,7 @@ const sslServicesSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Suppliers"
   },
-});
+}, {timestamps: true});
 
 let SslServices = mongoose.model("SslServices", sslServicesSchema);
-module.exports = {SslServices};
+module.exports = SslServices;

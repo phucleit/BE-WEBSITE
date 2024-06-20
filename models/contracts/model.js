@@ -25,12 +25,8 @@ const contractSchema = new mongoose.Schema({
   },
   note: {
     type: String
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  },
-});
+  }
+}, {timestamps: true});
 
 let Contracts = mongoose.model("Contracts", contractSchema);
 module.exports = {Contracts};

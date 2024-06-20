@@ -1,8 +1,8 @@
-const { Supplier } = require("../../models/suppliers/model");
-const { DomainPlans } = require("../../models/plans/domain/model");
-const { EmailPlans } = require("../../models/plans/email/model");
-const { HostingPlans } = require("../../models/plans/hosting/model");
-const { SslPlans } = require("../../models/plans/ssl/model");
+const Supplier = require("../../models/suppliers/model");
+const DomainPlans = require("../../models/plans/domain/model");
+const EmailPlans = require("../../models/plans/email/model");
+const HostingPlans = require("../../models/plans/hosting/model");
+const SslPlans = require("../../models/plans/ssl/model");
 
 const { ObjectId } = require('mongoose').Types;
 
