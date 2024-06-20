@@ -22,91 +22,345 @@ const init = async () =>{
   const count = await Functions.estimatedDocumentCount()
   if(count == 0){
     const array = [
+        // tài khoản
         {
-            _id: new ObjectId("66714266fda2502f9d9b4c7f"),
-            name: "Gói dịch vụ",
+            _id: new ObjectId("667460e3d19aa9fcecc69fa6"),
+            name: "Tài khoản",
         },
         {
-            _id: new ObjectId("66714309285e17cd42562bcd"),
-            fuction_parent_id: new ObjectId("66714266fda2502f9d9b4c7f"),
-            name: "Thêm gói dịch vụ",
+            _id: new ObjectId("66746193cb45907845239f36"),
+            fuction_parent_id: new ObjectId("667460e3d19aa9fcecc69fa6"),
+            name: "Tạo tài khoản mới",
+        },
+        {
+            _id: new ObjectId("66746193cb45907845239f37"),
+            fuction_parent_id: new ObjectId("667460e3d19aa9fcecc69fa6"),
+            name: "Reset mật khẩu",
+        },
+        {
+            _id: new ObjectId("66746193cb45907845239f38"),
+            fuction_parent_id: new ObjectId("667460e3d19aa9fcecc69fa6"),
+            name: "Sửa tài khoản",
+        },
+        {
+            _id: new ObjectId("66746193cb45907845239f50"),
+            fuction_parent_id: new ObjectId("667460e3d19aa9fcecc69fa6"),
+            name: "Xóa tài khoản",
+        },
+        {
+            _id: new ObjectId("66746193cb45907845239f39"),
+            fuction_parent_id: new ObjectId("667460e3d19aa9fcecc69fa6"),
+            name: "Tạo nhóm người dùng",
+        },
+        {
+            _id: new ObjectId("66746193cb45907845239f3a"),
+            fuction_parent_id: new ObjectId("667460e3d19aa9fcecc69fa6"),
+            name: "Sửa nhóm người dùng",
+        },
+        {
+            _id: new ObjectId("66746193cb45907845239f4a"),
+            fuction_parent_id: new ObjectId("667460e3d19aa9fcecc69fa6"),
+            name: "Xóa nhóm người dùng",
+        },
 
+        // nhà cung cấp
+        {
+            _id: new ObjectId("667463d04bede188dfb46d75"),
+            name: "Nhà cung cấp",
         },
         {
-            _id: new ObjectId("66714309285e17cd42562bce"),
-            fuction_parent_id: new ObjectId("66714266fda2502f9d9b4c7f"),
-            name: "Sửa gói dịch vụ",
+            _id: new ObjectId("667463d04bede188dfb46d76"),
+            fuction_parent_id: new ObjectId("667463d04bede188dfb46d75"),
+            name: "Tạo nhà cung cấp",
         },
         {
-            _id: new ObjectId("66714309285e17cd42562bcf"),
-            fuction_parent_id: new ObjectId("66714266fda2502f9d9b4c7f"),
-            name: "Xóa gói dịch vụ",
-        },
-        {
-            _id: new ObjectId("66714266fda2502f9d9b4c80"),
-            name: "Nhà cung cấp"
-        },
-        {
-            _id: new ObjectId("66714309285e17cd42562bd1"),
-            fuction_parent_id: new ObjectId("66714266fda2502f9d9b4c80"),
-            name: "Thêm nhà cung cấp",
-        },
-        {
-            _id: new ObjectId("66714309285e17cd42562bd2"),
-            fuction_parent_id: new ObjectId("66714266fda2502f9d9b4c80"),
+            _id: new ObjectId("667463d04bede188dfb46d77"),
+            fuction_parent_id: new ObjectId("667463d04bede188dfb46d75"),
             name: "Sửa nhà cung cấp",
         },
         {
-            _id: new ObjectId("66714309285e17cd42562bd3"),
-            fuction_parent_id: new ObjectId("66714266fda2502f9d9b4c80"),
+            _id: new ObjectId("667463d04bede188dfb46d78"),
+            fuction_parent_id: new ObjectId("667463d04bede188dfb46d75"),
             name: "Xóa nhà cung cấp",
         },
         {
-            _id: new ObjectId("66714266fda2502f9d9b4c81"),
-            name: "Dịch vụ"
+            _id: new ObjectId("667463d04bede188dfb46d79"),
+            fuction_parent_id: new ObjectId("667463d04bede188dfb46d75"),
+            name: "Tạo nhà mạng",
         },
         {
-            _id: new ObjectId("66714309285e17cd42562bd5"),
-            fuction_parent_id: new ObjectId("66714266fda2502f9d9b4c81"),
-            name: "Thêm dịch vụ",
+            _id: new ObjectId("667463d04bede188dfb46d80"),
+            fuction_parent_id: new ObjectId("667463d04bede188dfb46d75"),
+            name: "Sửa nhà mạng",
         },
         {
-            _id: new ObjectId("66714309285e17cd42562bd6"),
-            fuction_parent_id: new ObjectId("66714266fda2502f9d9b4c81"),
-            name: "Sửa dịch vụ",
+            _id: new ObjectId("667463d04bede188dfb46d81"),
+            fuction_parent_id: new ObjectId("667463d04bede188dfb46d75"),
+            name: "Xóa nhà mạng",
+        },
+
+        // hợp đồng
+        {
+            _id: new ObjectId("667463d04bede188dfb46d7a"),
+            name: "Hợp đồng",
         },
         {
-            _id: new ObjectId("66714309285e17cd42562bd7"),
-            fuction_parent_id: new ObjectId("66714266fda2502f9d9b4c81"),
-            name: "Xóa dịch vụ",
+            _id: new ObjectId("667463d04bede188dfb46d7b"),
+            fuction_parent_id: new ObjectId("667463d04bede188dfb46d7a"),
+            name: "Tạo hợp đồng",
         },
         {
-            _id: new ObjectId("66714266fda2502f9d9b4c82"),
-            name: "Khách hàng"
+            _id: new ObjectId("667463d04bede188dfb46d7c"),
+            fuction_parent_id: new ObjectId("667463d04bede188dfb46d7a"),
+            name: "Sửa hợp đồng",
         },
         {
-            _id: new ObjectId("66714309285e17cd42562bd9"),
-            fuction_parent_id: new ObjectId("66714266fda2502f9d9b4c82"),
-            name: "Thêm khách hàng",
+            _id: new ObjectId("667463d04bede188dfb46c7c"),
+            fuction_parent_id: new ObjectId("667463d04bede188dfb46d7a"),
+            name: "Xóa hợp đồng",
+        },
+
+        // khách hàng
+        {
+            _id: new ObjectId("667463d04bede188dfb46d7d"),
+            name: "Khách hàng",
         },
         {
-            _id: new ObjectId("66714309285e17cd42562bda"),
-            fuction_parent_id: new ObjectId("66714266fda2502f9d9b4c82"),
+            _id: new ObjectId("667463d04bede188dfb46d7e"),
+            fuction_parent_id: new ObjectId("667463d04bede188dfb46d7d"),
+            name: "Tạo khách hàng",
+        },
+        {
+            _id: new ObjectId("667463d04bede188dfb46d7f"),
+            fuction_parent_id: new ObjectId("667463d04bede188dfb46d7d"),
             name: "Sửa khách hàng",
         },
         {
-            _id: new ObjectId("66714309285e17cd42562bdb"),
-            fuction_parent_id: new ObjectId("66714266fda2502f9d9b4c82"),
+            _id: new ObjectId("667463d04bede188dfb46b7f"),
+            fuction_parent_id: new ObjectId("667463d04bede188dfb46d7d"),
             name: "Xóa khách hàng",
         },
+
+        //gói dịch vụ
         {
-            _id: new ObjectId("66714266fda2502f9d9b4c83"),
-            name: "Tài khoản Admin"
+            _id: new ObjectId("667464b5500bf3ad04c24f47"),
+            name: "Gói dịch vụ",
         },
         {
-            _id: new ObjectId("66714309285e17cd42562bdc"),
-            fuction_parent_id: new ObjectId("66714266fda2502f9d9b4c83"),
-            name: "Xem danh sách",
+            _id: new ObjectId("66746678f7f723b779b1b05f"),
+            fuction_parent_id: new ObjectId("667464b5500bf3ad04c24f47"),
+            name: "Tạo gói tên miền",
+        },
+        {
+            _id: new ObjectId("66746678f7f723b779b1b060"),
+            fuction_parent_id: new ObjectId("667464b5500bf3ad04c24f47"),
+            name: "Sửa gói tên miền",
+        },
+        {
+            _id: new ObjectId("66746678f7f723b779b1b061"),
+            fuction_parent_id: new ObjectId("667464b5500bf3ad04c24f47"),
+            name: "Xóa gói tên miền",
+        },
+        {
+            _id: new ObjectId("66746678f7f723b779b1b062"),
+            fuction_parent_id: new ObjectId("667464b5500bf3ad04c24f47"),
+            name: "Tạo gói hosting",
+        },
+        {
+            _id: new ObjectId("66746678f7f723b779b1b063"),
+            fuction_parent_id: new ObjectId("667464b5500bf3ad04c24f47"),
+            name: "Sửa gói hosting",
+        },
+        {
+            _id: new ObjectId("66746678f7f723b779b1b064"),
+            fuction_parent_id: new ObjectId("667464b5500bf3ad04c24f47"),
+            name: "Xóa gói hosting",
+        },
+        {
+            _id: new ObjectId("66746678f7f723b779b1b065"),
+            fuction_parent_id: new ObjectId("667464b5500bf3ad04c24f47"),
+            name: "Tạo gói email",
+        },
+        {
+            _id: new ObjectId("66746678f7f723b779b1b066"),
+            fuction_parent_id: new ObjectId("667464b5500bf3ad04c24f47"),
+            name: "Sửa gói email",
+        },
+        {
+            _id: new ObjectId("66746678f7f723b779b1b067"),
+            fuction_parent_id: new ObjectId("667464b5500bf3ad04c24f47"),
+            name: "Xóa gói email",
+        },
+        {
+            _id: new ObjectId("66746678f7f723b779b1b068"),
+            fuction_parent_id: new ObjectId("667464b5500bf3ad04c24f47"),
+            name: "Tạo gói ssl",
+        },
+        {
+            _id: new ObjectId("66746678f7f723b779b1b069"),
+            fuction_parent_id: new ObjectId("667464b5500bf3ad04c24f47"),
+            name: "Sửa gói ssl",
+        },
+        {
+            _id: new ObjectId("66746678f7f723b779b1b06a"),
+            fuction_parent_id: new ObjectId("667464b5500bf3ad04c24f47"),
+            name: "Xóa gói ssl",
+        },
+        {
+            _id: new ObjectId("66746678f7f723b779b1b06b"),
+            fuction_parent_id: new ObjectId("667464b5500bf3ad04c24f47"),
+            name: "Tạo gói viết bài content & PR",
+        },
+        {
+            _id: new ObjectId("66746678f7f723b779b1b06c"),
+            fuction_parent_id: new ObjectId("667464b5500bf3ad04c24f47"),
+            name: "Sửa gói viết bài content & PR",
+        },
+        {
+            _id: new ObjectId("66746678f7f723b779b1b06d"),
+            fuction_parent_id: new ObjectId("667464b5500bf3ad04c24f47"),
+            name: "Xóa gói viết bài content & PR",
+        },
+        {
+            _id: new ObjectId("66746678f7f723b779b1b06e"),
+            fuction_parent_id: new ObjectId("667464b5500bf3ad04c24f47"),
+            name: "Tạo gói bảo trì",
+        },
+        {
+            _id: new ObjectId("66746678f7f723b779b1b06f"),
+            fuction_parent_id: new ObjectId("667464b5500bf3ad04c24f47"),
+            name: "Sửa gói bảo trì",
+        },
+        {
+            _id: new ObjectId("66746678f7f723b779b1b070"),
+            fuction_parent_id: new ObjectId("667464b5500bf3ad04c24f47"),
+            name: "Xóa gói bảo trì",
+        },
+        {
+            _id: new ObjectId("66746678f7f723b779b1b071"),
+            fuction_parent_id: new ObjectId("667464b5500bf3ad04c24f47"),
+            name: "Tạo gói sim 4G",
+        },
+        {
+            _id: new ObjectId("66746678f7f723b779b1b072"),
+            fuction_parent_id: new ObjectId("667464b5500bf3ad04c24f47"),
+            name: "Sửa gói sim 4G",
+        },
+        {
+            _id: new ObjectId("66746678f7f723b779b1b073"),
+            fuction_parent_id: new ObjectId("667464b5500bf3ad04c24f47"),
+            name: "Xóa gói sim 4G",
+        },
+
+        //dịch vụ
+        {
+            _id: new ObjectId("667467eb263fb998b9925d2d"),
+            name: "Dịch vụ",
+        },
+        {
+            _id: new ObjectId("667467eb263fb998b9925d2e"),
+            fuction_parent_id: new ObjectId("667467eb263fb998b9925d2d"),
+            name: "Tạo dịch vụ tên miền",
+        },
+        {
+            _id: new ObjectId("667467eb263fb998b9925d2f"),
+            fuction_parent_id: new ObjectId("667467eb263fb998b9925d2d"),
+            name: "Sửa dịch vụ tên miền",
+        },
+        {
+            _id: new ObjectId("667467eb263fb998b9925d30"),
+            fuction_parent_id: new ObjectId("667467eb263fb998b9925d2d"),
+            name: "Xóa dịch vụ tên miền",
+        },
+        {
+            _id: new ObjectId("667467eb263fb998b9925d31"),
+            fuction_parent_id: new ObjectId("667467eb263fb998b9925d2d"),
+            name: "Tạo dịch vụ hosting",
+        },
+        {
+            _id: new ObjectId("667467eb263fb998b9925d32"),
+            fuction_parent_id: new ObjectId("667467eb263fb998b9925d2d"),
+            name: "Sửa dịch vụ hosting",
+        },
+        {
+            _id: new ObjectId("667467eb263fb998b9925d33"),
+            fuction_parent_id: new ObjectId("667467eb263fb998b9925d2d"),
+            name: "Xóa dịch vụ hosting",
+        },
+        {
+            _id: new ObjectId("667467eb263fb998b9925d34"),
+            fuction_parent_id: new ObjectId("667467eb263fb998b9925d2d"),
+            name: "Tạo dịch vụ email",
+        },
+        {
+            _id: new ObjectId("667467eb263fb998b9925d35"),
+            fuction_parent_id: new ObjectId("667467eb263fb998b9925d2d"),
+            name: "Sửa dịch vụ email",
+        },
+        {
+            _id: new ObjectId("667467eb263fb998b9925d36"),
+            fuction_parent_id: new ObjectId("667467eb263fb998b9925d2d"),
+            name: "Xóa dịch vụ email",
+        },
+        {
+            _id: new ObjectId("667467eb263fb998b9925d37"),
+            fuction_parent_id: new ObjectId("667467eb263fb998b9925d2d"),
+            name: "Tạo dịch vụ ssl",
+        },
+        {
+            _id: new ObjectId("667467eb263fb998b9925d38"),
+            fuction_parent_id: new ObjectId("667467eb263fb998b9925d2d"),
+            name: "Sửa dịch vụ ssl",
+        },
+        {
+            _id: new ObjectId("667467eb263fb998b9925d39"),
+            fuction_parent_id: new ObjectId("667467eb263fb998b9925d2d"),
+            name: "Xóa dịch vụ ssl",
+        },
+        {
+            _id: new ObjectId("667467eb263fb998b9925d3a"),
+            fuction_parent_id: new ObjectId("667467eb263fb998b9925d2d"),
+            name: "Tạo dịch vụ viết bài content & PR",
+        },
+        {
+            _id: new ObjectId("667467eb263fb998b9925d3b"),
+            fuction_parent_id: new ObjectId("667467eb263fb998b9925d2d"),
+            name: "Sửa dịch vụ viết bài content & PR",
+        },
+        {
+            _id: new ObjectId("667467eb263fb998b9925d3c"),
+            fuction_parent_id: new ObjectId("667467eb263fb998b9925d2d"),
+            name: "Xóa dịch vụ viết bài content & PR",
+        },
+        {
+            _id: new ObjectId("667467eb263fb998b9925d3d"),
+            fuction_parent_id: new ObjectId("667467eb263fb998b9925d2d"),
+            name: "Tạo dịch vụ bảo trì",
+        },
+        {
+            _id: new ObjectId("667467eb263fb998b9925d3e"),
+            fuction_parent_id: new ObjectId("667467eb263fb998b9925d2d"),
+            name: "Sửa dịch vụ bảo trì",
+        },
+        {
+            _id: new ObjectId("667467eb263fb998b9925d3f"),
+            fuction_parent_id: new ObjectId("667467eb263fb998b9925d2d"),
+            name: "Xóa dịch vụ bảo trì",
+        },
+        {
+            _id: new ObjectId("667467eb263fb998b9925d40"),
+            fuction_parent_id: new ObjectId("667467eb263fb998b9925d2d"),
+            name: "Tạo dịch vụ sim 4G",
+        },
+        {
+            _id: new ObjectId("667467eb263fb998b9925d41"),
+            fuction_parent_id: new ObjectId("667467eb263fb998b9925d2d"),
+            name: "Sửa dịch vụ sim 4G",
+        },
+        {
+            _id: new ObjectId("667467eb263fb998b9925d42"),
+            fuction_parent_id: new ObjectId("667467eb263fb998b9925d2d"),
+            name: "Xóa dịch vụ sim 4G",
         },
     ]
     await Functions.insertMany(array)
