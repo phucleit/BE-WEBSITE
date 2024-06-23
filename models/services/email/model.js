@@ -29,8 +29,7 @@ const emailServicesSchema = new mongoose.Schema({
     default: false
   },
   registeredAt: {
-    type: Date,
-    default: Date.now
+    type: Date
   },
   expiredAt: {
     type: Date

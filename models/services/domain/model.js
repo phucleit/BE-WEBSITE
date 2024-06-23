@@ -33,8 +33,7 @@ const domainServicesSchema = new mongoose.Schema({
     default: false
   },
   registeredAt: { // ngày đăng ký
-    type: Date,
-    default: Date.now
+    type: Date
   },
   expiredAt: { // ngày hết hạn
     type: Date

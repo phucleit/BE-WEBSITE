@@ -21,8 +21,7 @@ const mobileNetworkServicesSchema = new mongoose.Schema({
     type: Number
   },
   registeredAt: {
-    type: Date,
-    default: Date.now
+    type: Date
   },
   expiredAt: {
     type: Date

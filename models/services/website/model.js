@@ -24,6 +24,10 @@ const websiteServicesSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Suppliers"
   },
+  registeredAt: {
+    type: Date,
+    default: Date.now
+  },
 }, {timestamps: true});
 
 let WebsiteServices = mongoose.model("WebsiteServices", websiteServicesSchema);

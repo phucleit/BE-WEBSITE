@@ -1,9 +1,11 @@
 const cron = require('node-cron')
 const CronDomainServices = require("../../../../models/services/domain/model_cron");
+const Emailers = require("../../../emailers/index");
 
 cron.schedule('* * * * *', () => {
   // 7h sáng, theo múi h 0
-  getCronDomainServicesExpired()
+  // getCronDomainServicesExpired()
+  // Emailers
 }).start()
 
 async function getCronDomainServicesExpired() {

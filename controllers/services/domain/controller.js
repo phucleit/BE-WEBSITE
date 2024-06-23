@@ -15,7 +15,7 @@ const domainServicesController = {
 
       // cron dịch vụ
       const newCronDomainServices = new CronDomainServices(req.body);
-      newCronDomainServices.expiredAt = new Date(v.registeredAt);
+      newCronDomainServices.expiredAt = new Date(newDomainServices.registeredAt);
       newCronDomainServices.expiredAt.setFullYear(newCronDomainServices.expiredAt.getFullYear() + req.body.periods);
       newCronDomainServices.status = 1;
       await newCronDomainServices.save();
@@ -30,7 +30,9 @@ const domainServicesController = {
 
   getDomainServices: async(req, res) => {
     try {
-      let domainServices = await DomainServices.find().sort({"createdAt": -1}).populate('domain_plan_id').populate('customer_id', 'fullname gender email phone');
+      let domainServices = await DomainServices.find().sort({"createdAt": -1})
+        .populate('domain_plan_id')
+        .populate('customer_id', 'fullname gender email phone');        
 
       for (const item of domainServices) {
         const supplier_id = item.domain_plan_id.supplier_id;
@@ -45,7 +47,8 @@ const domainServicesController = {
             { new: true }
           );
         } catch (error) {
-          res.status(500).json(error);
+          console.error(err);
+          return res.status(500).send(err.message);
         }
       }
 
@@ -54,9 +57,10 @@ const domainServicesController = {
         .populate('customer_id', 'fullname gender email phone')
         .populate('supplier_id', 'name company');
 
-      res.status(200).json(domainServices);
+      return res.status(200).json(domainServices);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -67,18 +71,20 @@ const domainServicesController = {
         .populate('customer_id', 'fullname gender email phone')
         .populate('supplier_id', 'name company');
 
-      res.status(200).json(domainServices);
+      return res.status(200).json(domainServices);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
   deleteDomainServices: async(req, res) => {
     try {
       await DomainServices.findByIdAndDelete(req.params.id);
-      res.status(200).json("Xóa thành công!");
+      return res.status(200).json("Xóa thành công!");
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -94,9 +100,10 @@ const domainServicesController = {
         await domainServices.updateOne({$set: {before_payment: true}});
       }
       await domainServices.updateOne({$set: req.body});
-      res.status(200).json("Cập nhật thành công!");
+      return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -166,8 +173,9 @@ const domainServicesController = {
           item.status = 3
         })
         return res.status(200).json(data);
-    } catch (error) {
-      
+    } catch (err) {
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -214,9 +222,10 @@ const domainServicesController = {
         .populate('customer_id', 'fullname gender email phone')
         .populate('supplier_id', 'name company');
 
-      res.status(200).json(domainServicesExpiring);
+      return res.status(200).json(domainServicesExpiring);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -233,9 +242,10 @@ const domainServicesController = {
         .populate('customer_id', 'fullname gender email phone')
         .populate('supplier_id', 'name company');
 
-      res.status(200).json(domainServicesBeforePayment);
+      return res.status(200).json(domainServicesBeforePayment);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   }
 }

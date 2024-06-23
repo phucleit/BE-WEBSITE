@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const mongooseLeanVirtuals = require('mongoose-lean-virtuals')
+// const mongooseLeanVirtuals = require('mongoose-lean-virtuals')
 
 const customerSchema = new mongoose.Schema({
     fullname: {
@@ -56,12 +56,12 @@ const customerSchema = new mongoose.Schema({
 
 },{timestamps:true});
 
-customerSchema.plugin(mongooseLeanVirtuals.mongooseLeanVirtuals)
-	customerSchema.pre(['find', 'findOne', 'findById'], async function (next) {
-		this.lean({ virtuals: true })
-		this.sort({ _id: -1 })
-		return next()
-	})
+// customerSchema.plugin(mongooseLeanVirtuals.mongooseLeanVirtuals)
+// 	customerSchema.pre(['find', 'findOne', 'findById'], async function (next) {
+// 		// this.lean({ virtuals: true })
+// 		this.sort({ _id: -1 })
+// 		return next()
+// 	})
 
 const Customer = mongoose.model("Customers", customerSchema);
 module.exports = Customer;
