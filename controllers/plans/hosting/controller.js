@@ -5,40 +5,40 @@ const hostingPlansController = {
         try {
             const newHostingPlans = new HostingPlans(req.body);
             const saveHostingPlans = await newHostingPlans.save();
-            
-            res.status(200).json(saveHostingPlans);
+            return res.status(200).json(saveHostingPlans);
         } catch(err) {
-            res.status(500).json(err);
+            console.error(err);
+            return res.status(500).send(err.message);
         }
     },
 
     getHostingPlans: async(req, res) => {
         try {
             const hostingPlans = await HostingPlans.find().sort({"createdAt": -1}).populate('supplier_id', 'name company');
-            
-            res.status(200).json(hostingPlans);
+            return res.status(200).json(hostingPlans);
         } catch(err) {
-            res.status(500).json(err);
+            console.error(err);
+            return res.status(500).send(err.message);
         }
     },
 
     getDetailHostingPlans: async(req, res) => {
         try {
             const hostingPlans = await HostingPlans.findById(req.params.id).populate('supplier_id', 'name company phone address');
-            
-            res.status(200).json(hostingPlans);
+            return res.status(200).json(hostingPlans);
         } catch(err) {
-            res.status(500).json(err);
+            console.error(err);
+            return res.status(500).send(err.message);
         }
     },
 
     deleteHostingPlans: async(req, res) => {
         try {
             await HostingPlans.findByIdAndDelete(req.params.id);
-            
-            res.status(200).json("Deleted successfully!");
+            return res.status(200).json("Xóa thành công!");
         } catch(err) {
-            res.status(500).json(err);
+            console.error(err);
+            return res.status(500).send(err.message);
         }
     },
 
@@ -46,10 +46,10 @@ const hostingPlansController = {
         try {
             const hostingPlans = await HostingPlans.findById(req.params.id);
             await hostingPlans.updateOne({$set: req.body});
-            
-            res.status(200).json("Updated successfully");
+            return res.status(200).json("Cập nhật thành công!");
         } catch(err) {
-            res.status(500).json(err);
+            console.error(err);
+            return res.status(500).send(err.message);
         }
     }
 }

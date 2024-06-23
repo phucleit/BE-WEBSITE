@@ -78,7 +78,7 @@ const maintenanceServicesController = {
   deleteMaintenanceServices: async(req, res) => {
     try {
       await MaintenanceServices.findByIdAndDelete(req.params.id);
-      res.status(200).json("Deleted successfully!");
+      res.status(200).json("Xóa thành công!");
     } catch(err) {
       res.status(500).json(err);
     }
@@ -91,7 +91,7 @@ const maintenanceServicesController = {
         const currentDate = new Date();
         const expiredAt = currentDate.setMonth(currentDate.getMonth() + req.body.periods);
         await maintenanceServices.updateOne({$set: {expiredAt: expiredAt, status: 1}});
-        res.status(200).json("Updated successfully!");
+        res.status(200).json("Cập nhật thành công!");
       }
       
       await maintenanceServices.updateOne({$set: req.body});

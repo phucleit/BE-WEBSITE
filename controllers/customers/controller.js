@@ -6,7 +6,6 @@ const { ObjectId } = require('mongoose').Types;
 const customerController = {
   addCustomer: async(req, res) => {
     try {
-      console.log(req.body)
       const {
         fullname,
         email,
@@ -24,24 +23,24 @@ const customerController = {
 
       const count = await Customer.countDocuments({
         $or:[
-          {phone:phone},
-          {email:email}
+          {phone: phone},
+          {email: email}
         ]
       })
-      if(count > 0 ) throw new Error(`So DT hoac email da dc dang ky`)
+      if(count > 0 ) throw new Error(`Số điện thoại hoặc email đã được đăng ký`)
       const newCustomer = new Customer({
-        fullname:fullname,
-        email:email,
-        gender:gender,
-        idNumber:idNumber,
-        phone:phone,
-        address:address,
-        company:company,
-        tax_code:tax_code,
-        address_company:address_company,
-        representative:representative,
-        representative_hotline:representative_hotline,
-        mail_vat:mail_vat,
+        fullname: fullname,
+        email: email,
+        gender: gender,
+        idNumber: idNumber,
+        phone: phone,
+        address: address,
+        company: company,
+        tax_code: tax_code,
+        address_company: address_company,
+        representative: representative,
+        representative_hotline: representative_hotline,
+        mail_vat: mail_vat,
       });
 
 
@@ -67,29 +66,30 @@ const customerController = {
 
       const saveCustomer = await newCustomer.save();
       
-      res.status(200).json(saveCustomer);
+      return res.status(200).json(saveCustomer);
     } catch(err) {
       console.error(err);
-      res.status(500).send(err.message);
+      return res.status(500).send(err.message);
     }
   },
 
   getCustomer: async(req, res) => {
     try {
       const customers = await Customer.find().sort({"createdAt": -1});
-      
-      res.status(200).json(customers);
+      return res.status(200).json(customers);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
   getDetailCustomer: async(req, res) => {
     try {
       const customers = await Customer.findById(req.params.id);
-      res.status(200).json(customers);
+      return res.status(200).json(customers);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -140,9 +140,10 @@ const customerController = {
         },
       ]);
       
-      res.status(200).json(domainServiceByCustomerId);
+      return res.status(200).json(domainServiceByCustomerId);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -217,9 +218,10 @@ const customerController = {
         },
       ]);
       
-      res.status(200).json(hostingServiceByCustomerId);
+      return res.status(200).json(hostingServiceByCustomerId);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -294,9 +296,10 @@ const customerController = {
         },
       ]);
       
-      res.status(200).json(emailServiceByCustomerId);
+      return res.status(200).json(emailServiceByCustomerId);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      res.status(500).send(err.message);
     }
   },
 
@@ -371,9 +374,10 @@ const customerController = {
         },
       ]);
       
-      res.status(200).json(sslServiceByCustomerId);
+      return res.status(200).json(sslServiceByCustomerId);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -432,9 +436,10 @@ const customerController = {
         },
       ]);
       
-      res.status(200).json(websiteServiceByCustomerId);
+      return res.status(200).json(websiteServiceByCustomerId);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -485,7 +490,7 @@ const customerController = {
       if(!limit) limit = 10
 
       const {id} = req.params
-      if(!ObjectId.isValid(id)) throw new Error(`Khong timf thay du lieu`)
+      if(!ObjectId.isValid(id)) throw new Error(`Không tìm thấy dữ liệu!`)
 
       let query = {}
       if(ObjectId.isValid(id)){
@@ -513,8 +518,6 @@ const customerController = {
 
         ])
      
-
-
       return res.json({
         data, 
         count,
@@ -557,9 +560,10 @@ const customerController = {
         },
       ]);
       
-      res.status(200).json(toplistServiceByCustomerId);
+      return res.status(200).json(toplistServiceByCustomerId);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -638,20 +642,20 @@ const customerController = {
       //   },
       // ]);
       
-      res.status(200).json(maintenanceServiceByCustomerId);
+      return res.status(200).json(maintenanceServiceByCustomerId);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
   deleteCustomer: async(req, res) => {
     try {
       const customer = await Customer.findByIdAndDelete(req.params.id);
-      
-      res.status(200).json(customer);
+      return res.status(200).json(customer);
     } catch(err) {
-      res.status(500).json(err);
-    }
+      console.error(err);
+      return res.status(500).send(err.message);    }
   },
 
   updateCustomer: async(req, res) => {
@@ -681,10 +685,10 @@ const customerController = {
       }
 
       await customer.updateOne({$set: req.body});
-      
-      res.status(200).json("Updated successfully");
+      return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   }
 }

@@ -12,10 +12,10 @@ const userController = {
       const hashedPassword = sha512(password);
       const newUser = await Users({display_name, username, email, password: hashedPassword });
       const saveUser = await newUser.save();
-      
-      res.status(200).json(saveUser);
+      return res.status(200).json(saveUser);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -35,7 +35,7 @@ const userController = {
       }).save();
       return res.json({token});
     } catch(error) {
-      console.error(error)
+      console.error(error);
       return res.status(400).send(error.message)
     }
   },
@@ -52,30 +52,30 @@ const userController = {
   getUser: async(req, res) => {
     try {
       const users = await Users.find().sort({"createdAt": -1});
-      
-      res.status(200).json(users);
+      return res.status(200).json(users);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
   getDetailUser: async(req, res) => {
     try {
       const user = await Users.findById(req.params.id);
-      
-      res.status(200).json(user);
+      return res.status(200).json(user);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
   deleteUser: async(req, res) => {
     try {
       await Users.findByIdAndDelete(req.params.id);
-      
-      res.status(200).json("Deleted successfully!");
+      return res.status(200).json("Xóa thành công!");
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -83,10 +83,10 @@ const userController = {
     try {
       const user = await Users.findById(req.params.id);
       await user.updateOne({$set: req.body});
-      
-      res.status(200).json("Updated successfully");
+      return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   }
 }

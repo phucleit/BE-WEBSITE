@@ -83,7 +83,7 @@ const sslServicesController = {
     try {
       await SslServices.findByIdAndDelete(req.params.id);
       
-      res.status(200).json("Deleted successfully!");
+      res.status(200).json("Xóa thành công!");
     } catch(err) {
       res.status(500).json(err);
     }
@@ -103,7 +103,7 @@ const sslServicesController = {
       }
       
       await sslServices.updateOne({$set: req.body});
-      res.status(200).json("Updated successfully!");
+      res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       res.status(500).json(err);
     }

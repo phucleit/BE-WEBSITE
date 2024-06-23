@@ -6,6 +6,9 @@ var morgan = require("morgan");
 const dotenv = require("dotenv");
 const connectDB = require('./connectDB');
 
+const cron = require('./controllers/services/domain/cron/index')
+const { check_token_api } = require('./middleware/middleware_role')
+
 // gói dịch vụ
 const domainPlansRoutes = require("./routes/plans/domain/domain");
 const emailPlansRoutes = require("./routes/plans/email/email");
@@ -40,6 +43,9 @@ const contractRoutes = require("./routes/contracts/contracts");
 const userRoutes = require("./routes/users/user");
 const groupUserRoutes = require("./routes/group-user/group-user");
 
+// functions
+const functionRoutes = require("./routes/roles/functions");
+
 dotenv.config();
 
 app.use(bodyParser.json({limit: "500mb"}));
@@ -52,49 +58,48 @@ const corsOptions = {
 	optionsSuccessStatus: 204,
 };
 
-const {check_token_api} = require('./middleware/middleware_role')
-
 app.use(cors(corsOptions));
 
 app.use(morgan("common"));
 app.use('/uploads', express.static('uploads'));
 
 // các gói dịch vụ
-app.use("/v1/plans/domain", domainPlansRoutes);
-app.use("/v1/plans/email", emailPlansRoutes);
-app.use("/v1/plans/hosting", hostingPlansRoutes);
-app.use("/v1/plans/ssl", sslPlansRoutes);
-app.use("/v1/plans/content", contentPlansRoutes);
-app.use("/v1/plans/content", contentPlansRoutes);
-app.use("/v1/plans/maintenance", maintenancePlansRoutes);
-app.use("/v1/plans/mobile-network", mobileNetworkPlansRoutes);
+app.use("/v1/plans/domain", check_token_api, domainPlansRoutes);
+app.use("/v1/plans/email", check_token_api, emailPlansRoutes);
+app.use("/v1/plans/hosting", check_token_api, hostingPlansRoutes);
+app.use("/v1/plans/ssl", check_token_api, sslPlansRoutes);
+app.use("/v1/plans/content", check_token_api, contentPlansRoutes);
+app.use("/v1/plans/content", check_token_api, contentPlansRoutes);
+app.use("/v1/plans/maintenance", check_token_api, maintenancePlansRoutes);
+app.use("/v1/plans/mobile-network", check_token_api, mobileNetworkPlansRoutes);
 
 // khách hàng
-app.use("/v1/customer", customerRoutes);
+app.use("/v1/customer", check_token_api, customerRoutes);
 
 // nhà cung cấp
-app.use("/v1/supplier", supplierRoutes);
-app.use("/v1/mobile-network", mobileNetworkRoutes);
+app.use("/v1/supplier", check_token_api, supplierRoutes);
+app.use("/v1/mobile-network", check_token_api, mobileNetworkRoutes);
 
 // dịch vụ
-app.use("/v1/services/domain", domainServicesRoutes);
-app.use("/v1/services/hosting", hostingServicesRoutes);
-app.use("/v1/services/email", emailServicesRoutes);
-app.use("/v1/services/ssl", sslServicesRoutes);
-app.use("/v1/services/content", contentServicesRoutes);
-app.use("/v1/services/website", websiteServicesRoutes);
-app.use("/v1/services/toplist", toplistServicesRoutes);
-app.use("/v1/services/maintenance", maintenanceServicesRoutes);
-app.use("/v1/services/mobile-network", mobileNetworkServicesRoutes);
+app.use("/v1/services/domain", check_token_api, domainServicesRoutes);
+app.use("/v1/services/hosting", check_token_api, hostingServicesRoutes);
+app.use("/v1/services/email", check_token_api, emailServicesRoutes);
+app.use("/v1/services/ssl", check_token_api, sslServicesRoutes);
+app.use("/v1/services/content", check_token_api, contentServicesRoutes);
+app.use("/v1/services/website", check_token_api, websiteServicesRoutes);
+app.use("/v1/services/toplist", check_token_api, toplistServicesRoutes);
+app.use("/v1/services/maintenance", check_token_api, maintenanceServicesRoutes);
+app.use("/v1/services/mobile-network", check_token_api, mobileNetworkServicesRoutes);
 
 // hợp đồng
-app.use("/v1/contracts", contractRoutes);
+app.use("/v1/contracts", check_token_api, contractRoutes);
 
 // users
 app.use("/v1/users", userRoutes);
 app.use("/v1/group-user", check_token_api, groupUserRoutes);
 
-const PORT = process.env.PORT || 3123;
-app.listen(PORT, () => {
-    console.log(`Server is running... ${PORT}`);});
+// functions
+app.use("/v1/functions", functionRoutes);
 
+const PORT = process.env.PORT || 3123;
+app.listen(PORT, () => {console.log(`Server đang chạy... ${PORT}`);});

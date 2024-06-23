@@ -5,51 +5,51 @@ const contentPlansController = {
       try {
         const newContentPlans = new ContentPlans(req.body);
         const saveContentPlans = await newContentPlans.save();
-        
-        res.status(200).json(saveContentPlans);
+        return res.status(200).json(saveContentPlans);
       } catch(err) {
-        res.status(500).json(err);
+        console.error(err);
+        return res.status(500).send(err.message);
       }
     },
 
     getContentPlans: async(req, res) => {
       try {
         const contentPlans = await ContentPlans.find().sort({"createdAt": -1});
-        
-        res.status(200).json(contentPlans);
+        return res.status(200).json(contentPlans);
       } catch(err) {
-        res.status(500).json(err);
+        console.error(err);
+        return res.status(500).send(err.message);
       }
     },
 
     getDetailContentPlans: async(req, res) => {
       try {
         const contentPlans = await ContentPlans.findById(req.params.id);
-        
-        res.status(200).json(contentPlans);
+        return res.status(200).json(contentPlans);
       } catch(err) {
-        res.status(500).json(err);
+        console.error(err);
+        return res.status(500).send(err.message);
       }
     },
 
     deleteContentPlans: async(req, res) => {
       try {
         await ContentPlans.findByIdAndDelete(req.params.id);
-        
-        res.status(200).json("Deleted successfully!");
+        return res.status(200).json("Xóa thành công!");
       } catch(err) {
-        res.status(500).json(err);
+        console.error(err);
+        return res.status(500).send(err.message);
       }
     },
 
     updateContentPlans: async(req, res) => {
       try {
         const contentPlans = await ContentPlans.findById(req.params.id);
-        
         await contentPlans.updateOne({$set: req.body});
-        res.status(200).json("Updated successfully!");
+        return res.status(200).json("Cập nhật thành công!");
       } catch(err) {
-        res.status(500).json(err);
+        console.error(err);
+        return res.status(500).send(err.message);
       }
     }
 }

@@ -4,9 +4,9 @@ const groupUserController = {
   getGroupUser: async(req, res) => {
     try {
       const groupUser = await GroupUsers.find().sort({"createdAt": -1});
-      res.status(200).json(groupUser);
+      return res.status(200).json(groupUser);
     } catch(err) {
-      console.error(err)
+      console.error(err);
       res.status(500).json(err);
     }
   },
@@ -15,7 +15,7 @@ const groupUserController = {
     try {
       const newGroupUser = new GroupUsers(req.body);
       const saveGroupUser = await newGroupUser.save();
-      res.status(200).json(saveGroupUser);
+      return res.status(200).json(saveGroupUser);
     } catch(err) {
       console.log(err);
       res.status(500).json(err);
@@ -25,9 +25,10 @@ const groupUserController = {
   getDetailGroupUser: async(req, res) => {
     try {
       const groupUser = await GroupUsers.findById(req.params.id);
-      res.status(200).json(groupUser);
+      return res.status(200).json(groupUser);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -35,18 +36,20 @@ const groupUserController = {
     try {
       const groupUser = await GroupUsers.findById(req.params.id);
       await groupUser.updateOne({$set: req.body});
-      res.status(200).json("Updated successfully!");
+      return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
   deleteGroupUser: async(req, res) => {
     try {
       await GroupUsers.findByIdAndDelete(req.params.id);
-      res.status(200).json("Deleted successfully!");
+      return res.status(200).json("Xóa thành công!");
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 }

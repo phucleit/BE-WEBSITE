@@ -69,7 +69,7 @@ const mobileNetworkServicesController = {
         await mobileNetworkServices.updateOne({$set: {expiredAt: expiredAt, status: 1}});
       }
       await mobileNetworkServices.updateOne({$set: req.body});
-      res.status(200).json("Updated successfully!");
+      res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       res.status(500).json(err);
     }
@@ -78,7 +78,7 @@ const mobileNetworkServicesController = {
   deleteMobileNetworkServices: async(req, res) => {
     try {
       await MobileNetworkServices.findByIdAndDelete(req.params.id);
-      res.status(200).json("Deleted successfully!");
+      res.status(200).json("Xóa thành công!");
     } catch(err) {
       res.status(500).json(err);
     }

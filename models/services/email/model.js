@@ -24,6 +24,10 @@ const emailServicesSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  after_payment: {
+    type: Boolean,
+    default: false
+  },
   registeredAt: {
     type: Date,
     default: Date.now

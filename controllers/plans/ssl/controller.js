@@ -5,40 +5,40 @@ const sslPlansController = {
         try {
             const newSslPlans = new SslPlans(req.body);
             const saveSslPlans = await newSslPlans.save();
-            
-            res.status(200).json(saveSslPlans);
+            return res.status(200).json(saveSslPlans);
         } catch(err) {
-            res.status(500).json(err);
+            console.error(err);
+            return res.status(500).send(err.message);
         }
     },
 
     getSslPlans: async(req, res) => {
         try {
             const sslPlans = await SslPlans.find().sort({"createdAt": -1}).populate('supplier_id', 'name company');
-            
-            res.status(200).json(sslPlans);
+            return res.status(200).json(sslPlans);
         } catch(err) {
-            res.status(500).json(err);
+            console.error(err);
+            return res.status(500).send(err.message);
         }
     },
 
     getDetailSslPlans: async(req, res) => {
         try {
             const sslPlans = await SslPlans.findById(req.params.id).populate('supplier_id', 'name company phone address');
-            
-            res.status(200).json(sslPlans);
+            return res.status(200).json(sslPlans);
         } catch(err) {
-            res.status(500).json(err);
+            console.error(err);
+            return res.status(500).send(err.message);
         }
     },
 
     deleteSslPlans: async(req, res) => {
         try {
             await SslPlans.findByIdAndDelete(req.params.id);
-            
-            res.status(200).json("Deleted successfully!");
+            return res.status(200).json("Xóa thành công!");
         } catch(err) {
-            res.status(500).json(err);
+            console.error(err);
+            return res.status(500).send(err.message);
         }
     },
 
@@ -46,10 +46,10 @@ const sslPlansController = {
         try {
             const sslPlans = await SslPlans.findById(req.params.id);
             await sslPlans.updateOne({$set: req.body});
-            
-            res.status(200).json("Updated successfully");
+            return res.status(200).json("Cập nhật thành công!");
         } catch(err) {
-            res.status(500).json(err);
+            console.error(err);
+            return res.status(500).send(err.message);
         }
     }
 }

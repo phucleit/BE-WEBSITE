@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const domainServicesSchema = new mongoose.Schema({
+const cronDomainServicesSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true
@@ -28,10 +28,6 @@ const domainServicesSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  after_payment: { // true => đã thanh toán
-    type: Boolean,
-    default: false
-  },
   registeredAt: { // ngày đăng ký
     type: Date,
     default: Date.now
@@ -41,7 +37,6 @@ const domainServicesSchema = new mongoose.Schema({
   },
 }, {timestamps: true});
 
-let DomainServices = mongoose.model("DomainServices", domainServicesSchema);
-module.exports = DomainServices;
-
+let CronDomainServices = mongoose.model("CronDomainServices", cronDomainServicesSchema);
+module.exports = CronDomainServices;
 

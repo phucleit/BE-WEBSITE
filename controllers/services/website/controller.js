@@ -73,7 +73,7 @@ const websiteServicesController = {
     try {
       await WebsiteServices.findByIdAndDelete(req.params.id);
       
-      res.status(200).json("Deleted successfully!");
+      res.status(200).json("Xóa thành công!");
     } catch(err) {
       res.status(500).json(err);
     }
@@ -84,7 +84,7 @@ const websiteServicesController = {
       const websiteServices = await WebsiteServices.findById(req.params.id);
       await websiteServices.updateOne({$set: req.body});
       
-      res.status(200).json("Updated successfully");
+      res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       res.status(500).json(err);
     }

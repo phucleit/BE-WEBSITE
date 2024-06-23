@@ -28,13 +28,13 @@ exports.check_role = (role_id) =>{
 exports.check_token_api = async (req, res, next) =>{
     try {
         const token = req.headers?.token || req.cookies?.token 
-        if(!token) return res.status(403).send(`Phiên đăng nhập hết hạn`)
+        if(!token) return res.status(403).send(`Phiên đăng nhập hết hạn!`)
 
         const count = await ModelToken.countDocuments({token:token})
-        if(count == 0) return res.status(403).send(`Phiên đăng nhập hết hạn`)
+        if(count == 0) return res.status(403).send(`Phiên đăng nhập hết hạn!`)
 
         const data = jwt.verify(token, process.env.JWT_SECRET)
-        if(!data) return res.status(403).send(`Phiên đăng nhập hết hạn`)
+        if(!data) return res.status(403).send(`Phiên đăng nhập hết hạn!`)
         
         req.auth = data
         return next()
