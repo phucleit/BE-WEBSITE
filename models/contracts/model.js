@@ -29,4 +29,4 @@ const contractSchema = new mongoose.Schema({
 }, {timestamps: true});
 
 let Contracts = mongoose.model("Contracts", contractSchema);
-module.exports = {Contracts};
+module.exports = Contracts;

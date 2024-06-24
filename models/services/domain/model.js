@@ -42,5 +42,3 @@ const domainServicesSchema = new mongoose.Schema({
 
 let DomainServices = mongoose.model("DomainServices", domainServicesSchema);
 module.exports = DomainServices;
-
-

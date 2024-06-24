@@ -28,7 +28,7 @@ exports.send_email = async (to_email, subject, text, content_html) => {
   }
 }
 
-this.send_email("phamvanvu992412@gmail.com","Email test", "Abc def", `
-    <h1>Hello</h1>
-    <h2>Heloooooo</h2>
-  `)
+// this.send_email("phamvanvu992412@gmail.com","Email test", "Abc def", `
+//     <h1>Hello</h1>
+//     <h2>Heloooooo</h2>
+//   `)
