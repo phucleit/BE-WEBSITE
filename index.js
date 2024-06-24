@@ -24,6 +24,7 @@ const customerRoutes = require("./routes/customers/customer");
 // nhà cung cấp
 const supplierRoutes = require("./routes/suppliers/supplier");
 const mobileNetworkRoutes = require("./routes/suppliers/mobile-network");
+const serverRoutes = require("./routes/suppliers/server");
 
 // dịch vụ
 const domainServicesRoutes = require("./routes/services/domain/domain");
@@ -79,6 +80,7 @@ app.use("/v1/customer", check_token_api, customerRoutes);
 // nhà cung cấp
 app.use("/v1/supplier", check_token_api, supplierRoutes);
 app.use("/v1/mobile-network", check_token_api, mobileNetworkRoutes);
+app.use("/v1/server", check_token_api, serverRoutes);
 
 // dịch vụ
 app.use("/v1/services/domain", check_token_api, domainServicesRoutes);
