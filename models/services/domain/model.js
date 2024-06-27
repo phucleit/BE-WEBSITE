@@ -5,37 +5,45 @@ const domainServicesSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  periods: { // 1 năm, 2 năm - thời gian đăng ký
+  periods: {
     type: Number,
     required: true
   },
-  supplier_id: { // nhà cung cấp
+  supplier_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Suppliers"
   },
-  domain_plan_id: { // gói dịch vụ
+  domain_plan_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "DomainPlans"
   },
-  customer_id: { // khách hàng
+  server_plan_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "ServerPlans"
+  },
+  customer_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Customers"
   },
-  status: { // 1,2,3 đang sử dụng, sắp hết hạn, đã hết hạn
+  ping_cloudflare: {
+    type: Boolean,
+    default: false
+  },
+  status: {
     type: Number
   },
-  before_payment: { // true => đã thanh toán
+  before_payment: {
     type: Boolean,
     default: false
   },
-  after_payment: { // true => đã thanh toán
+  after_payment: {
     type: Boolean,
     default: false
   },
-  registeredAt: { // ngày đăng ký
+  registeredAt: {
     type: Date
   },
-  expiredAt: { // ngày hết hạn
+  expiredAt: {
     type: Date
   },
 }, {timestamps: true});

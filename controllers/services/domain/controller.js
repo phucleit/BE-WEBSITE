@@ -32,6 +32,7 @@ const domainServicesController = {
     try {
       let domainServices = await DomainServices.find().sort({"createdAt": -1})
         .populate('domain_plan_id')
+        .populate('server_plan_id', 'name')
         .populate('customer_id', 'fullname gender email phone');        
 
       for (const item of domainServices) {
@@ -54,6 +55,7 @@ const domainServicesController = {
 
       domainServices = await DomainServices.find().sort({"createdAt": -1})
         .populate('domain_plan_id')
+        .populate('server_plan_id', 'name')
         .populate('customer_id', 'fullname gender email phone')
         .populate('supplier_id', 'name company');
 
@@ -68,6 +70,7 @@ const domainServicesController = {
     try {
       const domainServices = await DomainServices.findById(req.params.id)
         .populate('domain_plan_id')
+        .populate('server_plan_id', 'name')
         .populate('customer_id', 'fullname gender email phone')
         .populate('supplier_id', 'name company');
 
@@ -159,6 +162,7 @@ const domainServicesController = {
         ] = await Promise.all([
           DomainServices.find({expiredAt: {$lte: currentDate}}).sort({"createdAt": -1})
             .populate('domain_plan_id')
+            .populate('server_plan_id', 'name')
             .populate('customer_id', 'fullname gender email phone')
             .populate('supplier_id', 'name company'),
 
@@ -219,6 +223,7 @@ const domainServicesController = {
         )
         .sort({"createdAt": -1})
         .populate('domain_plan_id')
+        .populate('server_plan_id', 'name')
         .populate('customer_id', 'fullname gender email phone')
         .populate('supplier_id', 'name company');
 
@@ -239,6 +244,7 @@ const domainServicesController = {
         )
         .sort({"createdAt": -1})
         .populate('domain_plan_id')
+        .populate('server_plan_id', 'name')
         .populate('customer_id', 'fullname gender email phone')
         .populate('supplier_id', 'name company');
 
