@@ -17,6 +17,7 @@ const sslPlansRoutes = require("./routes/plans/ssl/ssl");
 const contentPlansRoutes = require("./routes/plans/content/content");
 const maintenancePlansRoutes = require("./routes/plans/maintenance/maintenance");
 const mobileNetworkPlansRoutes = require("./routes/plans/mobile-network/mobileNetwork");
+const serverPlansRoutes = require("./routes/plans/server/server");
 
 // khách hàng
 const customerRoutes = require("./routes/customers/customer");
@@ -73,6 +74,7 @@ app.use("/v1/plans/content", check_token_api, contentPlansRoutes);
 app.use("/v1/plans/content", check_token_api, contentPlansRoutes);
 app.use("/v1/plans/maintenance", check_token_api, maintenancePlansRoutes);
 app.use("/v1/plans/mobile-network", check_token_api, mobileNetworkPlansRoutes);
+app.use("/v1/plans/server", check_token_api, serverPlansRoutes);
 
 // khách hàng
 app.use("/v1/customer", check_token_api, customerRoutes);
