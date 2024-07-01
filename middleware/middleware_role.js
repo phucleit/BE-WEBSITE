@@ -27,7 +27,7 @@ exports.check_role = (role_id) =>{
 
 exports.check_token_api = async (req, res, next) =>{
     try {
-        const token = req.headers?.token || req.cookies?.token 
+        const token = req.headers?.token || req.cookies?.token
         if(!token) return res.status(403).send(`Phiên đăng nhập hết hạn!`)
 
         const count = await ModelToken.countDocuments({token:token})

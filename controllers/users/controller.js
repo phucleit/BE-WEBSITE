@@ -33,7 +33,11 @@ const userController = {
         user_id: validUser._id,
         token: token
       }).save();
-      return res.json({token});
+
+      return res.json({
+        token: token,
+        display_name: validUser.display_name
+      });
     } catch(error) {
       console.error(error);
       return res.status(400).send(error.message)

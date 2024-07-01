@@ -98,6 +98,21 @@ const init = async () =>{
             fuction_parent_id: new ObjectId("667463d04bede188dfb46d75"),
             name: "Xóa nhà mạng",
         },
+        {
+            _id: new ObjectId("667463d04bede188dfb46a81"),
+            fuction_parent_id: new ObjectId("667463d04bede188dfb46d75"),
+            name: "Tạo server",
+        },
+        {
+            _id: new ObjectId("667463d04bede188dfb46e81"),
+            fuction_parent_id: new ObjectId("667463d04bede188dfb46d75"),
+            name: "Sửa server",
+        },
+        {
+            _id: new ObjectId("667463d04bede188dfb46f81"),
+            fuction_parent_id: new ObjectId("667463d04bede188dfb46d75"),
+            name: "Xóa server",
+        },
 
         // hợp đồng
         {

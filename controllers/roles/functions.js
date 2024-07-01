@@ -46,6 +46,15 @@ const functionController = {
       return res.status(400).send(err.message);
     }
   },
+  getRoles: async(req, res) => {
+    try {
+      const roles = await Roles.find();
+      return res.status(200).json(roles);
+    } catch(err) {
+      console.error(err);
+      return res.status(400).send(err.message);
+    }
+  },
 }
 
 module.exports = functionController;
