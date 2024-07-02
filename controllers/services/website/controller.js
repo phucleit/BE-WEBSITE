@@ -46,9 +46,10 @@ const websiteServicesController = {
         .populate('domain_plan_id', 'name')
         .populate('domain_supplier_id', 'name company')
       
-      res.status(200).json(websiteServices);
+      return res.status(200).json(websiteServices);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 

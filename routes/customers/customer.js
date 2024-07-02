@@ -1,12 +1,13 @@
 const router = require("express").Router();
 const upload = require('../../middleware/upload');
 const customerController = require("../../controllers/customers/controller");
+const { check_role } = require("../../middleware/middleware_role");
 
 router.post('/', upload.fields([
   { name: 'image_front_view', maxCount: 1 },
   { name: 'image_back_view', maxCount: 1 },
 ]), customerController.addCustomer);
-router.get("/", customerController.getCustomer);
+router.get("/",  customerController.getCustomer);
 router.get("/:id", customerController.getDetailCustomer);
 router.get("/domain-service/:id", customerController.getDomainServiceByCustomerId);
 router.get("/hosting-service/:id", customerController.getHostingServiceByCustomerId);

@@ -45,6 +45,9 @@ const contractRoutes = require("./routes/contracts/contracts");
 const userRoutes = require("./routes/users/user");
 const groupUserRoutes = require("./routes/group-user/group-user");
 
+// login
+const loginRoutes = require("./routes/login/login");
+
 // functions
 const functionRoutes = require("./routes/roles/functions");
 
@@ -99,8 +102,11 @@ app.use("/v1/services/mobile-network", check_token_api, mobileNetworkServicesRou
 app.use("/v1/contracts", check_token_api, contractRoutes);
 
 // users
-app.use("/v1/users", userRoutes);
+app.use("/v1/users", check_token_api, userRoutes);
 app.use("/v1/group-user", check_token_api, groupUserRoutes);
+
+// login
+app.use("/v1/login", loginRoutes);
 
 // functions
 app.use("/v1/functions", functionRoutes);

@@ -19,6 +19,12 @@ const userchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
+  },
+  group_user_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    index: true,
+    ref: "GroupUsers",
   }
 }, {timestamps: true});
 
@@ -32,7 +38,8 @@ const init = async () =>{
       display_name: "IT Vũng Tàu",
       username: "itvt",
       password: sha512('1'),
-      email: "cuongthinhitv@gmail.com"
+      email: "cuongthinhitv@gmail.com",
+      group_user_id: "6684196550a34692df218d8d"
     }).save()
   }
 }
