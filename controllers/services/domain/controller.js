@@ -10,22 +10,57 @@ const domainServicesController = {
       const newDomainServices = new DomainServices(req.body);
       newDomainServices.expiredAt = new Date(newDomainServices.registeredAt);
       newDomainServices.expiredAt.setFullYear(newDomainServices.expiredAt.getFullYear() + req.body.periods);
-      newDomainServices.status = 1;
       const saveDomainServices = await newDomainServices.save();
 
       // cron dịch vụ
       const newCronDomainServices = new CronDomainServices(req.body);
       newCronDomainServices.expiredAt = new Date(newDomainServices.registeredAt);
       newCronDomainServices.expiredAt.setFullYear(newCronDomainServices.expiredAt.getFullYear() + req.body.periods);
-      newCronDomainServices.status = 1;
       await newCronDomainServices.save();
 
-      
       return res.status(200).json(saveDomainServices);
     } catch(err) {
       console.error(err)
       return res.status(500).send(err.message);
     }
+
+    // try {
+    //   // dịch vụ
+    //   const {
+    //     name,
+    //     periods,
+    //     registeredAt,
+    //     domain_plan_id,
+    //     server_plan_id,
+    //     ping_cloudflare,
+    //     customer_id,
+    //   } = req.body
+
+    //   const object = {
+    //     name:name,
+    //     periods:periods,
+    //     registeredAt:registeredAt,
+    //     domain_plan_id:domain_plan_id,
+    //     server_plan_id:server_plan_id,
+    //     ping_cloudflare:ping_cloudflare === 'true',
+    //     customer_id:customer_id,
+    //   };
+    //   const newDomainServices = new DomainServices({
+    //     ...object
+    //   }).save()
+
+    //   // cron dịch vụ
+    //   const newCronDomainServices = new CronDomainServices(req.body);
+    //   newCronDomainServices.expiredAt = newDomainServices.expiredAt
+    //   newCronDomainServices.status = newDomainServices.status;
+    //   await newCronDomainServices.save();
+
+      
+    //   return res.status(200).json(newDomainServices);
+    // } catch(err) {
+    //   console.error(err)
+    //   return res.status(500).send(err.message);
+    // }
   },
 
   getDomainServices: async(req, res) => {

@@ -15,10 +15,12 @@ const emailServicesSchema = new mongoose.Schema({
   },
   customer_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Customers"
+    ref: "Customers",
+    index: true
   },
   status: {
-    type: Number
+    type: Number,
+    default: 1
   },
   before_payment: {
     type: Boolean,
@@ -47,6 +49,15 @@ const emailServicesSchema = new mongoose.Schema({
     ref: "Suppliers"
   },
 }, {timestamps: true});
+
+emailServicesSchema.post(['save','updateOne','create'], async function (next) {
+  const ModelContract = require('../../contracts/model');
+  if (this.customer_id) {
+    ModelContract.create_or_update_contract(this.customer_id);
+  } else if (this['$set']?.customer_id) {
+    ModelContract.create_or_update_contract(this['$set']?.customer_id);
+  }
+});
 
 let EmailServices = mongoose.model("EmailServices", emailServicesSchema);
 module.exports = EmailServices;

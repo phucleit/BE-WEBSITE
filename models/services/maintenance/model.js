@@ -18,10 +18,12 @@ const maintenanceServicesSchema = new mongoose.Schema({
   },
   customer_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Customers"
+    ref: "Customers",
+    index: true
   },
   status: {
-    type: Number
+    type: Number,
+    default: 1
   },
   registeredAt: {
     type: Date
@@ -38,6 +40,15 @@ const maintenanceServicesSchema = new mongoose.Schema({
     ref: "Suppliers"
   },
 }, {timestamps: true});
+
+maintenanceServicesSchema.post(['save','updateOne','create'], async function (next) {
+  const ModelContract = require('../../contracts/model');
+  if (this.customer_id) {
+    ModelContract.create_or_update_contract(this.customer_id);
+  } else if (this['$set']?.customer_id) {
+    ModelContract.create_or_update_contract(this['$set']?.customer_id);
+  }
+});
 
 let MaintenanceServices = mongoose.model("MaintenanceServices", maintenanceServicesSchema);
 module.exports = MaintenanceServices;

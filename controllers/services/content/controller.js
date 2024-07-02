@@ -8,7 +8,6 @@ const contentServicesController = {
       const newContentServices = new ContentServices(req.body);
       newContentServices.expiredAt = new Date(newContentServices.registeredAt);
       newContentServices.expiredAt.setMonth(newContentServices.expiredAt.getMonth() + req.body.periods);
-      newContentServices.status = 1;
       const saveContentServices = await newContentServices.save();
       return res.status(200).json(saveContentServices);
       

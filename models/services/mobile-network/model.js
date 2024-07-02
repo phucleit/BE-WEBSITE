@@ -15,10 +15,12 @@ const mobileNetworkServicesSchema = new mongoose.Schema({
   },
   customerId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Customers"
+    ref: "Customers",
+    index: true
   },
   status: {
-    type: Number
+    type: Number,
+    default: 1
   },
   registeredAt: {
     type: Date
@@ -27,6 +29,15 @@ const mobileNetworkServicesSchema = new mongoose.Schema({
     type: Date
   },
 }, {timestamps: true});
+
+mobileNetworkServicesSchema.post(['save','updateOne','create'], async function (next) {
+  const ModelContract = require('../../contracts/model');
+  if (this.customer_id) {
+    ModelContract.create_or_update_contract(this.customer_id);
+  } else if(this['$set']?.customer_id) {
+    ModelContract.create_or_update_contract(this['$set']?.customer_id);
+  }
+});
 
 let MobileNetworkServices = mongoose.model("MobileNetworkServices", mobileNetworkServicesSchema);
 module.exports = MobileNetworkServices;

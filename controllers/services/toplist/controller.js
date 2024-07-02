@@ -8,7 +8,6 @@ const toplistServiceController = {
       const newToplistService = new ToplistServices(req.body);
       newToplistService.expiredAt = new Date(newToplistService.registeredAt);
       newToplistService.expiredAt.setFullYear(newToplistService.expiredAt.getFullYear() + req.body.periods);
-      newToplistService.status = 1;
       const saveToplistService = await newToplistService.save();
       
       res.status(200).json(saveToplistService);

@@ -8,7 +8,6 @@ const maintenanceServicesController = {
       const newMaintenanceServices = new MaintenanceServices(req.body);
       newMaintenanceServices.expiredAt = new Date(newMaintenanceServices.registeredAt);
       newMaintenanceServices.expiredAt.setMonth(newMaintenanceServices.expiredAt.getMonth() + req.body.periods);
-      newMaintenanceServices.status = 1;
       const saveMaintenanceServices = await newMaintenanceServices.save();
       
       res.status(200).json(saveMaintenanceServices);

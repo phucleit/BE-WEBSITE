@@ -39,7 +39,6 @@ const mobileNetworkServicesController = {
       const newMobileNetworkServices = new MobileNetworkServices(req.body);
       newMobileNetworkServices.expiredAt = new Date(newMobileNetworkServices.registeredAt);
       newMobileNetworkServices.expiredAt.setFullYear(newMobileNetworkServices.expiredAt.getFullYear() + req.body.periods);
-      newMobileNetworkServices.status = 1;
       const saveMobileNetworkServices = await newMobileNetworkServices.save();
       
       res.status(200).json(saveMobileNetworkServices);

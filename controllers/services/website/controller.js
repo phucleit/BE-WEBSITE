@@ -4,7 +4,6 @@ const websiteServicesController = {
   addWebsiteServices: async(req, res) => {
     try {
       const newWebsite = new WebsiteServices(req.body);
-      newWebsite.status = 1;
       const saveWebsiteServices = await newWebsite.save();
       
       res.status(200).json(saveWebsiteServices);
@@ -47,7 +46,6 @@ const websiteServicesController = {
         .populate('domain_plan_id', 'name')
         .populate('domain_supplier_id', 'name company')
       
-      
       res.status(200).json(websiteServices);
     } catch(err) {
       res.status(500).json(err);
@@ -62,7 +60,6 @@ const websiteServicesController = {
         .populate('domain_plan_id', 'name')
         .populate('domain_supplier_id', 'name company');
 
-      
       res.status(200).json(websiteServices);
     } catch(err) {
       res.status(500).json(err);

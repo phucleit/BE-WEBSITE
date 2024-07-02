@@ -8,7 +8,6 @@ const hostingServicesController = {
       const newHostingServices = new HostingServices(req.body);
       newHostingServices.expiredAt = new Date(newHostingServices.registeredAt);
       newHostingServices.expiredAt.setFullYear(newHostingServices.expiredAt.getFullYear() + req.body.periods);
-      newHostingServices.status = 1;
       const saveHostingServices = await newHostingServices.save();
       
       res.status(200).json(saveHostingServices);

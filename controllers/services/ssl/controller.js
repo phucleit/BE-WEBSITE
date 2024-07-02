@@ -8,7 +8,6 @@ const sslServicesController = {
       const newSslServices = new SslServices(req.body);
       newSslServices.expiredAt = new Date(newSslServices.registeredAt);
       newSslServices.expiredAt.setFullYear(newSslServices.expiredAt.getFullYear() + req.body.periods);
-      newSslServices.status = 1;
       const saveSslServices = await newSslServices.save();
       
       res.status(200).json(saveSslServices);
