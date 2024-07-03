@@ -1,10 +1,11 @@
 const router = require("express").Router();
+const { check_role } = require("../../middleware/middleware_role");
 const supplierController = require("../../controllers/suppliers/controller");
 
-router.post("/", supplierController.addSupplier);
+router.post("/", check_role("667463d04bede188dfb46d76"), supplierController.addSupplier);
 router.get("/", supplierController.getSupplier);
 router.get("/:id", supplierController.getDetailSupplier);
-router.delete("/:id", supplierController.deleteSupplier);
-router.put("/:id", supplierController.updateSupplier);
+router.put("/:id", check_role("667463d04bede188dfb46d77"), supplierController.updateSupplier);
+router.delete("/:id", check_role("667463d04bede188dfb46d78"), supplierController.deleteSupplier);
 
 module.exports = router;

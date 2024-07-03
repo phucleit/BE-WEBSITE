@@ -1,11 +1,12 @@
 const router = require("express").Router();
-const maintenanceServicesController = require("../../../controllers/services/maintenance/controller")
+const { check_role } = require("../../../middleware/middleware_role");
+const maintenanceServicesController = require("../../../controllers/services/maintenance/controller");
 
-router.post("/", maintenanceServicesController.addMaintenanceServices);
+router.post("/", check_role("667467eb263fb998b9925d3d"), maintenanceServicesController.addMaintenanceServices);
 router.get("/", maintenanceServicesController.getMaintenanceServices);
 router.get("/:id", maintenanceServicesController.getDetailMaintenanceServices);
-router.delete("/:id", maintenanceServicesController.deleteMaintenanceServices);
-router.put("/:id", maintenanceServicesController.updateMaintenanceServices);
+router.put("/:id", check_role("667467eb263fb998b9925d3e"), maintenanceServicesController.updateMaintenanceServices);
+router.delete("/:id", check_role("667467eb263fb998b9925d3f"), maintenanceServicesController.deleteMaintenanceServices);
 router.get("/expired/all", maintenanceServicesController.getMaintenanceServicesExpired);
 router.get("/expiring/all", maintenanceServicesController.getMaintenanceServicesExpiring);
 

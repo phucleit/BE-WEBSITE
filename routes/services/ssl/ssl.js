@@ -1,11 +1,12 @@
 const router = require("express").Router();
-const sslServicesController = require("../../../controllers/services/ssl/controller")
+const { check_role } = require("../../../middleware/middleware_role");
+const sslServicesController = require("../../../controllers/services/ssl/controller");
 
-router.post("/", sslServicesController.addSslServices);
+router.post("/", check_role("667467eb263fb998b9925d37"), sslServicesController.addSslServices);
 router.get("/", sslServicesController.getSslServices);
 router.get("/:id", sslServicesController.getDetailSslServices);
-router.delete("/:id", sslServicesController.deleteSslServices);
-router.put("/:id", sslServicesController.updateSslServices);
+router.put("/:id", check_role("667467eb263fb998b9925d38"), sslServicesController.updateSslServices);
+router.delete("/:id", check_role("667467eb263fb998b9925d39"), sslServicesController.deleteSslServices);
 router.get("/expired/all", sslServicesController.getSslServicesExpired);
 router.get("/expiring/all", sslServicesController.getSslServicesExpiring);
 router.get("/before-payment/all", sslServicesController.getSslServicesBeforePayment);

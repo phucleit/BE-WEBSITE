@@ -1,11 +1,12 @@
 const router = require("express").Router();
-const mobileNetworkServicesController = require("../../../controllers/services/mobile-network/controller")
+const { check_role } = require("../../../middleware/middleware_role");
+const mobileNetworkServicesController = require("../../../controllers/services/mobile-network/controller");
 
+router.post("/", check_role("667467eb263fb998b9925d40"), mobileNetworkServicesController.addMobileNetworkServices);
 router.get("/", mobileNetworkServicesController.getMobileNetworkServices);
-router.post("/", mobileNetworkServicesController.addMobileNetworkServices);
 router.get("/:id", mobileNetworkServicesController.getDetailMobileNetworkServices);
-router.put("/:id", mobileNetworkServicesController.updateMobileNetworkServices);
-router.delete("/:id", mobileNetworkServicesController.deleteMobileNetworkServices);
+router.put("/:id", check_role("667467eb263fb998b9925d41"), mobileNetworkServicesController.updateMobileNetworkServices);
+router.delete("/:id", check_role("667467eb263fb998b9925d42"), mobileNetworkServicesController.deleteMobileNetworkServices);
 router.get("/expired/all", mobileNetworkServicesController.getMobileNetworkServicesExpired);
 router.get("/expiring/all", mobileNetworkServicesController.getMobileNetworkServicesExpiring);
 

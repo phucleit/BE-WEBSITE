@@ -18,9 +18,9 @@ const userchema = new mongoose.Schema({
 const Functions = mongoose.model("Functions", userchema);
 module.exports = Functions;
 
-const init = async () =>{
+const init = async () => {
   const count = await Functions.estimatedDocumentCount()
-  if(count == 0){
+  if (count == 0) {
     const array = [
         // tài khoản
         {
@@ -266,6 +266,21 @@ const init = async () =>{
             fuction_parent_id: new ObjectId("667464b5500bf3ad04c24f47"),
             name: "Xóa gói sim 4G",
         },
+        {
+            _id: new ObjectId("66746678f7f723b779b1b074"),
+            fuction_parent_id: new ObjectId("667464b5500bf3ad04c24f47"),
+            name: "Tạo server",
+        },
+        {
+            _id: new ObjectId("66746678f7f723b779b1b075"),
+            fuction_parent_id: new ObjectId("667464b5500bf3ad04c24f47"),
+            name: "Sửa server",
+        },
+        {
+            _id: new ObjectId("66746678f7f723b779b1b076"),
+            fuction_parent_id: new ObjectId("667464b5500bf3ad04c24f47"),
+            name: "Xóa server",
+        },
 
         //dịch vụ
         {
@@ -376,6 +391,36 @@ const init = async () =>{
             _id: new ObjectId("667467eb263fb998b9925d42"),
             fuction_parent_id: new ObjectId("667467eb263fb998b9925d2d"),
             name: "Xóa dịch vụ sim 4G",
+        },
+        {
+            _id: new ObjectId("667467eb263fb998b9925d43"),
+            fuction_parent_id: new ObjectId("667467eb263fb998b9925d2d"),
+            name: "Tạo dịch vụ toplist",
+        },
+        {
+            _id: new ObjectId("667467eb263fb998b9925d44"),
+            fuction_parent_id: new ObjectId("667467eb263fb998b9925d2d"),
+            name: "Sửa dịch vụ toplist",
+        },
+        {
+            _id: new ObjectId("667467eb263fb998b9925d45"),
+            fuction_parent_id: new ObjectId("667467eb263fb998b9925d2d"),
+            name: "Xóa dịch vụ toplist",
+        },
+        {
+            _id: new ObjectId("667467eb263fb998b9925d46"),
+            fuction_parent_id: new ObjectId("667467eb263fb998b9925d2d"),
+            name: "Tạo dịch vụ website",
+        },
+        {
+            _id: new ObjectId("667467eb263fb998b9925d47"),
+            fuction_parent_id: new ObjectId("667467eb263fb998b9925d2d"),
+            name: "Sửa dịch vụ website",
+        },
+        {
+            _id: new ObjectId("667467eb263fb998b9925d48"),
+            fuction_parent_id: new ObjectId("667467eb263fb998b9925d2d"),
+            name: "Xóa dịch vụ website",
         },
     ]
     await Functions.insertMany(array)

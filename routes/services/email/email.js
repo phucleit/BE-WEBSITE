@@ -1,11 +1,12 @@
 const router = require("express").Router();
-const emailServicesController = require("../../../controllers/services/email/controller")
+const { check_role } = require("../../../middleware/middleware_role");
+const emailServicesController = require("../../../controllers/services/email/controller");
 
-router.post("/", emailServicesController.addEmailServices);
+router.post("/", check_role("667467eb263fb998b9925d34"), emailServicesController.addEmailServices);
 router.get("/", emailServicesController.getEmailServices);
 router.get("/:id", emailServicesController.getDetailEmailServices);
-router.delete("/:id", emailServicesController.deleteEmailServices);
-router.put("/:id", emailServicesController.updateEmailServices);
+router.put("/:id", check_role("667467eb263fb998b9925d35"), emailServicesController.updateEmailServices);
+router.delete("/:id", check_role("667467eb263fb998b9925d36"), emailServicesController.deleteEmailServices);
 router.get("/expired/all", emailServicesController.getEmailServicesExpired);
 router.get("/expiring/all", emailServicesController.getEmailServicesExpiring);
 router.get("/before-payment/all", emailServicesController.getEmailServicesBeforePayment);
