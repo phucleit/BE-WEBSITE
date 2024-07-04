@@ -22,7 +22,8 @@ const loginController = {
 
       return res.json({
         token: token,
-        display_name: validUser.display_name
+        display_name: validUser.display_name,
+        group_user_id: validUser.group_user_id
       });
     } catch(error) {
       console.error(error);

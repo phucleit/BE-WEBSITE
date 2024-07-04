@@ -15,12 +15,12 @@ const functionController = {
   },
   addRole: async(req, res) => {
     try {
-      const {name, description, group} = req.body
+      const {name, description, group} = req.body;
 
       if (!name) throw new Error(`Vui lòng nhập tên nhóm!`)     
       if (!description) throw new Error(`Mô tả không được trống!`)
 
-      const existingName = await GroupUsers.findOne({name: name})
+      const existingName = await GroupUsers.findOne({name: name});
       if (existingName) throw new Error(`Tên nhóm đã tồn tại, vui lòng chọn tên khác!`);
 
       const data_group = await new GroupUsers({
@@ -55,6 +55,15 @@ const functionController = {
       return res.status(400).send(err.message);
     }
   },
+  getRolesByGroupUserId: async(req, res) => {
+    try {
+      const roles = await Roles.find({ group_user_id: req.params.group_user_id });
+      return res.status(200).json(roles);
+    } catch(err) {
+      console.error(err);
+      return res.status(400).send(err.message);
+    }
+  }
 }
 
 module.exports = functionController;
