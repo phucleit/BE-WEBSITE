@@ -258,6 +258,11 @@ const init = async () => {
         group_user_id: new ObjectId("6684196550a34692df218d8d"),
       },
       {
+        _id: new ObjectId("668653c9e55c5173ec41c976"),
+        function_id: new ObjectId("66746678f7f723b779b1b06d"),
+        group_user_id: new ObjectId("6684196550a34692df218d8d"),
+      },
+      {
         _id: new ObjectId("668653c9e55c5173ec41c977"),
         function_id: new ObjectId("66746193cb45907845239f36"),
         group_user_id: new ObjectId("6684196550a34692df218d8d"),
