@@ -10,9 +10,10 @@ const sslServicesController = {
       newSslServices.expiredAt.setFullYear(newSslServices.expiredAt.getFullYear() + req.body.periods);
       const saveSslServices = await newSslServices.save();
       
-      res.status(200).json(saveSslServices);
+      return res.status(200).json(saveSslServices);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -41,8 +42,9 @@ const sslServicesController = {
             },
             { new: true }
           );
-        } catch (error) {
-          res.status(500).json(error);
+        } catch (err) {
+          console.error(err);
+          return res.status(500).send(err.message);
         }
       }
 
@@ -55,9 +57,10 @@ const sslServicesController = {
         .populate('ssl_supplier_id', 'name company');
       
       
-      res.status(200).json(sslServices);
+      return res.status(200).json(sslServices);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -71,20 +74,20 @@ const sslServicesController = {
         .populate('domain_supplier_id', 'name company')
         .populate('ssl_supplier_id', 'name company');
 
-      
-      res.status(200).json(sslServices);
+      return res.status(200).json(sslServices);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
   deleteSslServices: async(req, res) => {
     try {
       await SslServices.findByIdAndDelete(req.params.id);
-      
-      res.status(200).json("Xóa thành công!");
+      return res.status(200).json("Xóa thành công!");
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -102,9 +105,10 @@ const sslServicesController = {
       }
       
       await sslServices.updateOne({$set: req.body});
-      res.status(200).json("Cập nhật thành công!");
+      return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -128,8 +132,9 @@ const sslServicesController = {
             },
             { new: true }
           );
-        } catch (error) {
-          res.status(500).json(error);
+        } catch (err) {
+          console.error(err);
+          return res.status(500).send(err.message);
         }
       }
 
@@ -147,9 +152,10 @@ const sslServicesController = {
         .populate('domain_supplier_id', 'name company')
         .populate('ssl_supplier_id', 'name company');
       
-      res.status(200).json(sslServicesExpired);
+      return res.status(200).json(sslServicesExpired);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -177,8 +183,9 @@ const sslServicesController = {
             },
             { new: true }
           );
-        } catch (error) {
-          res.status(500).json(error);
+        } catch (err) {
+          console.error(err);
+          return res.status(500).send(err.message);
         }
       }
 
@@ -199,9 +206,10 @@ const sslServicesController = {
         .populate('domain_supplier_id', 'name company')
         .populate('ssl_supplier_id', 'name company');
       
-      res.status(200).json(sslServicesExpiring);
+      return res.status(200).json(sslServicesExpiring);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -221,9 +229,10 @@ const sslServicesController = {
         .populate('domain_supplier_id', 'name company')
         .populate('ssl_supplier_id', 'name company');
       
-      res.status(200).json(sslServicesBeforePayment);
+      return res.status(200).json(sslServicesBeforePayment);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   }
 }

@@ -7,7 +7,7 @@ const groupUserController = {
       return res.status(200).json(groupUser);
     } catch(err) {
       console.error(err);
-      res.status(500).json(err);
+      return res.status(500).json(err);
     }
   },
 
@@ -18,7 +18,7 @@ const groupUserController = {
       return res.status(200).json(saveGroupUser);
     } catch(err) {
       console.log(err);
-      res.status(500).json(err);
+      return res.status(500).json(err);
     }
   },
 

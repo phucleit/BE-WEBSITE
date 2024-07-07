@@ -18,8 +18,9 @@ const mobileNetworkServicesController = {
             },
             { new: true }
           );
-        } catch (error) {
-          res.status(500).json(error);
+        } catch (err) {
+          console.error(err);
+          return res.status(500).send(err.message);
         }
       }
 
@@ -28,9 +29,10 @@ const mobileNetworkServicesController = {
         .populate('customerId', 'fullname gender email phone')
         .populate('supplierMobileNetworkId');
 
-      res.status(200).json(mobileNetworkServices);
+      return res.status(200).json(mobileNetworkServices);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -41,9 +43,10 @@ const mobileNetworkServicesController = {
       newMobileNetworkServices.expiredAt.setFullYear(newMobileNetworkServices.expiredAt.getFullYear() + req.body.periods);
       const saveMobileNetworkServices = await newMobileNetworkServices.save();
       
-      res.status(200).json(saveMobileNetworkServices);
+      return res.status(200).json(saveMobileNetworkServices);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -53,9 +56,10 @@ const mobileNetworkServicesController = {
         .populate('mobileNetworkPlanId')
         .populate('customerId', 'fullname gender email phone')
         .populate('supplierMobileNetworkId');
-      res.status(200).json(mobileNetworkServices);
+      return res.status(200).json(mobileNetworkServices);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -68,18 +72,20 @@ const mobileNetworkServicesController = {
         await mobileNetworkServices.updateOne({$set: {expiredAt: expiredAt, status: 1}});
       }
       await mobileNetworkServices.updateOne({$set: req.body});
-      res.status(200).json("Cập nhật thành công!");
+      return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
   deleteMobileNetworkServices: async(req, res) => {
     try {
       await MobileNetworkServices.findByIdAndDelete(req.params.id);
-      res.status(200).json("Xóa thành công!");
+      return res.status(200).json("Xóa thành công!");
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -103,8 +109,9 @@ const mobileNetworkServicesController = {
             },
             { new: true }
           );
-        } catch (error) {
-          res.status(500).json(error);
+        } catch (err) {
+          console.error(err);
+          return res.status(500).send(err.message);
         }
       }
 
@@ -119,9 +126,10 @@ const mobileNetworkServicesController = {
         .populate('customerId', 'fullname gender email phone')
         .populate('supplierMobileNetworkId');
       
-      res.status(200).json(mobileNetworkServicesExpired);
+      return res.status(200).json(mobileNetworkServicesExpired);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -149,8 +157,9 @@ const mobileNetworkServicesController = {
             },
             { new: true }
           );
-        } catch (error) {
-          res.status(500).json(error);
+        } catch (err) {
+          console.error(err);
+          return res.status(500).send(err.message);
         }
       }
 
@@ -168,9 +177,10 @@ const mobileNetworkServicesController = {
         .populate('customerId', 'fullname gender email phone')
         .populate('supplierMobileNetworkId');
       
-      res.status(200).json(mobileNetworkServicesExpiring);
+      return res.status(200).json(mobileNetworkServicesExpiring);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   }
 }

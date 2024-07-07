@@ -202,10 +202,10 @@ const supplierController = {
     try {
       const supplier = await Supplier.findById(req.params.id);
       await supplier.updateOne({$set: req.body});
-      
-      res.status(200).json("Cập nhật thành công!");
+      return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   }
 }

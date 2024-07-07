@@ -34,11 +34,11 @@ const emailPlansController = {
 
   deleteEmailPlans: async(req, res) => {
     try {
-        await EmailPlans.findByIdAndDelete(req.params.id);
-        return res.status(200).json("Xóa thành công!");
+      await EmailPlans.findByIdAndDelete(req.params.id);
+      return res.status(200).json("Xóa thành công!");
     } catch(err) {
-        console.error(err);
-        return res.status(500).send(err.message);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 

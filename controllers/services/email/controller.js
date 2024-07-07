@@ -10,9 +10,10 @@ const emailServicesController = {
       newEmailServices.expiredAt.setFullYear(newEmailServices.expiredAt.getFullYear() + req.body.periods);
       const saveEmailServices = await newEmailServices.save();
       
-      res.status(200).json(saveEmailServices);
+      return res.status(200).json(saveEmailServices);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -41,8 +42,9 @@ const emailServicesController = {
             },
             { new: true }
           );
-        } catch (error) {
-          res.status(500).json(error);
+        } catch (err) {
+          console.error(err);
+          return res.status(500).send(err.message);
         }
       }
 
@@ -55,9 +57,10 @@ const emailServicesController = {
         .populate('email_supplier_id', 'name company');
       
       
-      res.status(200).json(emailServices);
+      return res.status(200).json(emailServices);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -72,19 +75,20 @@ const emailServicesController = {
         .populate('email_supplier_id', 'name company');
       
       
-      res.status(200).json(emailServices);
+      return res.status(200).json(emailServices);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
   deleteEmailServices: async(req, res) => {
     try {
       await EmailServices.findByIdAndDelete(req.params.id);
-      
-      res.status(200).json("Xóa thành công!");
+      return res.status(200).json("Xóa thành công!");
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -102,9 +106,10 @@ const emailServicesController = {
       }
       
       await emailServices.updateOne({$set: req.body});
-      res.status(200).json("Cập nhật thành công!");
+      return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -128,8 +133,9 @@ const emailServicesController = {
             },
             { new: true }
           );
-        } catch (error) {
-          res.status(500).json(error);
+        } catch (err) {
+          console.error(err);
+          return res.status(500).send(err.message);
         }
       }
 
@@ -147,9 +153,10 @@ const emailServicesController = {
         .populate('domain_supplier_id', 'name company')
         .populate('email_supplier_id', 'name company');
       
-      res.status(200).json(emailServicesExpired);
+      return res.status(200).json(emailServicesExpired);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -177,8 +184,9 @@ const emailServicesController = {
             },
             { new: true }
           );
-        } catch (error) {
-          res.status(500).json(error);
+        } catch (err) {
+          console.error(err);
+          return res.status(500).send(err.message);
         }
       }
 
@@ -199,9 +207,10 @@ const emailServicesController = {
         .populate('domain_supplier_id', 'name company')
         .populate('email_supplier_id', 'name company');
       
-      res.status(200).json(emailServicesExpiring);
+      return res.status(200).json(emailServicesExpiring);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -221,10 +230,10 @@ const emailServicesController = {
         .populate('domain_supplier_id', 'name company')
         .populate('email_supplier_id', 'name company');
       
-      
-      res.status(200).json(emailServicesBeforePayment);
+      return res.status(200).json(emailServicesBeforePayment);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   }
 }

@@ -3,9 +3,9 @@ const ContentPlans = require("../../../models/plans/content/model");
 const contentPlansController = {
   addContentPlans: async(req, res) => {
     try {
-    const newContentPlans = new ContentPlans(req.body);
-    const saveContentPlans = await newContentPlans.save();
-    return res.status(200).json(saveContentPlans);
+      const newContentPlans = new ContentPlans(req.body);
+      const saveContentPlans = await newContentPlans.save();
+      return res.status(200).json(saveContentPlans);
     } catch(err) {
       console.error(err);
       return res.status(500).send(err.message);

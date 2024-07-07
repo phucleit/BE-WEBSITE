@@ -23,44 +23,6 @@ const domainServicesController = {
       console.error(err)
       return res.status(500).send(err.message);
     }
-
-    // try {
-    //   // dịch vụ
-    //   const {
-    //     name,
-    //     periods,
-    //     registeredAt,
-    //     domain_plan_id,
-    //     server_plan_id,
-    //     ping_cloudflare,
-    //     customer_id,
-    //   } = req.body
-
-    //   const object = {
-    //     name:name,
-    //     periods:periods,
-    //     registeredAt:registeredAt,
-    //     domain_plan_id:domain_plan_id,
-    //     server_plan_id:server_plan_id,
-    //     ping_cloudflare:ping_cloudflare === 'true',
-    //     customer_id:customer_id,
-    //   };
-    //   const newDomainServices = new DomainServices({
-    //     ...object
-    //   }).save()
-
-    //   // cron dịch vụ
-    //   const newCronDomainServices = new CronDomainServices(req.body);
-    //   newCronDomainServices.expiredAt = newDomainServices.expiredAt
-    //   newCronDomainServices.status = newDomainServices.status;
-    //   await newCronDomainServices.save();
-
-      
-    //   return res.status(200).json(newDomainServices);
-    // } catch(err) {
-    //   console.error(err)
-    //   return res.status(500).send(err.message);
-    // }
   },
 
   getDomainServices: async(req, res) => {
@@ -82,7 +44,7 @@ const domainServicesController = {
             },
             { new: true }
           );
-        } catch (error) {
+        } catch (err) {
           console.error(err);
           return res.status(500).send(err.message);
         }

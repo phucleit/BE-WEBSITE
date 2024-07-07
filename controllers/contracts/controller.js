@@ -7,7 +7,7 @@ const contractController = {
       const existing_contract_code = await Contracts.findOne({ contract_code: req.body.contract_code });
 
       if (existing_contract_code) {
-        res.status(409).json('Mã hợp đồng đã tồn tại!');
+        return res.status(409).json('Mã hợp đồng đã tồn tại!');
       } else {
         const total_price = req.body.total_price;
         const deposit_amount = req.body.deposit_amount;
@@ -55,9 +55,10 @@ const contractController = {
   deleteContract: async(req, res) => {
     try {
       await Contracts.findByIdAndDelete(req.params.id);
-      res.status(200).json("Xóa thành công!");
+      return res.status(200).json("Xóa thành công!");
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 

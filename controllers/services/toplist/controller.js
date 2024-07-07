@@ -10,20 +10,20 @@ const toplistServiceController = {
       newToplistService.expiredAt.setFullYear(newToplistService.expiredAt.getFullYear() + req.body.periods);
       const saveToplistService = await newToplistService.save();
       
-      res.status(200).json(saveToplistService);
+      return res.status(200).json(saveToplistService);
     } catch(err) {
-      console.log(err);
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
   getToplistService: async(req, res) => {
     try {
       let toplistService = await ToplistServices.find().sort({"createdAt": -1}).populate('customer_id', 'fullname gender email phone');
-      res.status(200).json(toplistService);
+      return res.status(200).json(toplistService);
     } catch(err) {
-      console.log(err);
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -32,19 +32,20 @@ const toplistServiceController = {
       const toplistService = await ToplistServices.findById(req.params.id)
         .populate('customer_id', 'fullname gender email phone');
       
-      res.status(200).json(toplistService);
+      return res.status(200).json(toplistService);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
   deleteToplistService: async(req, res) => {
     try {
       await ToplistServices.findByIdAndDelete(req.params.id);
-      
-      res.status(200).json("Xóa thành công!");
+      return res.status(200).json("Xóa thành công!");
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -57,10 +58,10 @@ const toplistServiceController = {
         await toplistService.updateOne({$set: {expiredAt: expiredAt, status: 1}});
       }
       await toplistService.updateOne({$set: req.body});
-      
-      res.status(200).json("Cập nhật thành công!");
+      return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -84,8 +85,9 @@ const toplistServiceController = {
             },
             { new: true }
           );
-        } catch (error) {
-          res.status(500).json(error);
+        } catch (err) {
+          console.error(err);
+          return res.status(500).send(err.message);
         }
       }
 
@@ -99,9 +101,10 @@ const toplistServiceController = {
         .populate('customer_id', 'fullname gender email phone');
       
       
-      res.status(200).json(toplistServiceExpired);
+      return res.status(200).json(toplistServiceExpired);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -129,8 +132,9 @@ const toplistServiceController = {
             },
             { new: true }
           );
-        } catch (error) {
-          res.status(500).json(error);
+        } catch (err) {
+          console.error(err);
+          return res.status(500).send(err.message);
         }
       }
 
@@ -146,10 +150,10 @@ const toplistServiceController = {
         .sort({"createdAt": -1})
         .populate('customer_id', 'fullname gender email phone');
       
-      
-      res.status(200).json(toplistServiceExpiring);
+      return res.status(200).json(toplistServiceExpiring);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   }
 }

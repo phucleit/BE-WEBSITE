@@ -1,4 +1,5 @@
-const fs = require('fs');
+const fs = require('fs-extra');
+const path = require('path');
 const Customer = require("../../models/customers/model");
 
 const { ObjectId } = require('mongoose').Types;
@@ -19,15 +20,16 @@ const customerController = {
         representative,
         representative_hotline,
         mail_vat,
-      } = req.body
+      } = req.body;
 
       const count = await Customer.countDocuments({
-        $or:[
-          {phone: phone},
-          {email: email}
+        $or: [
+          { phone: phone },
+          { email: email }
         ]
-      })
-      if(count > 0 ) throw new Error(`Số điện thoại hoặc email đã được đăng ký`)
+      });
+
+      if (count > 0 ) throw new Error(`Số điện thoại hoặc email đã được đăng ký!`)
       const newCustomer = new Customer({
         fullname: fullname,
         email: email,
@@ -41,31 +43,11 @@ const customerController = {
         representative: representative,
         representative_hotline: representative_hotline,
         mail_vat: mail_vat,
+        image_front_view: req.files['image_front_view'] ? req.files['image_front_view'].map(file => file.path) : [],
+        image_back_view: req.files['image_back_view'] ? req.files['image_back_view'].map(file => file.path) : []
       });
 
-
-      if (req.files.image_front_view) {
-        let imagesBuffer = [];
-        req.files.image_front_view.forEach(function (file) {
-          const imageBuffer = fs.readFileSync(file.path);
-          const base64Image = imageBuffer.toString('base64');
-          imagesBuffer.push(base64Image);
-        });
-        newCustomer.image_front_view = imagesBuffer;
-      }
-
-      if (req.files.image_back_view) {
-        let imagesBuffer = [];
-        req.files.image_back_view.forEach(function (file) {
-            const imageBuffer = fs.readFileSync(file.path);
-            const base64Image = imageBuffer.toString('base64');
-            imagesBuffer.push(base64Image);
-        });
-        newCustomer.image_back_view = imagesBuffer;
-      }
-
       const saveCustomer = await newCustomer.save();
-      
       return res.status(200).json(saveCustomer);
     } catch(err) {
       console.error(err);
@@ -87,6 +69,59 @@ const customerController = {
     try {
       const customers = await Customer.findById(req.params.id);
       return res.status(200).json(customers);
+    } catch(err) {
+      console.error(err);
+      return res.status(500).send(err.message);
+    }
+  },
+
+  deleteCustomer: async(req, res) => {
+    try {
+      const customer = await Customer.findByIdAndDelete(req.params.id);
+      if (!customer) {
+        return res.status(404).send('Không tìm thấy khách hàng!');
+      }
+      const deleteFiles = async (filePaths) => {
+        for (const filePath of filePaths) {
+          try {
+            await fs.remove(path.resolve(filePath));
+          } catch (err) {
+            console.error(`Lỗi xóa tập tin: ${filePath}`, err);
+          }
+        }
+      };
+  
+      await deleteFiles(customer.image_front_view);
+      await deleteFiles(customer.image_back_view);
+  
+      await Customer.findByIdAndDelete(req.params.id);
+  
+      return res.status(200).send('Xóa thành công!');
+    } catch(err) {
+      console.error(err);
+      return res.status(500).send(err.message);    }
+  },
+
+  updateCustomer: async(req, res) => {
+    try {
+      const customer = await Customer.findById(req.params.id);
+
+      if (!customer) {
+        return res.status(404).send('Không tìm thấy khách hàng!');
+      }
+
+      const updateData = { ...req.body };
+
+      if (req.files['image_front_view']) {
+        updateData.image_front_view = req.files['image_front_view'].map(file => file.path);
+      }
+
+      if (req.files['image_back_view']) {
+        updateData.image_back_view = req.files['image_back_view'].map(file => file.path);
+      }
+
+      await Customer.findByIdAndUpdate(req.params.id, { $set: updateData }, { new: true });
+      return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);
       return res.status(500).send(err.message);
@@ -648,49 +683,6 @@ const customerController = {
       return res.status(500).send(err.message);
     }
   },
-
-  deleteCustomer: async(req, res) => {
-    try {
-      const customer = await Customer.findByIdAndDelete(req.params.id);
-      return res.status(200).json(customer);
-    } catch(err) {
-      console.error(err);
-      return res.status(500).send(err.message);    }
-  },
-
-  updateCustomer: async(req, res) => {
-    try {
-      const customer = await Customer.findById(req.params.id);
-
-      if (req.files.image_front_view) {
-        let imagesBuffer = [];
-        req.files.image_front_view.forEach(function (file) {
-          const imageBuffer = fs.readFileSync(file.path);
-          const base64Image = imageBuffer.toString('base64');
-          imagesBuffer.push(base64Image);
-        });
-        customer.image_front_view = imagesBuffer;
-        await customer.updateOne({$set: {image_front_view: imagesBuffer}});
-      }
-    
-      if (req.files.image_back_view) {
-        let imagesBuffer = [];
-        req.files.image_back_view.forEach(function (file) {
-          const imageBuffer = fs.readFileSync(file.path);
-          const base64Image = imageBuffer.toString('base64');
-          imagesBuffer.push(base64Image);
-        });
-        customer.image_back_view = imagesBuffer;
-        await customer.updateOne({$set: {image_back_view: imagesBuffer}});
-      }
-
-      await customer.updateOne({$set: req.body});
-      return res.status(200).json("Cập nhật thành công!");
-    } catch(err) {
-      console.error(err);
-      return res.status(500).send(err.message);
-    }
-  }
 }
 
 module.exports = customerController;

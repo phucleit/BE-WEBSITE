@@ -10,9 +10,8 @@ const contentServicesController = {
       newContentServices.expiredAt.setMonth(newContentServices.expiredAt.getMonth() + req.body.periods);
       const saveContentServices = await newContentServices.save();
       return res.status(200).json(saveContentServices);
-      
     } catch(err) {
-      console.error(err)
+      console.error(err);
       return res.status(500).send(err.message);
     }
   },
@@ -20,27 +19,30 @@ const contentServicesController = {
   getContentServices: async(req, res) => {
     try {
       const contentServices = await ContentServices.find().sort({"createdAt": -1}).populate('content_plan_id').populate('customer_id', 'fullname gender email phone');
-      res.status(200).json(contentServices);
+      return res.status(200).json(contentServices);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
   getDetailContentServices: async(req, res) => {
     try {
       const contentServices = await ContentServices.findById(req.params.id).sort({"createdAt": -1}).populate('content_plan_id').populate('customer_id', 'fullname gender email phone');
-      res.status(200).json(contentServices);
+      return res.status(200).json(contentServices);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
   deleteContentServices: async(req, res) => {
     try {
       await ContentServices.findByIdAndDelete(req.params.id);
-      res.status(200).json("Xóa thành công!");
+      return res.status(200).json("Xóa thành công!");
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -51,10 +53,11 @@ const contentServicesController = {
         const currentDate = new Date();
         const expiredAt = currentDate.setMonth(currentDate.getMonth() + req.body.periods);
         await contentServices.updateOne({$set: {expiredAt: expiredAt, periods: req.body.periods, status: 1}});
-        res.status(200).json("Cập nhật thành công!");
+        return res.status(200).json("Cập nhật thành công!");
       }
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -78,8 +81,9 @@ const contentServicesController = {
             },
             { new: true }
           );
-        } catch (error) {
-          res.status(500).json(error);
+        } catch (err) {
+          console.error(err);
+          return res.status(500).send(err.message);
         }
       }
 
@@ -93,9 +97,10 @@ const contentServicesController = {
         .populate('content_plan_id')
         .populate('customer_id', 'fullname gender email phone')
       
-      res.status(200).json(contentServicesExpired);
+      return res.status(200).json(contentServicesExpired);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -123,8 +128,9 @@ const contentServicesController = {
             },
             { new: true }
           );
-        } catch (error) {
-          res.status(500).json(error);
+        } catch (err) {
+          console.error(err);
+          return res.status(500).send(err.message);
         }
       }
 
@@ -141,9 +147,10 @@ const contentServicesController = {
         .populate('content_plan_id')
         .populate('customer_id', 'fullname gender email phone')
       
-      res.status(200).json(contentServicesExpiring);
+      return res.status(200).json(contentServicesExpiring);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   }
 }

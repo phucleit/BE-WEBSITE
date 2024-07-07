@@ -5,12 +5,12 @@ const websiteServicesController = {
     try {
       const newWebsite = new WebsiteServices(req.body);
       const saveWebsiteServices = await newWebsite.save();
-      
-      res.status(200).json(saveWebsiteServices);
+      return res.status(200).json(saveWebsiteServices);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
-},
+  },
 
   getWebsiteServices: async(req, res) => {
     try {
@@ -34,9 +34,9 @@ const websiteServicesController = {
             },
             { new: true }
           );
-        } catch (error) {
-          console.log(error);
-          res.status(500).json(error);
+        } catch (err) {
+          console.error(err);
+          return res.status(500).send(err.message);
         }
       }
 
@@ -61,19 +61,20 @@ const websiteServicesController = {
         .populate('domain_plan_id', 'name')
         .populate('domain_supplier_id', 'name company');
 
-      res.status(200).json(websiteServices);
+      return res.status(200).json(websiteServices);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
   deleteWebsiteServices: async(req, res) => {
     try {
       await WebsiteServices.findByIdAndDelete(req.params.id);
-      
-      res.status(200).json("Xóa thành công!");
+      return res.status(200).json("Xóa thành công!");
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -81,10 +82,10 @@ const websiteServicesController = {
     try {
       const websiteServices = await WebsiteServices.findById(req.params.id);
       await websiteServices.updateOne({$set: req.body});
-      
-      res.status(200).json("Cập nhật thành công!");
+      return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -101,10 +102,10 @@ const websiteServicesController = {
       .populate('domain_plan_id', 'name')
       .populate('domain_supplier_id', 'name company');
     
-      
-      res.status(200).json(websiteServicesClosed);
+      return res.status(200).json(websiteServicesClosed);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   }
 }

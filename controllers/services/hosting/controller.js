@@ -10,9 +10,10 @@ const hostingServicesController = {
       newHostingServices.expiredAt.setFullYear(newHostingServices.expiredAt.getFullYear() + req.body.periods);
       const saveHostingServices = await newHostingServices.save();
       
-      res.status(200).json(saveHostingServices);
+      return res.status(200).json(saveHostingServices);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -41,8 +42,9 @@ const hostingServicesController = {
             },
             { new: true }
           );
-        } catch (error) {
-          res.status(500).json(error);
+        } catch (err) {
+          console.error(err);
+          return res.status(500).send(err.message);
         }
       }
 
@@ -54,10 +56,10 @@ const hostingServicesController = {
         .populate('domain_supplier_id', 'name company')
         .populate('hosting_supplier_id', 'name company');
       
-      
-      res.status(200).json(hostingServices);
+      return res.status(200).json(hostingServices);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -71,20 +73,20 @@ const hostingServicesController = {
         .populate('domain_supplier_id', 'name company')
         .populate('hosting_supplier_id', 'name company');
       
-      
-      res.status(200).json(hostingServices);
+      return res.status(200).json(hostingServices);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
   deleteHostingServices: async(req, res) => {
     try {
       await HostingServices.findByIdAndDelete(req.params.id);
-      
-      res.status(200).json("Xóa thành công!");
+      return res.status(200).json("Xóa thành công!");
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -102,9 +104,10 @@ const hostingServicesController = {
       }
       
       await hostingServices.updateOne({$set: req.body});
-      res.status(200).json("Cập nhật thành công!");
+      return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -128,8 +131,9 @@ const hostingServicesController = {
             },
             { new: true }
           );
-        } catch (error) {
-          res.status(500).json(error);
+        } catch (err) {
+          console.error(err);
+          return res.status(500).send(err.message);
         }
       }
 
@@ -147,9 +151,10 @@ const hostingServicesController = {
         .populate('domain_supplier_id', 'name company')
         .populate('hosting_supplier_id', 'name company');
       
-      res.status(200).json(hostingServicesExpired);
+      return res.status(200).json(hostingServicesExpired);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -177,8 +182,9 @@ const hostingServicesController = {
             },
             { new: true }
           );
-        } catch (error) {
-          res.status(500).json(error);
+        } catch (err) {
+          console.error(err);
+          return res.status(500).send(err.message);
         }
       }
 
@@ -199,9 +205,10 @@ const hostingServicesController = {
         .populate('domain_supplier_id', 'name company')
         .populate('hosting_supplier_id', 'name company');
       
-      res.status(200).json(hostingServicesExpiring);
+      return res.status(200).json(hostingServicesExpiring);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -221,9 +228,10 @@ const hostingServicesController = {
         .populate('domain_supplier_id', 'name company')
         .populate('hosting_supplier_id', 'name company');
       
-      res.status(200).json(hostingServicesBeforePayment);
+      return res.status(200).json(hostingServicesBeforePayment);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   }
 }

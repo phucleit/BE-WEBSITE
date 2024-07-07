@@ -10,10 +10,10 @@ const maintenanceServicesController = {
       newMaintenanceServices.expiredAt.setMonth(newMaintenanceServices.expiredAt.getMonth() + req.body.periods);
       const saveMaintenanceServices = await newMaintenanceServices.save();
       
-      res.status(200).json(saveMaintenanceServices);
+      return res.status(200).json(saveMaintenanceServices);
     } catch(err) {
-      console.log(err);
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -39,8 +39,9 @@ const maintenanceServicesController = {
             },
             { new: true }
           );
-        } catch (error) {
-          res.status(500).json(error);
+        } catch (err) {
+          console.error(err);
+          return res.status(500).send(err.message);
         }
       }
 
@@ -52,9 +53,10 @@ const maintenanceServicesController = {
         .populate('domain_supplier_id', 'name company')
       
       
-      res.status(200).json(maintenanceServices);
+      return res.status(200).json(maintenanceServices);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -67,19 +69,20 @@ const maintenanceServicesController = {
         .populate('domain_plan_id')
         .populate('domain_supplier_id', 'name company');
       
-      
-      res.status(200).json(maintenanceServices);
+      return res.status(200).json(maintenanceServices);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
   deleteMaintenanceServices: async(req, res) => {
     try {
       await MaintenanceServices.findByIdAndDelete(req.params.id);
-      res.status(200).json("Xóa thành công!");
+      return res.status(200).json("Xóa thành công!");
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -90,12 +93,12 @@ const maintenanceServicesController = {
         const currentDate = new Date();
         const expiredAt = currentDate.setMonth(currentDate.getMonth() + req.body.periods);
         await maintenanceServices.updateOne({$set: {expiredAt: expiredAt, status: 1}});
-        res.status(200).json("Cập nhật thành công!");
       }
-      
       await maintenanceServices.updateOne({$set: req.body});
+      return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -137,10 +140,10 @@ const maintenanceServicesController = {
         .populate('domain_plan_id')
         .populate('domain_supplier_id', 'name company');
       
-      
-      res.status(200).json(maintenanceServicesExpired);
+      return res.status(200).json(maintenanceServicesExpired);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   },
 
@@ -168,8 +171,9 @@ const maintenanceServicesController = {
             },
             { new: true }
           );
-        } catch (error) {
-          res.status(500).json(error);
+        } catch (err) {
+          console.error(err);
+          return res.status(500).send(err.message);
         }
       }
 
@@ -189,10 +193,10 @@ const maintenanceServicesController = {
         .populate('domain_plan_id')
         .populate('domain_supplier_id', 'name company');
       
-      
-      res.status(200).json(maintenanceServicesExpiring);
+      return res.status(200).json(maintenanceServicesExpiring);
     } catch(err) {
-      res.status(500).json(err);
+      console.error(err);
+      return res.status(500).send(err.message);
     }
   }
 }

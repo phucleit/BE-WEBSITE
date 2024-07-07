@@ -34,9 +34,9 @@ const loginController = {
   logout: async (req, res) => {
     try {
       res.cookie('access_token', '', { httpOnly: true, expires: new Date(0) });  
-      res.status(200).json({ message: 'Đăng xuất thành công!' });
+      return res.status(200).json({ message: 'Đăng xuất thành công!' });
     } catch (err) {
-      res.status(500).json({ error: err.message });
+      return res.status(500).json({ error: err.message });
     }
   },
 }
