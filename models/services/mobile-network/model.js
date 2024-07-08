@@ -5,15 +5,15 @@ const mobileNetworkServicesSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  supplierMobileNetworkId: {
+  supplier_mobile_network_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "MobileNetworks"
   },
-  mobileNetworkPlanId: {
+  mobile_network_plan_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "MobileNetworkPlans"
   },
-  customerId: {
+  customer_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Customers",
     index: true

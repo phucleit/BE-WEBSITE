@@ -3,7 +3,7 @@ const MobileNetworkPlans = require("../../../models/plans/mobile-network/model")
 const mobileNetworkPlansController = {
   getMobileNetworkPlans: async(req, res) => {
     try {
-      const mobileNetworkPlans = await MobileNetworkPlans.find().sort({"createdAt": -1}).populate('supplierMobileNetworkId');
+      const mobileNetworkPlans = await MobileNetworkPlans.find().sort({"createdAt": -1}).populate('supplier_mobile_network_id');
       return res.status(200).json(mobileNetworkPlans);
     } catch(err) {
       console.error(err);
@@ -24,7 +24,7 @@ const mobileNetworkPlansController = {
 
   getDetailMobileNetworkPlans: async(req, res) => {
     try {
-      const mobileNetworkPlans = await MobileNetworkPlans.findById(req.params.id).populate('supplierMobileNetworkId');
+      const mobileNetworkPlans = await MobileNetworkPlans.findById(req.params.id).populate('supplier_mobile_network_id');
       return res.status(200).json(mobileNetworkPlans);
     } catch(err) {
       console.error(err);

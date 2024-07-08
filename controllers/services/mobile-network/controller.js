@@ -5,15 +5,15 @@ const MobileNetworkServices = require("../../../models/services/mobile-network/m
 const mobileNetworkServicesController = {
   getMobileNetworkServices: async(req, res) => {
     try {
-      let mobileNetworkServices = await MobileNetworkServices.find().sort({"createdAt": -1}).populate('mobileNetworkPlanId').populate('customerId', 'fullname gender email phone');
+      let mobileNetworkServices = await MobileNetworkServices.find().sort({"createdAt": -1}).populate('mobile_network_plan_id').populate('customerId', 'fullname gender email phone');
       for (const item of mobileNetworkServices) {
-        const supplierMobileNetworkId = item.mobileNetworkPlanId.supplierMobileNetworkId;
+        const supplierMobileNetworkId = item.mobile_network_plan_id.supplier_mobile_network_id;
         try {
           mobileNetworkServices = await MobileNetworkServices.findByIdAndUpdate(
             item._id,
             {
               $set: {
-                supplierMobileNetworkId: supplierMobileNetworkId
+                supplier_mobile_network_id: supplierMobileNetworkId
               }
             },
             { new: true }
@@ -25,9 +25,9 @@ const mobileNetworkServicesController = {
       }
 
       mobileNetworkServices = await MobileNetworkServices.find().sort({"createdAt": -1})
-        .populate('mobileNetworkPlanId')
-        .populate('customerId', 'fullname gender email phone')
-        .populate('supplierMobileNetworkId');
+        .populate('mobile_network_plan_id')
+        .populate('customer_id ', 'fullname gender email phone')
+        .populate('supplier_mobile_network_id');
 
       return res.status(200).json(mobileNetworkServices);
     } catch(err) {
@@ -53,9 +53,9 @@ const mobileNetworkServicesController = {
   getDetailMobileNetworkServices: async(req, res) => {
     try {
       const mobileNetworkServices = await MobileNetworkServices.findById(req.params.id)
-        .populate('mobileNetworkPlanId')
-        .populate('customerId', 'fullname gender email phone')
-        .populate('supplierMobileNetworkId');
+        .populate('mobile_network_plan_id')
+        .populate('customer_id ', 'fullname gender email phone')
+        .populate('supplier_mobile_network_id');
       return res.status(200).json(mobileNetworkServices);
     } catch(err) {
       console.error(err);
@@ -122,9 +122,9 @@ const mobileNetworkServicesController = {
           }
         )
         .sort({"createdAt": -1})
-        .populate('mobileNetworkPlanId')
-        .populate('customerId', 'fullname gender email phone')
-        .populate('supplierMobileNetworkId');
+        .populate('mobile_network_plan_id')
+        .populate('customer_id ', 'fullname gender email phone')
+        .populate('supplier_mobile_network_id');
       
       return res.status(200).json(mobileNetworkServicesExpired);
     } catch(err) {
@@ -173,9 +173,9 @@ const mobileNetworkServicesController = {
           }
         )
         .sort({"createdAt": -1})
-        .populate('mobileNetworkPlanId')
-        .populate('customerId', 'fullname gender email phone')
-        .populate('supplierMobileNetworkId');
+        .populate('mobile_network_plan_id')
+        .populate('customer_id ', 'fullname gender email phone')
+        .populate('supplier_mobile_network_id');
       
       return res.status(200).json(mobileNetworkServicesExpiring);
     } catch(err) {

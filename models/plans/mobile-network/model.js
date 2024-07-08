@@ -27,7 +27,7 @@ const mobileNetworkPlansSchema = new mongoose.Schema({
   esim: {
     type: Boolean
   },
-  supplierMobileNetworkId: {
+  supplier_mobile_network_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "MobileNetworks"
   }

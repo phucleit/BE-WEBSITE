@@ -37,30 +37,100 @@ module.exports = Contracts;
 
 Contracts.create_or_update_contract = async (customer_id) =>{
   try {
-      const ModelDomain = require('../../models/services/domain/model')
-      const data_domain = await ModelDomain.find({customer_id:customer_id})
+    let total_price = 0
+    let deposit_amount = 0
+    let remaining_cost = 0
 
-      let total_price = 0
-      let deposit_amount = 0
-      let remaining_cost = 0
+    // domain
+    const ModelDomain = require('../../models/services/domain/model');
+    const data_domain = await ModelDomain.find({customer_id:customer_id}).populate('domain_plan_id').exec();
+    data_domain.forEach(item => {
+      if (item.domain_plan_id && item.domain_plan_id.price) {
+        total_price += item.domain_plan_id.price * item.periods;
+      }
+    });
 
-      const code = await Contracts.createCode()
-      const data_contract = await Contracts.findOneAndUpdate({
-        customer_id:customer_id
-      },{
-        $setOnInsert:{
-          customer_id:customer_id,
-          contract_code: code
-        },
-        $set:{
-          total_price:total_price,
-          deposit_amount:deposit_amount,
-          remaining_cost:remaining_cost,
-        }
-        
-      }, {upsert:true})
-  } catch (error) {
+    // hosting
+    const ModelHosting = require('../../models/services/hosting/model')
+    const data_hosting = await ModelHosting.find({customer_id:customer_id}).populate('hosting_plan_id').exec();
+    data_hosting.forEach(item => {
+      if (item.hosting_plan_id && item.hosting_plan_id.price) {
+        total_price += item.periods * 12 * item.hosting_plan_id.price;
+      }
+    });
     
+    // email
+    const ModelEmail = require('../../models/services/email/model')
+    const data_email = await ModelEmail.find({customer_id:customer_id}).populate('email_plan_id').exec();
+    data_email.forEach(item => {
+      if (item.email_plan_id && item.email_plan_id.price) {
+        total_price += item.periods * 12 * item.email_plan_id.price;
+      }
+    });
+    
+    // ssl
+    const ModelSsl = require('../../models/services/ssl/model')
+    const data_ssl = await ModelSsl.find({customer_id:customer_id}).populate('ssl_plan_id').exec();
+    data_ssl.forEach(item => {
+      if (item.ssl_plan_id && item.ssl_plan_id.price) {
+        total_price += item.periods * 12 * item.ssl_plan_id.price;
+      }
+    });
+    
+    // website
+    const ModelWebsite = require('../../models/services/website/model')
+    const data_website = await ModelWebsite.find({customer_id:customer_id});
+    data_website.forEach(item => {
+      total_price += item.price;
+    });
+    
+    // content
+    const ModelContent = require('../../models/services/content/model')
+    const data_content = await ModelContent.find({customer_id:customer_id}).populate('content_plan_id').exec();
+    data_content.forEach(item => {
+      if (item.content_plan_id && item.content_plan_id.price) {
+        total_price += item.periods * item.content_plan_id.price;
+      }
+    });
+    
+    // toplist
+    const ModelToplist = require('../../models/services/toplist/model')
+    const data_toplist = await ModelToplist.find({customer_id:customer_id});
+    data_toplist.forEach(item => {
+      total_price += item.periods * 12 * item.price;
+    });
+    
+    // maintenance
+    const ModelMaintenance = require('../../models/services/maintenance/model')
+    const data_maintenance = await ModelMaintenance.find({customer_id:customer_id}).populate('maintenance_plan_id').exec();
+    data_maintenance.forEach(item => {
+      if (item.maintenance_plan_id && item.maintenance_plan_id.price) {
+        total_price += item.periods * item.maintenance_plan_id.price;
+      }
+    });
+
+    // mobile network
+    const ModelMobileNetwork = require('../../models/services/mobile-network/model')
+    const data_mobile_network = await ModelMobileNetwork.find({customer_id:customer_id});
+    console.log(data_mobile_network);
+
+    // const code = await Contracts.createCode()
+    // const data_contract = await Contracts.findOneAndUpdate({
+    //   customer_id:customer_id
+    // },{
+    //   $setOnInsert:{
+    //     customer_id:customer_id,
+    //     contract_code: code
+    //   },
+    //   $set:{
+    //     total_price:total_price,
+    //     deposit_amount:deposit_amount,
+    //     remaining_cost:remaining_cost,
+    //   }
+      
+    // }, {upsert:true})
+  } catch (error) {
+    console.log(error);
   }
 } 
 
