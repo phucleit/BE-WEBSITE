@@ -1,37 +1,6 @@
 const Contracts = require("../../models/contracts/model");
 
 const contractController = {
-  addContract: async(req, res) => {
-    try {
-      const newContract = new Contracts(req.body);
-      const existing_contract_code = await Contracts.findOne({ contract_code: req.body.contract_code });
-
-      if (existing_contract_code) {
-        return res.status(409).json('Mã hợp đồng đã tồn tại!');
-      } else {
-        const total_price = req.body.total_price;
-        const deposit_amount = req.body.deposit_amount;
-        const remaining_cost = req.body.remaining_cost;
-
-        if (deposit_amount || remaining_cost) {
-          if ((deposit_amount + remaining_cost) == total_price) {
-            newContract.status = 1;
-          } else if (deposit_amount < total_price) {
-            newContract.status = 2;
-          }
-        } else {
-          newContract.status = 1;
-        }
-
-        const saveContract = await newContract.save();
-        return res.status(200).json(saveContract);
-      }
-    } catch(err) {
-      console.error(err);
-      return res.status(500).send(err.message);
-    }
-},
-
   getContract: async(req, res) => {
     try {
       const contract = await Contracts.find().sort({"createdAt": -1}).populate('customer_id');
@@ -65,6 +34,44 @@ const contractController = {
   updateContract: async(req, res) => {
     try {
       const contract = await Contracts.findById(req.params.id);
+      let total_price = contract.total_price;
+      let deposit_amount = req.body.deposit_amount;
+      let remaining_cost = 0;
+      
+      if (deposit_amount) {
+        if (deposit_amount == total_price) {
+          await contract.updateOne({
+            $set: {
+              deposit_amount: deposit_amount,
+              remaining_cost: 0,
+              status: 2
+            }
+          });
+        } else {
+          remaining_cost = total_price - deposit_amount;
+          await contract.updateOne({
+            $set: {
+              deposit_amount: deposit_amount,
+              remaining_cost: remaining_cost,
+              status: 1
+            }
+          });
+        }
+      }
+
+      let remaining_cost_body = req.body.remaining_cost;
+      if (remaining_cost_body) {
+        if ((contract.deposit_amount + remaining_cost_body) === total_price) {
+          await contract.updateOne({
+            $set: {
+              deposit_amount: contract.deposit_amount + remaining_cost_body,
+              remaining_cost: 0,
+              status: 2
+            }
+          });
+        }
+      }
+
       await contract.updateOne({$set: req.body});
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
