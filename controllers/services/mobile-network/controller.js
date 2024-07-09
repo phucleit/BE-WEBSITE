@@ -3,13 +3,23 @@ const dayjs = require('dayjs');
 const MobileNetworkServices = require("../../../models/services/mobile-network/model");
 
 const mobileNetworkServicesController = {
-  getMobileNetworkServices: async(req, res) => {
-    try {
-      let mobileNetworkServices = await MobileNetworkServices.find().sort({"createdAt": -1}).populate('mobile_network_plan_id').populate('customerId', 'fullname gender email phone');
+  getMobileNetworkServices: async (req, res) => {
+    try {  
+      let mobileNetworkServices = await MobileNetworkServices.find()
+        .sort({ "createdAt": -1 })
+        .populate('mobile_network_plan_id')
+        .populate('customer_id', 'fullname gender email phone')
+        .populate('supplier_mobile_network_id')
+        .setOptions({ strictPopulate: false });
+  
+      if (!mobileNetworkServices.length) {
+        return res.status(404).json({ message: "Không tìm thấy dịch vụ mạng di động!" });
+      }
+  
       for (const item of mobileNetworkServices) {
         const supplierMobileNetworkId = item.mobile_network_plan_id.supplier_mobile_network_id;
         try {
-          mobileNetworkServices = await MobileNetworkServices.findByIdAndUpdate(
+          await MobileNetworkServices.findByIdAndUpdate(
             item._id,
             {
               $set: {
@@ -23,14 +33,16 @@ const mobileNetworkServicesController = {
           return res.status(500).send(err.message);
         }
       }
-
-      mobileNetworkServices = await MobileNetworkServices.find().sort({"createdAt": -1})
+  
+      let newMobileNetworkServices = await MobileNetworkServices.find()
+        .sort({ "createdAt": -1 })
         .populate('mobile_network_plan_id')
-        .populate('customer_id ', 'fullname gender email phone')
-        .populate('supplier_mobile_network_id');
-
-      return res.status(200).json(mobileNetworkServices);
-    } catch(err) {
+        .populate('customer_id', 'fullname gender email phone')
+        .populate('supplier_mobile_network_id', 'name')
+        .setOptions({ strictPopulate: false });
+  
+      return res.status(200).json(newMobileNetworkServices);
+    } catch (err) {
       console.error(err);
       return res.status(500).send(err.message);
     }
@@ -51,13 +63,19 @@ const mobileNetworkServicesController = {
   },
 
   getDetailMobileNetworkServices: async(req, res) => {
-    try {
+    try {  
       const mobileNetworkServices = await MobileNetworkServices.findById(req.params.id)
         .populate('mobile_network_plan_id')
-        .populate('customer_id ', 'fullname gender email phone')
-        .populate('supplier_mobile_network_id');
+        .populate('customer_id', 'fullname gender email phone')
+        .populate('supplier_mobile_network_id')
+        .setOptions({ strictPopulate: false });
+  
+      if (!mobileNetworkServices) {
+        return res.status(404).json({ message: "Không tìm thấy dịch vụ mạng di động!" });
+      }
+  
       return res.status(200).json(mobileNetworkServices);
-    } catch(err) {
+    } catch (err) {
       console.error(err);
       return res.status(500).send(err.message);
     }

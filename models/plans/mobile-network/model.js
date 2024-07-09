@@ -11,7 +11,7 @@ const mobileNetworkPlansSchema = new mongoose.Schema({
     required: true,
     index: true
   },
-  importPrice: {
+  import_price: {
     type: Number,
     required: true,
     index: true
