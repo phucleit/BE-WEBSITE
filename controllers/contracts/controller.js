@@ -36,6 +36,7 @@ const contractController = {
       const contract = await Contracts.findById(req.params.id);
       let total_price = contract.total_price;
       let deposit_amount = req.body.deposit_amount;
+      let remaining_cost_body = req.body.remaining_cost;
       let remaining_cost = 0;
       
       if (deposit_amount) {
@@ -59,12 +60,11 @@ const contractController = {
         }
       }
 
-      let remaining_cost_body = req.body.remaining_cost;
       if (remaining_cost_body) {
         if ((contract.deposit_amount + remaining_cost_body) === total_price) {
           await contract.updateOne({
             $set: {
-              deposit_amount: contract.deposit_amount + remaining_cost_body,
+              deposit_amount: total_price,
               remaining_cost: 0,
               status: 2
             }
