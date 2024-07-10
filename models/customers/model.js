@@ -52,6 +52,10 @@ const customerSchema = new mongoose.Schema({
   image_back_view: {
     type: [String],
   },
+  type_customer: {
+    type: Boolean,
+    default: false
+  }
 }, {timestamps: true});
 
 // customerSchema.plugin(mongooseLeanVirtuals.mongooseLeanVirtuals)

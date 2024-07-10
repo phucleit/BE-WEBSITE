@@ -9,6 +9,8 @@ router.post('/', check_role("667463d04bede188dfb46d7e"), upload.fields([
 ]), customerController.addCustomer);
 router.get("/",  customerController.getCustomer);
 router.get("/:id", customerController.getDetailCustomer);
+router.get("/type/guests", customerController.getGuestsCustomer);
+router.get("/type/company", customerController.getCompanyCustomer);
 router.get("/domain-service/:id", customerController.getDomainServiceByCustomerId);
 router.get("/hosting-service/:id", customerController.getHostingServiceByCustomerId);
 router.get("/email-service/:id", customerController.getEmailServiceByCustomerId);

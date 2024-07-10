@@ -20,6 +20,7 @@ const customerController = {
         representative,
         representative_hotline,
         mail_vat,
+        type_customer,
       } = req.body;
 
       const count = await Customer.countDocuments({
@@ -44,7 +45,8 @@ const customerController = {
         representative_hotline: representative_hotline,
         mail_vat: mail_vat,
         image_front_view: req.files['image_front_view'] ? req.files['image_front_view'].map(file => file.path) : [],
-        image_back_view: req.files['image_back_view'] ? req.files['image_back_view'].map(file => file.path) : []
+        image_back_view: req.files['image_back_view'] ? req.files['image_back_view'].map(file => file.path) : [],
+        type_customer: type_customer
       });
 
       const saveCustomer = await newCustomer.save();
@@ -122,6 +124,34 @@ const customerController = {
 
       await Customer.findByIdAndUpdate(req.params.id, { $set: updateData }, { new: true });
       return res.status(200).json("Cập nhật thành công!");
+    } catch(err) {
+      console.error(err);
+      return res.status(500).send(err.message);
+    }
+  },
+
+  getGuestsCustomer: async(req, res) => {
+    try {
+      var guests_customer = await Customer.find(
+        {
+          type_customer: false
+        }
+      ).sort({"createdAt": -1});
+      return res.status(200).json(guests_customer);
+    } catch(err) {
+      console.error(err);
+      return res.status(500).send(err.message);
+    }
+  },
+
+  getCompanyCustomer: async(req, res) => {
+    try {
+      var company_customer = await Customer.find(
+        {
+          type_customer: true
+        }
+      ).sort({"createdAt": -1});
+      return res.status(200).json(company_customer);
     } catch(err) {
       console.error(err);
       return res.status(500).send(err.message);
