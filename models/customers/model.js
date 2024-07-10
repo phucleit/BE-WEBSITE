@@ -68,7 +68,12 @@ const customerSchema = new mongoose.Schema({
 const Customer = mongoose.model("Customers", customerSchema);
 module.exports = Customer;
 
-
+customerSchema.virtual('data_service', {
+	ref: 'DomainServices',
+	localField: '_id',
+	foreignField: 'customer_id',
+	justOne: false,
+});
 	
 	// Schema.pre(['aggregate'], async function (next) {
 	// 	let is_sort = false
@@ -101,14 +106,3 @@ module.exports = Customer;
 	// Schema.post(['find'], async function(docs, next) {
 	//     return next(docs)
 	// })
-
-
-customerSchema.virtual('data_service', {
-	ref: 'ContentServices',
-	localField: '_id',
-	foreignField: 'customer_id',
-	justOne: false,
-	// options: {
-	// 	select: '_id FullName Phone ID_GroupUser',
-	// },
-})

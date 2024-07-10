@@ -11,14 +11,6 @@ router.get("/",  customerController.getCustomer);
 router.get("/:id", customerController.getDetailCustomer);
 router.get("/type/guests", customerController.getGuestsCustomer);
 router.get("/type/company", customerController.getCompanyCustomer);
-router.get("/domain-service/:id", customerController.getDomainServiceByCustomerId);
-router.get("/hosting-service/:id", customerController.getHostingServiceByCustomerId);
-router.get("/email-service/:id", customerController.getEmailServiceByCustomerId);
-router.get("/ssl-service/:id", customerController.getSslServiceByCustomerId);
-router.get("/website-service/:id", customerController.getWebsiteServiceByCustomerId);
-router.get("/content-service/:id", customerController.getContentServiceByCustomerId);
-router.get("/toplist-service/:id", customerController.getToplistServiceByCustomerId);
-router.get("/maintenance-service/:id", customerController.getMaintenanceServiceByCustomerId);
 router.put('/:id', check_role("667463d04bede188dfb46d7f"), upload.fields([
   { name: 'image_front_view', maxCount: 1 },
   { name: 'image_back_view', maxCount: 1 },
