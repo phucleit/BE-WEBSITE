@@ -200,6 +200,25 @@ const mobileNetworkServicesController = {
       console.error(err);
       return res.status(500).send(err.message);
     }
+  },
+  getMobileNetworkServicesByCustomerId: async(req, res) => {
+    try {
+      const customer_id = req.params.customer_id;
+      const mobileNetworkServices = await MobileNetworkServices
+        .find(
+          {
+            customer_id: customer_id
+          }
+        )
+        .sort({"createdAt": -1})
+        .populate('mobile_network_plan_id')
+        .populate('supplier_mobile_network_id');
+      
+      return res.status(200).json(mobileNetworkServices);
+    } catch(err) {
+      console.error(err);
+      return res.status(500).send(err.message);
+    }
   }
 }
 

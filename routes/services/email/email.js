@@ -10,5 +10,6 @@ router.delete("/:id", check_role("667467eb263fb998b9925d36"), emailServicesContr
 router.get("/expired/all", emailServicesController.getEmailServicesExpired);
 router.get("/expiring/all", emailServicesController.getEmailServicesExpiring);
 router.get("/before-payment/all", emailServicesController.getEmailServicesBeforePayment);
+router.get("/customer/:customer_id", emailServicesController.getEmailServicesByCustomerId);
 
 module.exports = router;

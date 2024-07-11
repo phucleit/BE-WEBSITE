@@ -155,6 +155,23 @@ const toplistServiceController = {
       console.error(err);
       return res.status(500).send(err.message);
     }
+  },
+  getToplistServiceByCustomerId: async(req, res) => {
+    try {
+      const customer_id = req.params.customer_id;
+      const toplistService = await ToplistServices
+        .find(
+          {
+            customer_id: customer_id
+          }
+        )
+        .sort({"createdAt": -1});
+      
+      return res.status(200).json(toplistService);
+    } catch(err) {
+      console.error(err);
+      return res.status(500).send(err.message);
+    }
   }
 }
 

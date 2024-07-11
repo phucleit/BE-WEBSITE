@@ -152,6 +152,21 @@ const contentServicesController = {
       console.error(err);
       return res.status(500).send(err.message);
     }
+  },
+  getContentServicesByCustomerId: async(req, res) => {
+    try {
+      const customer_id = req.params.customer_id;
+      const content_services = await ContentServices
+        .find({
+          customer_id: customer_id
+        })
+        .sort({"createdAt": -1})
+        .populate('content_plan_id');
+      return res.status(200).json(content_services);
+    } catch(err) {
+      console.error(err);
+      return res.status(500).send(err.message);
+    }
   }
 }
 

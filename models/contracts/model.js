@@ -121,7 +121,7 @@ Contracts.create_or_update_contract = async (customer_id) =>{
     const data_ssl = await ModelSsl.find({customer_id:customer_id}).populate('ssl_plan_id').exec();
     data_ssl.forEach(item => {
       if (item.ssl_plan_id && item.ssl_plan_id.price) {
-        total_price += item.periods * 12 * item.ssl_plan_id.price;
+        total_price += item.periods * item.ssl_plan_id.price;
       }
     });
     
@@ -145,7 +145,7 @@ Contracts.create_or_update_contract = async (customer_id) =>{
     const ModelToplist = require('../../models/services/toplist/model')
     const data_toplist = await ModelToplist.find({customer_id:customer_id});
     data_toplist.forEach(item => {
-      total_price += item.periods * 12 * item.price;
+      total_price += item.periods * item.price;
     });
     
     // maintenance
@@ -162,7 +162,7 @@ Contracts.create_or_update_contract = async (customer_id) =>{
     const data_mobile_network = await ModelMobileNetwork.find({customer_id:customer_id});
     data_mobile_network.forEach(item => {
       if (item.maintenance_plan_id && item.mobile_network_plan_id.price) {
-        total_price += item.periods * 12 * item.mobile_network_plan_id.price;
+        total_price += item.periods * item.mobile_network_plan_id.price;
       }
     });
 

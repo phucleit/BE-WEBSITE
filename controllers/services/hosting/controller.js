@@ -233,6 +233,28 @@ const hostingServicesController = {
       console.error(err);
       return res.status(500).send(err.message);
     }
+  },
+  getHostingServicesByCustomerId: async(req, res) => {
+    try {
+      const customer_id = req.params.customer_id;
+      const hosting_services = await HostingServices
+      .find(
+        {
+          customer_id: customer_id
+        }
+      )
+      .sort({"createdAt": -1})
+      .populate('domain_service_id')
+      .populate('hosting_plan_id')
+      .populate('domain_plan_id')
+      .populate('domain_supplier_id', 'name company')
+      .populate('hosting_supplier_id', 'name company');
+    
+    return res.status(200).json(hosting_services);
+    } catch(err) {
+      console.error(err);
+      return res.status(500).send(err.message);
+    }
   }
 }
 

@@ -10,5 +10,6 @@ router.delete("/:id", check_role("667467eb263fb998b9925d39"), sslServicesControl
 router.get("/expired/all", sslServicesController.getSslServicesExpired);
 router.get("/expiring/all", sslServicesController.getSslServicesExpiring);
 router.get("/before-payment/all", sslServicesController.getSslServicesBeforePayment);
+router.get("/customer/:customer_id", sslServicesController.getSslServicesByCustomerId);
 
 module.exports = router;

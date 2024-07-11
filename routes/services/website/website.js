@@ -8,5 +8,6 @@ router.get("/:id", websiteServicesController.getDetailWebsiteServices);
 router.put("/:id", check_role("667467eb263fb998b9925d47"), websiteServicesController.updateWebsiteServices);
 router.delete("/:id", check_role("667467eb263fb998b9925d48"), websiteServicesController.deleteWebsiteServices);
 router.get("/closed/all", websiteServicesController.getWebsiteServicesClosed);
+router.get("/customer/:customer_id", websiteServicesController.getWebsiteServicesByCustomerId);
 
 module.exports = router;

@@ -9,5 +9,6 @@ router.put("/:id", check_role("667467eb263fb998b9925d41"), mobileNetworkServices
 router.delete("/:id", check_role("667467eb263fb998b9925d42"), mobileNetworkServicesController.deleteMobileNetworkServices);
 router.get("/expired/all", mobileNetworkServicesController.getMobileNetworkServicesExpired);
 router.get("/expiring/all", mobileNetworkServicesController.getMobileNetworkServicesExpiring);
+router.get("/customer/:customer_id", mobileNetworkServicesController.getMobileNetworkServicesByCustomerId);
 
 module.exports = router;

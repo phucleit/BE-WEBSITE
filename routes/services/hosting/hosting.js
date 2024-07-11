@@ -10,5 +10,6 @@ router.delete("/:id", check_role("667467eb263fb998b9925d33"), hostingServicesCon
 router.get("/expired/all", hostingServicesController.getHostingServicesExpired);
 router.get("/expiring/all", hostingServicesController.getHostingServicesExpiring);
 router.get("/before-payment/all", hostingServicesController.getHostingServicesBeforePayment);
+router.get("/customer/:customer_id", hostingServicesController.getHostingServicesByCustomerId);
 
 module.exports = router;

@@ -108,76 +108,76 @@ const domainServicesController = {
   },
 
   getDomainServicesExpired: async(req, res) => {
-    // try {
-    //   var currentDate = new Date();
-    //   // tìm những domain service hết hạn
-    //   var domainServicesExpired = await DomainServices.find(
-    //     {
-    //       expiredAt: {$lte: currentDate}
-    //     }
-    //   );
-
-    //   for (const item of domainServicesExpired) {
-    //     try {
-    //       // cập nhập bằng 3
-    //       domainServicesExpired = await DomainServices.findByIdAndUpdate(
-    //         item._id,
-    //         {
-    //           $set: {
-    //             status: 3
-    //           }
-    //         },
-    //         { new: true }
-    //       );
-    //     } catch (error) {
-    //       res.status(500).json(error);
-    //     }
-    //   }
-
-    //   domainServicesExpired = await DomainServices
-    //     .find(
-    //       {
-    //         expiredAt: {$lte: currentDate}
-    //       }
-    //     )
-    //     .sort({"createdAt": -1})
-    //     .populate('domain_plan_id')
-    //     .populate('customer_id', 'fullname gender email phone')
-    //     .populate('supplier_id', 'name company');
-
-    //   res.status(200).json(domainServicesExpired);
-    // } catch(err) {
-    //   res.status(500).json(err);
-    // }
-
     try {
-        var currentDate = new Date();
+      var currentDate = new Date();
+      // tìm những domain service hết hạn
+      var domainServicesExpired = await DomainServices.find(
+        {
+          expiredAt: {$lte: currentDate}
+        }
+      );
 
-        const [
-          data,
-          data_update
-        ] = await Promise.all([
-          DomainServices.find({expiredAt: {$lte: currentDate}}).sort({"createdAt": -1})
-            .populate('domain_plan_id')
-            .populate('server_plan_id', 'name')
-            .populate('customer_id', 'fullname gender email phone')
-            .populate('supplier_id', 'name company'),
+      for (const item of domainServicesExpired) {
+        try {
+          // cập nhập bằng 3
+          domainServicesExpired = await DomainServices.findByIdAndUpdate(
+            item._id,
+            {
+              $set: {
+                status: 3
+              }
+            },
+            { new: true }
+          );
+        } catch (error) {
+          res.status(500).json(error);
+        }
+      }
 
-          DomainServices.updateMany({expiredAt: {$lte: currentDate}},{
-            $set: {
-              status: 3
-            }      
-          })
-        ])
+      domainServicesExpired = await DomainServices
+        .find(
+          {
+            expiredAt: {$lte: currentDate}
+          }
+        )
+        .sort({"createdAt": -1})
+        .populate('domain_plan_id')
+        .populate('customer_id', 'fullname gender email phone')
+        .populate('supplier_id', 'name company');
 
-        data.forEach(item =>{
-          item.status = 3
-        })
-        return res.status(200).json(data);
-    } catch (err) {
-      console.error(err);
-      return res.status(500).send(err.message);
+      res.status(200).json(domainServicesExpired);
+    } catch(err) {
+      res.status(500).json(err);
     }
+
+    // try {
+    //     var currentDate = new Date();
+
+    //     const [
+    //       data,
+    //       data_update
+    //     ] = await Promise.all([
+    //       DomainServices.find({expiredAt: {$lte: currentDate}}).sort({"createdAt": -1})
+    //         .populate('domain_plan_id')
+    //         .populate('server_plan_id', 'name')
+    //         .populate('customer_id', 'fullname gender email phone')
+    //         .populate('supplier_id', 'name company'),
+
+    //       DomainServices.updateMany({expiredAt: {$lte: currentDate}},{
+    //         $set: {
+    //           status: 3
+    //         }      
+    //       })
+    //     ])
+
+    //     data.forEach(item =>{
+    //       item.status = 3
+    //     })
+    //     return res.status(200).json(data);
+    // } catch (err) {
+    //   console.error(err);
+    //   return res.status(500).send(err.message);
+    // }
   },
 
   getDomainServicesExpiring: async(req, res) => {
@@ -246,6 +246,24 @@ const domainServicesController = {
         .populate('supplier_id', 'name company');
 
       return res.status(200).json(domainServicesBeforePayment);
+    } catch(err) {
+      console.error(err);
+      return res.status(500).send(err.message);
+    }
+  },
+
+  getDomainServicesByCustomerId: async(req, res) => {
+    try {
+      const customer_id = req.params.customer_id;
+      const domain_services = await DomainServices
+        .find({
+          customer_id: customer_id
+        })
+        .sort({"createdAt": -1})
+        .populate('domain_plan_id')
+        .populate('server_plan_id', 'name')
+        .populate('supplier_id', 'name company');
+      return res.status(200).json(domain_services);
     } catch(err) {
       console.error(err);
       return res.status(500).send(err.message);

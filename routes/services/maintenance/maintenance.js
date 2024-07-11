@@ -9,5 +9,6 @@ router.put("/:id", check_role("667467eb263fb998b9925d3e"), maintenanceServicesCo
 router.delete("/:id", check_role("667467eb263fb998b9925d3f"), maintenanceServicesController.deleteMaintenanceServices);
 router.get("/expired/all", maintenanceServicesController.getMaintenanceServicesExpired);
 router.get("/expiring/all", maintenanceServicesController.getMaintenanceServicesExpiring);
+router.get("/customer/:customer_id", maintenanceServicesController.getMaintenanceServicesByCustomerId);
 
 module.exports = router;

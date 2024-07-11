@@ -10,5 +10,6 @@ router.delete("/:id", check_role("667467eb263fb998b9925d30"), domainServicesCont
 router.get("/expired/all", domainServicesController.getDomainServicesExpired);
 router.get("/expiring/all", domainServicesController.getDomainServicesExpiring);
 router.get("/before-payment/all", domainServicesController.getDomainServicesBeforePayment);
+router.get("/customer/:customer_id", domainServicesController.getDomainServicesByCustomerId);
 
 module.exports = router;

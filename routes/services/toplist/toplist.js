@@ -9,5 +9,6 @@ router.put("/:id", check_role("667467eb263fb998b9925d44"), toplistServicesContro
 router.delete("/:id", check_role("667467eb263fb998b9925d45"), toplistServicesController.deleteToplistService);
 router.get("/expired/all", toplistServicesController.getToplistServiceExpired);
 router.get("/expiring/all", toplistServicesController.getToplistServiceExpiring);
+router.get("/customer/:customer_id", toplistServicesController.getToplistServiceByCustomerId);
 
 module.exports = router;

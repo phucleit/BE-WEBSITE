@@ -234,6 +234,28 @@ const sslServicesController = {
       console.error(err);
       return res.status(500).send(err.message);
     }
+  },
+  getSslServicesByCustomerId: async(req, res) => {
+    try {
+      const customer_id = req.params.customer_id;
+      const sslServices = await SslServices
+        .find(
+          {
+            customer_id: customer_id
+          }
+        )
+        .sort({"createdAt": -1})
+        .populate('domain_service_id')
+        .populate('ssl_plan_id')
+        .populate('domain_plan_id')
+        .populate('domain_supplier_id', 'name company')
+        .populate('ssl_supplier_id', 'name company');
+      
+      return res.status(200).json(sslServices);
+    } catch(err) {
+      console.error(err);
+      return res.status(500).send(err.message);
+    }
   }
 }
 
