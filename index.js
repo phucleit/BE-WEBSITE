@@ -58,7 +58,7 @@ app.use(bodyParser.urlencoded({extended:true, limit:'500mb'}));
 
 const corsOptions = {
 	// origin: 'http://localhost:3006',
-	origin: 'https://dms.thietkewebvungtau.com',
+	origin: 'https://backend.thietkewebvungtau.com',
 	methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
 	credentials: true,
 	optionsSuccessStatus: 204,
