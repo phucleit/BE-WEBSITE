@@ -1,6 +1,7 @@
 const dayjs = require('dayjs');
 
 const ContentServices = require("../../../models/services/content/model");
+const logAction = require("../../../middleware/action_logs");
 
 const contentServicesController = {
   addContentServices: async(req, res) => {
@@ -9,6 +10,7 @@ const contentServicesController = {
       newContentServices.expiredAt = new Date(newContentServices.registeredAt);
       newContentServices.expiredAt.setMonth(newContentServices.expiredAt.getMonth() + req.body.periods);
       const saveContentServices = await newContentServices.save();
+      await logAction(req.auth._id, 'Dịch vụ Viết bài Content & PR', 'Thêm mới');
       return res.status(200).json(saveContentServices);
     } catch(err) {
       console.error(err);
@@ -39,6 +41,7 @@ const contentServicesController = {
   deleteContentServices: async(req, res) => {
     try {
       await ContentServices.findByIdAndDelete(req.params.id);
+      await logAction(req.auth._id, 'Dịch vụ Viết bài Content & PR', 'Xóa');
       return res.status(200).json("Xóa thành công!");
     } catch(err) {
       console.error(err);
@@ -53,6 +56,7 @@ const contentServicesController = {
         const currentDate = new Date();
         const expiredAt = currentDate.setMonth(currentDate.getMonth() + req.body.periods);
         await contentServices.updateOne({$set: {expiredAt: expiredAt, periods: req.body.periods, status: 1}});
+        await logAction(req.auth._id, 'Dịch vụ Viết bài Content & PR', 'Cập nhật');
         return res.status(200).json("Cập nhật thành công!");
       }
     } catch(err) {
@@ -153,6 +157,7 @@ const contentServicesController = {
       return res.status(500).send(err.message);
     }
   },
+
   getContentServicesByCustomerId: async(req, res) => {
     try {
       const customer_id = req.params.customer_id;

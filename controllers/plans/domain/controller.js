@@ -1,10 +1,12 @@
 const DomainPlans = require("../../../models/plans/domain/model");
+const logAction = require("../../../middleware/action_logs");
 
 const domainPlansController = {
   addDomainPlans: async(req, res) => {
     try {
       const newDomainPlans = new DomainPlans(req.body);
       const saveDomainPlans = await newDomainPlans.save();
+      await logAction(req.auth._id, 'Gói DV Tên miền', 'Thêm mới');
       return res.status(200).json(saveDomainPlans);
     } catch(err) {
       console.error(err);
@@ -35,6 +37,7 @@ const domainPlansController = {
   deleteDomainPlans: async(req, res) => {
     try {
       await DomainPlans.findByIdAndDelete(req.params.id);
+      await logAction(req.auth._id, 'Gói DV Tên miền', 'Xóa');
       return res.status(200).json("Xóa thành công!");
     } catch(err) {
       console.error(err);
@@ -46,6 +49,7 @@ const domainPlansController = {
     try {
       const domainPlans = await DomainPlans.findById(req.params.id);
       await domainPlans.updateOne({$set: req.body});
+      await logAction(req.auth._id, 'Gói DV Tên miền', 'Cập nhật');
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);

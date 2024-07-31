@@ -1,10 +1,12 @@
 const ContentPlans = require("../../../models/plans/content/model");
+const logAction = require("../../../middleware/action_logs");
 
 const contentPlansController = {
   addContentPlans: async(req, res) => {
     try {
       const newContentPlans = new ContentPlans(req.body);
       const saveContentPlans = await newContentPlans.save();
+      await logAction(req.auth._id, 'Gói DV Viết bài Content & PR', 'Thêm mới');
       return res.status(200).json(saveContentPlans);
     } catch(err) {
       console.error(err);
@@ -35,6 +37,7 @@ const contentPlansController = {
   deleteContentPlans: async(req, res) => {
     try {
       await ContentPlans.findByIdAndDelete(req.params.id);
+      await logAction(req.auth._id, 'Gói DV Viết bài Content & PR', 'Xóa');
       return res.status(200).json("Xóa thành công!");
     } catch(err) {
       console.error(err);
@@ -46,6 +49,7 @@ const contentPlansController = {
     try {
       const contentPlans = await ContentPlans.findById(req.params.id);
       await contentPlans.updateOne({$set: req.body});
+      await logAction(req.auth._id, 'Gói DV Viết bài Content & PR', 'Cập nhật');
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);

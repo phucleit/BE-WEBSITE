@@ -1,6 +1,7 @@
 const dayjs = require('dayjs');
 
 const EmailServices = require("../../../models/services/email/model");
+const logAction = require("../../../middleware/action_logs");
 
 const emailServicesController = {
   addEmailServices: async(req, res) => {
@@ -9,7 +10,7 @@ const emailServicesController = {
       newEmailServices.expiredAt = new Date(newEmailServices.registeredAt);
       newEmailServices.expiredAt.setFullYear(newEmailServices.expiredAt.getFullYear() + req.body.periods);
       const saveEmailServices = await newEmailServices.save();
-      
+      await logAction(req.auth._id, 'Dịch vụ Email', 'Thêm mới');
       return res.status(200).json(saveEmailServices);
     } catch(err) {
       console.error(err);
@@ -55,8 +56,7 @@ const emailServicesController = {
         .populate('domain_plan_id')
         .populate('domain_supplier_id', 'name company')
         .populate('email_supplier_id', 'name company');
-      
-      
+
       return res.status(200).json(emailServices);
     } catch(err) {
       console.error(err);
@@ -74,7 +74,6 @@ const emailServicesController = {
         .populate('domain_supplier_id', 'name company')
         .populate('email_supplier_id', 'name company');
       
-      
       return res.status(200).json(emailServices);
     } catch(err) {
       console.error(err);
@@ -85,6 +84,7 @@ const emailServicesController = {
   deleteEmailServices: async(req, res) => {
     try {
       await EmailServices.findByIdAndDelete(req.params.id);
+      await logAction(req.auth._id, 'Dịch vụ Email', 'Xóa');
       return res.status(200).json("Xóa thành công!");
     } catch(err) {
       console.error(err);
@@ -106,6 +106,7 @@ const emailServicesController = {
       }
       
       await emailServices.updateOne({$set: req.body});
+      await logAction(req.auth._id, 'Dịch vụ Email', 'Cập nhật');
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);
@@ -236,6 +237,7 @@ const emailServicesController = {
       return res.status(500).send(err.message);
     }
   },
+
   getEmailServicesByCustomerId: async(req, res) => {
     try {
       const customer_id = req.params.customer_id;

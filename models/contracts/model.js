@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const logAction = require("../../middleware/action_logs");
 
 const contractSchema = new mongoose.Schema({
   contract_code: {
@@ -83,7 +84,7 @@ Contracts.createCode = async () =>{
   }
 }
 
-Contracts.create_or_update_contract = async (customer_id) =>{
+Contracts.create_or_update_contract = async (customer_id) => {
   try {
     let total_price = 0
     let deposit_amount = 0
@@ -181,6 +182,7 @@ Contracts.create_or_update_contract = async (customer_id) =>{
       }
       
     }, {upsert: true});
+    await logAction(req.auth._id, 'Hợp đồng', 'Thêm mới hoặc Cập nhật');
   } catch (error) {
     console.log(error);
   }

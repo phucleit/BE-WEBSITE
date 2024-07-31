@@ -1,6 +1,7 @@
 const dayjs = require('dayjs');
 
 const HostingServices = require("../../../models/services/hosting/model");
+const logAction = require("../../../middleware/action_logs");
 
 const hostingServicesController = {
   addHostingServices: async(req, res) => {
@@ -8,8 +9,8 @@ const hostingServicesController = {
       const newHostingServices = new HostingServices(req.body);
       newHostingServices.expiredAt = new Date(newHostingServices.registeredAt);
       newHostingServices.expiredAt.setFullYear(newHostingServices.expiredAt.getFullYear() + req.body.periods);
+      await logAction(req.auth._id, 'Dịch vụ Hosting', 'Thêm mới');
       const saveHostingServices = await newHostingServices.save();
-      
       return res.status(200).json(saveHostingServices);
     } catch(err) {
       console.error(err);
@@ -83,6 +84,7 @@ const hostingServicesController = {
   deleteHostingServices: async(req, res) => {
     try {
       await HostingServices.findByIdAndDelete(req.params.id);
+      await logAction(req.auth._id, 'Dịch vụ Hosting', 'Xóa');
       return res.status(200).json("Xóa thành công!");
     } catch(err) {
       console.error(err);
@@ -104,6 +106,7 @@ const hostingServicesController = {
       }
       
       await hostingServices.updateOne({$set: req.body});
+      await logAction(req.auth._id, 'Dịch vụ Hosting', 'Cập nhật');
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);
@@ -234,6 +237,7 @@ const hostingServicesController = {
       return res.status(500).send(err.message);
     }
   },
+  
   getHostingServicesByCustomerId: async(req, res) => {
     try {
       const customer_id = req.params.customer_id;

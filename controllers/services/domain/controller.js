@@ -2,6 +2,7 @@ const dayjs = require('dayjs');
 
 const DomainServices = require("../../../models/services/domain/model");
 const CronDomainServices = require("../../../models/services/domain/model_cron");
+const logAction = require("../../../middleware/action_logs");
 
 const domainServicesController = {
   addDomainServices: async(req, res) => {
@@ -10,6 +11,7 @@ const domainServicesController = {
       const newDomainServices = new DomainServices(req.body);
       newDomainServices.expiredAt = new Date(newDomainServices.registeredAt);
       newDomainServices.expiredAt.setFullYear(newDomainServices.expiredAt.getFullYear() + req.body.periods);
+      await logAction(req.auth._id, 'Dịch vụ Tên miền', 'Thêm mới');
       const saveDomainServices = await newDomainServices.save();
 
       // cron dịch vụ
@@ -81,6 +83,7 @@ const domainServicesController = {
   deleteDomainServices: async(req, res) => {
     try {
       await DomainServices.findByIdAndDelete(req.params.id);
+      await logAction(req.auth._id, 'Dịch vụ Tên miền', 'Xóa');
       return res.status(200).json("Xóa thành công!");
     } catch(err) {
       console.error(err);
@@ -100,6 +103,7 @@ const domainServicesController = {
         await domainServices.updateOne({$set: {before_payment: true}});
       }
       await domainServices.updateOne({$set: req.body});
+      await logAction(req.auth._id, 'Dịch vụ Tên miền', 'Cập nhật');
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);

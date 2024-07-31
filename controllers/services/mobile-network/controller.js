@@ -1,6 +1,7 @@
 const dayjs = require('dayjs');
 
 const MobileNetworkServices = require("../../../models/services/mobile-network/model");
+const logAction = require("../../../middleware/action_logs");
 
 const mobileNetworkServicesController = {
   getMobileNetworkServices: async (req, res) => {
@@ -54,7 +55,7 @@ const mobileNetworkServicesController = {
       newMobileNetworkServices.expiredAt = new Date(newMobileNetworkServices.registeredAt);
       newMobileNetworkServices.expiredAt.setFullYear(newMobileNetworkServices.expiredAt.getFullYear() + req.body.periods);
       const saveMobileNetworkServices = await newMobileNetworkServices.save();
-      
+      await logAction(req.auth._id, 'Dịch vụ nhà mạng', 'Thêm mới');
       return res.status(200).json(saveMobileNetworkServices);
     } catch(err) {
       console.error(err);
@@ -90,6 +91,7 @@ const mobileNetworkServicesController = {
         await mobileNetworkServices.updateOne({$set: {expiredAt: expiredAt, status: 1}});
       }
       await mobileNetworkServices.updateOne({$set: req.body});
+      await logAction(req.auth._id, 'Dịch vụ nhà mạng', 'Cập nhật');
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);
@@ -100,6 +102,7 @@ const mobileNetworkServicesController = {
   deleteMobileNetworkServices: async(req, res) => {
     try {
       await MobileNetworkServices.findByIdAndDelete(req.params.id);
+      await logAction(req.auth._id, 'Dịch vụ nhà mạng', 'Xóa');
       return res.status(200).json("Xóa thành công!");
     } catch(err) {
       console.error(err);
@@ -201,6 +204,7 @@ const mobileNetworkServicesController = {
       return res.status(500).send(err.message);
     }
   },
+
   getMobileNetworkServicesByCustomerId: async(req, res) => {
     try {
       const customer_id = req.params.customer_id;

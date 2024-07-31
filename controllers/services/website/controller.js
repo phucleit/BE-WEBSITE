@@ -1,10 +1,12 @@
 const WebsiteServices = require("../../../models/services/website/model");
+const logAction = require("../../../middleware/action_logs");
 
 const websiteServicesController = {
   addWebsiteServices: async(req, res) => {
     try {
       const newWebsite = new WebsiteServices(req.body);
       const saveWebsiteServices = await newWebsite.save();
+      await logAction(req.auth._id, 'Dịch vụ Website', 'Thêm mới');
       return res.status(200).json(saveWebsiteServices);
     } catch(err) {
       console.error(err);
@@ -71,6 +73,7 @@ const websiteServicesController = {
   deleteWebsiteServices: async(req, res) => {
     try {
       await WebsiteServices.findByIdAndDelete(req.params.id);
+      await logAction(req.auth._id, 'Dịch vụ Website', 'Xóa');
       return res.status(200).json("Xóa thành công!");
     } catch(err) {
       console.error(err);
@@ -82,6 +85,7 @@ const websiteServicesController = {
     try {
       const websiteServices = await WebsiteServices.findById(req.params.id);
       await websiteServices.updateOne({$set: req.body});
+      await logAction(req.auth._id, 'Dịch vụ Website', 'Cập nhật');
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);
@@ -108,6 +112,7 @@ const websiteServicesController = {
       return res.status(500).send(err.message);
     }
   },
+
   getWebsiteServicesByCustomerId: async(req, res) => {
     try {
       const customer_id = req.params.customer_id;

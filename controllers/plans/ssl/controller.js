@@ -1,10 +1,12 @@
 const SslPlans = require("../../../models/plans/ssl/model");
+const logAction = require("../../../middleware/action_logs");
 
 const sslPlansController = {
   addSslPlans: async(req, res) => {
     try {
       const newSslPlans = new SslPlans(req.body);
       const saveSslPlans = await newSslPlans.save();
+      await logAction(req.auth._id, 'Gói DV SSL', 'Thêm mới');
       return res.status(200).json(saveSslPlans);
     } catch(err) {
       console.error(err);
@@ -35,6 +37,7 @@ const sslPlansController = {
   deleteSslPlans: async(req, res) => {
     try {
       await SslPlans.findByIdAndDelete(req.params.id);
+      await logAction(req.auth._id, 'Gói DV SSL', 'Xóa');
       return res.status(200).json("Xóa thành công!");
     } catch(err) {
       console.error(err);
@@ -46,6 +49,7 @@ const sslPlansController = {
     try {
       const sslPlans = await SslPlans.findById(req.params.id);
       await sslPlans.updateOne({$set: req.body});
+      await logAction(req.auth._id, 'Gói DV SSL', 'Cập nhật');
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);

@@ -1,6 +1,7 @@
 const dayjs = require('dayjs');
 
 const MaintenanceServices = require("../../../models/services/maintenance/model");
+const logAction = require("../../../middleware/action_logs");
 
 const maintenanceServicesController = {
   addMaintenanceServices: async(req, res) => {
@@ -9,7 +10,7 @@ const maintenanceServicesController = {
       newMaintenanceServices.expiredAt = new Date(newMaintenanceServices.registeredAt);
       newMaintenanceServices.expiredAt.setMonth(newMaintenanceServices.expiredAt.getMonth() + req.body.periods);
       const saveMaintenanceServices = await newMaintenanceServices.save();
-      
+      await logAction(req.auth._id, 'Dịch vụ Bảo trì', 'Thêm mới');
       return res.status(200).json(saveMaintenanceServices);
     } catch(err) {
       console.error(err);
@@ -79,6 +80,7 @@ const maintenanceServicesController = {
   deleteMaintenanceServices: async(req, res) => {
     try {
       await MaintenanceServices.findByIdAndDelete(req.params.id);
+      await logAction(req.auth._id, 'Dịch vụ Bảo trì', 'Xóa');
       return res.status(200).json("Xóa thành công!");
     } catch(err) {
       console.error(err);
@@ -95,6 +97,7 @@ const maintenanceServicesController = {
         await maintenanceServices.updateOne({$set: {expiredAt: expiredAt, status: 1}});
       }
       await maintenanceServices.updateOne({$set: req.body});
+      await logAction(req.auth._id, 'Dịch vụ Bảo trì', 'Cập nhật');
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);
@@ -199,6 +202,7 @@ const maintenanceServicesController = {
       return res.status(500).send(err.message);
     }
   },
+
   getMaintenanceServicesByCustomerId: async(req, res) => {
     try {
       const customer_id = req.params.customer_id;

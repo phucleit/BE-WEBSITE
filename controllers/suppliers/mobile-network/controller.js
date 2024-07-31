@@ -1,4 +1,5 @@
 const MobileNetwork = require("../../../models/suppliers/mobile-network/model");
+const logAction = require("../../../middleware/action_logs");
 
 const mobileNetworkController = {
   getMobileNetwork: async(req, res) => {
@@ -15,6 +16,7 @@ const mobileNetworkController = {
     try {
       const newMobileNetwork = new MobileNetwork(req.body);
       const saveMobileNetwork = await newMobileNetwork.save();
+      await logAction(req.auth._id, 'Nhà mạng', 'Thêm mới');
       return res.status(200).json(saveMobileNetwork);
     } catch(err) {
       console.error(err);
@@ -36,6 +38,7 @@ const mobileNetworkController = {
     try {
       const mobileNetwork = await MobileNetwork.findById(req.params.id);
       await mobileNetwork.updateOne({$set: req.body});
+      await logAction(req.auth._id, 'Nhà mạng', 'Cập nhật');
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);
@@ -46,6 +49,7 @@ const mobileNetworkController = {
   deleteMobileNetwork: async(req, res) => {
     try {
       await MobileNetwork.findByIdAndDelete(req.params.id);
+      await logAction(req.auth._id, 'Nhà mạng', 'Xóa');
       return res.status(200).json("Xóa thành công!");
     } catch(err) {
       console.error(err);

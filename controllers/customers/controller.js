@@ -1,6 +1,7 @@
 const fs = require('fs-extra');
 const path = require('path');
 const Customer = require("../../models/customers/model");
+const logAction = require("../../middleware/action_logs");
 
 const { ObjectId } = require('mongoose').Types;
 
@@ -50,6 +51,7 @@ const customerController = {
       });
 
       const saveCustomer = await newCustomer.save();
+      await logAction(req.auth._id, 'Khách hàng', 'Thêm mới');
       return res.status(200).json(saveCustomer);
     } catch(err) {
       console.error(err);
@@ -69,7 +71,7 @@ const customerController = {
 
   getDetailCustomer: async(req, res) => {
     try {
-      const customers = await Customer.findById(req.params.id).populate('data_service').exec();;
+      const customers = await Customer.findById(req.params.id).populate('data_service').exec();
       return res.status(200).json(customers);
     } catch(err) {
       console.error(err);
@@ -97,7 +99,7 @@ const customerController = {
       await deleteFiles(customer.image_back_view);
   
       await Customer.findByIdAndDelete(req.params.id);
-  
+      await logAction(req.auth._id, 'Khách hàng', 'Xóa');
       return res.status(200).send('Xóa thành công!');
     } catch(err) {
       console.error(err);
@@ -123,6 +125,7 @@ const customerController = {
       }
 
       await Customer.findByIdAndUpdate(req.params.id, { $set: updateData }, { new: true });
+      await logAction(req.auth._id, 'Khách hàng', 'Cập nhật');
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);

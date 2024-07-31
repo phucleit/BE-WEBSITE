@@ -1,6 +1,7 @@
 const dayjs = require('dayjs');
 
 const SslServices = require("../../../models/services/ssl/model");
+const logAction = require("../../../middleware/action_logs");
 
 const sslServicesController = {
   addSslServices: async(req, res) => {
@@ -9,7 +10,7 @@ const sslServicesController = {
       newSslServices.expiredAt = new Date(newSslServices.registeredAt);
       newSslServices.expiredAt.setFullYear(newSslServices.expiredAt.getFullYear() + req.body.periods);
       const saveSslServices = await newSslServices.save();
-      
+      await logAction(req.auth._id, 'Dịch vụ SSL', 'Thêm mới');
       return res.status(200).json(saveSslServices);
     } catch(err) {
       console.error(err);
@@ -84,6 +85,7 @@ const sslServicesController = {
   deleteSslServices: async(req, res) => {
     try {
       await SslServices.findByIdAndDelete(req.params.id);
+      await logAction(req.auth._id, 'Dịch vụ SSL', 'Xóa');
       return res.status(200).json("Xóa thành công!");
     } catch(err) {
       console.error(err);
@@ -105,6 +107,7 @@ const sslServicesController = {
       }
       
       await sslServices.updateOne({$set: req.body});
+      await logAction(req.auth._id, 'Dịch vụ SSL', 'Cập nhật');
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);

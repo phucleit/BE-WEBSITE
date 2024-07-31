@@ -1,4 +1,5 @@
 const Contracts = require("../../models/contracts/model");
+const logAction = require("../../middleware/action_logs");
 
 const contractController = {
   getContract: async(req, res) => {
@@ -24,6 +25,7 @@ const contractController = {
   deleteContract: async(req, res) => {
     try {
       await Contracts.findByIdAndDelete(req.params.id);
+      await logAction(req.auth._id, 'Hợp đồng', 'Xóa');
       return res.status(200).json("Xóa thành công!");
     } catch(err) {
       console.error(err);
@@ -73,6 +75,7 @@ const contractController = {
       }
 
       await contract.updateOne({$set: req.body});
+      await logAction(req.auth._id, 'Hợp đồng', 'Cập nhật');
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);

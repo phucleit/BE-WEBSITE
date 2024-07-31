@@ -1,10 +1,12 @@
 const HostingPlans = require("../../../models/plans/hosting/model");
+const logAction = require("../../../middleware/action_logs");
 
 const hostingPlansController = {
   addHostingPlans: async(req, res) => {
     try {
       const newHostingPlans = new HostingPlans(req.body);
       const saveHostingPlans = await newHostingPlans.save();
+      await logAction(req.auth._id, 'Gói DV Hosting', 'Thêm mới');
       return res.status(200).json(saveHostingPlans);
     } catch(err) {
       console.error(err);
@@ -35,6 +37,7 @@ const hostingPlansController = {
   deleteHostingPlans: async(req, res) => {
     try {
       await HostingPlans.findByIdAndDelete(req.params.id);
+      await logAction(req.auth._id, 'Gói DV Hosting', 'Xóa');
       return res.status(200).json("Xóa thành công!");
     } catch(err) {
       console.error(err);
@@ -46,6 +49,7 @@ const hostingPlansController = {
     try {
       const hostingPlans = await HostingPlans.findById(req.params.id);
       await hostingPlans.updateOne({$set: req.body});
+      await logAction(req.auth._id, 'Gói DV Hosting', 'Cập nhật');
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);

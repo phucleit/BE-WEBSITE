@@ -4,6 +4,8 @@ const EmailPlans = require("../../models/plans/email/model");
 const HostingPlans = require("../../models/plans/hosting/model");
 const SslPlans = require("../../models/plans/ssl/model");
 
+const logAction = require("../../middleware/action_logs");
+
 const { ObjectId } = require('mongoose').Types;
 
 const supplierController = {
@@ -11,6 +13,7 @@ const supplierController = {
     try {
       const newSupplier = new Supplier(req.body);
       const saveSupplier = await newSupplier.save();
+      await logAction(req.auth._id, 'Nhà cung cấp', 'Thêm mới');
       return res.status(200).json(saveSupplier);
     } catch(err) {
       console.error(err);
@@ -191,6 +194,7 @@ const supplierController = {
       await SslPlans.updateMany({supplier_id: req.params.id}, {supplier_id: null});
       await Supplier.findByIdAndDelete(req.params.id);
       
+      await logAction(req.auth._id, 'Nhà cung cấp', 'Xóa');
       return res.status(200).json("Deleted successfully");
     } catch(err) {
       console.error(err);
@@ -202,6 +206,7 @@ const supplierController = {
     try {
       const supplier = await Supplier.findById(req.params.id);
       await supplier.updateOne({$set: req.body});
+      await logAction(req.auth._id, 'Nhà cung cấp', 'Cập nhật');
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);

@@ -1,6 +1,7 @@
 const dayjs = require('dayjs');
 
 const ToplistServices = require("../../../models/services/toplist/model");
+const logAction = require("../../../middleware/action_logs");
 
 const toplistServiceController = {
   addToplistService: async(req, res) => {
@@ -9,7 +10,7 @@ const toplistServiceController = {
       newToplistService.expiredAt = new Date(newToplistService.registeredAt);
       newToplistService.expiredAt.setFullYear(newToplistService.expiredAt.getFullYear() + req.body.periods);
       const saveToplistService = await newToplistService.save();
-      
+      await logAction(req.auth._id, 'Dịch vụ Toplist', 'Thêm mới');
       return res.status(200).json(saveToplistService);
     } catch(err) {
       console.error(err);
@@ -42,6 +43,7 @@ const toplistServiceController = {
   deleteToplistService: async(req, res) => {
     try {
       await ToplistServices.findByIdAndDelete(req.params.id);
+      await logAction(req.auth._id, 'Dịch vụ Toplist', 'Xóa');
       return res.status(200).json("Xóa thành công!");
     } catch(err) {
       console.error(err);
@@ -58,6 +60,7 @@ const toplistServiceController = {
         await toplistService.updateOne({$set: {expiredAt: expiredAt, status: 1}});
       }
       await toplistService.updateOne({$set: req.body});
+      await logAction(req.auth._id, 'Dịch vụ Toplist', 'Cập nhật');
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);
@@ -156,6 +159,7 @@ const toplistServiceController = {
       return res.status(500).send(err.message);
     }
   },
+
   getToplistServiceByCustomerId: async(req, res) => {
     try {
       const customer_id = req.params.customer_id;

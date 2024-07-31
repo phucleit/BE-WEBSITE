@@ -51,20 +51,26 @@ const loginRoutes = require("./routes/login/login");
 // functions
 const functionRoutes = require("./routes/roles/functions");
 
+// logs action
+const actionLogsRoutes = require("./routes/action-logs/action_logs");
+
 dotenv.config();
 
 app.use(bodyParser.json({limit: "500mb"}));
 app.use(bodyParser.urlencoded({extended:true, limit:'500mb'})); 
 
 const corsOptions = {
-	// origin: 'http://localhost:3006',
-	origin: 'https://backend.thietkewebvungtau.com',
-	methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-	credentials: true,
-	optionsSuccessStatus: 204,
+	origin: 'http://localhost:3006',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+	optionsSuccessStatus: 200,
+  // origin: '*',
+  // credentials: true,
+  // optionsSuccessStatus: 200,
 };
 
 app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 app.use(morgan("common"));
 app.use('/uploads', express.static('uploads'));
@@ -110,7 +116,10 @@ app.use("/v1/group-user", check_token_api, groupUserRoutes);
 app.use("/v1/login", loginRoutes);
 
 // functions
-app.use("/v1/functions", functionRoutes);
+app.use("/v1/functions", check_token_api, functionRoutes);
+
+// action logs 
+app.use("/v1/action-logs", check_token_api, actionLogsRoutes);
 
 const PORT = process.env.PORT || 3123;
 app.listen(PORT, () => {console.log(`Server đang chạy... ${PORT}`);});

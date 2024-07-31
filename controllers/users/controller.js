@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const Users = require("../../models/users/model");
 const sha512 = require('js-sha512');
 const ModelToken = require('../../models/users/token');
+const logAction = require("../../middleware/action_logs");
 
 const userController = {
   addUser: async(req, res) => {
@@ -11,6 +12,7 @@ const userController = {
       const hashedPassword = sha512(password);
       const newUser = await Users({display_name, username, email, password: hashedPassword, group_user_id });
       const saveUser = await newUser.save();
+      await logAction(req.auth._id, 'Tài khoản', 'Thêm mới');
       return res.status(200).json(saveUser);
     } catch(err) {
       console.error(err);
@@ -41,6 +43,7 @@ const userController = {
   deleteUser: async(req, res) => {
     try {
       await Users.findByIdAndDelete(req.params.id);
+      await logAction(req.auth._id, 'Tài khoản', 'Xóa');
       return res.status(200).json("Xóa thành công!");
     } catch(err) {
       console.error(err);
@@ -52,6 +55,7 @@ const userController = {
     try {
       const user = await Users.findById(req.params.id);
       await user.updateOne({$set: req.body});
+      await logAction(req.auth._id, 'Tài khoản', 'Cập nhật');
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);
