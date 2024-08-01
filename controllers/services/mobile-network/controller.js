@@ -13,36 +13,38 @@ const mobileNetworkServicesController = {
         .populate('supplier_mobile_network_id')
         .setOptions({ strictPopulate: false });
   
-      if (!mobileNetworkServices.length) {
-        return res.status(404).json({ message: "Không tìm thấy dịch vụ mạng di động!" });
-      }
+      // if (!mobileNetworkServices.length) {
+      //   return res.status(404).json({ message: "Không tìm thấy dịch vụ mạng di động!" });
+      // }
   
-      for (const item of mobileNetworkServices) {
-        const supplierMobileNetworkId = item.mobile_network_plan_id.supplier_mobile_network_id;
-        try {
-          await MobileNetworkServices.findByIdAndUpdate(
-            item._id,
-            {
-              $set: {
-                supplier_mobile_network_id: supplierMobileNetworkId
-              }
-            },
-            { new: true }
-          );
-        } catch (err) {
-          console.error(err);
-          return res.status(500).send(err.message);
+      if (mobileNetworkServices) {
+        for (const item of mobileNetworkServices) {
+          const supplierMobileNetworkId = item.mobile_network_plan_id.supplier_mobile_network_id;
+          try {
+            await MobileNetworkServices.findByIdAndUpdate(
+              item._id,
+              {
+                $set: {
+                  supplier_mobile_network_id: supplierMobileNetworkId
+                }
+              },
+              { new: true }
+            );
+          } catch (err) {
+            console.error(err);
+            return res.status(500).send(err.message);
+          }
         }
+    
+        let newMobileNetworkServices = await MobileNetworkServices.find()
+          .sort({ "createdAt": -1 })
+          .populate('mobile_network_plan_id')
+          .populate('customer_id', 'fullname gender email phone')
+          .populate('supplier_mobile_network_id', 'name')
+          .setOptions({ strictPopulate: false });
+    
+        return res.status(200).json(newMobileNetworkServices);
       }
-  
-      let newMobileNetworkServices = await MobileNetworkServices.find()
-        .sort({ "createdAt": -1 })
-        .populate('mobile_network_plan_id')
-        .populate('customer_id', 'fullname gender email phone')
-        .populate('supplier_mobile_network_id', 'name')
-        .setOptions({ strictPopulate: false });
-  
-      return res.status(200).json(newMobileNetworkServices);
     } catch (err) {
       console.error(err);
       return res.status(500).send(err.message);
