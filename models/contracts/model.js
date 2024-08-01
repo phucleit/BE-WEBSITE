@@ -161,9 +161,9 @@ Contracts.create_or_update_contract = async (customer_id) => {
 
     // mobile network
     const ModelMobileNetwork = require('../../models/services/mobile-network/model')
-    const data_mobile_network = await ModelMobileNetwork.find({customer_id:customer_id});
+    const data_mobile_network = await ModelMobileNetwork.find({customer_id:customer_id}).populate('mobile_network_plan_id').exec();
     data_mobile_network.forEach(item => {
-      if (item.maintenance_plan_id && item.mobile_network_plan_id.price) {
+      if (item.mobile_network_plan_id && item.mobile_network_plan_id.price) {
         total_price += item.periods * item.mobile_network_plan_id.price;
       }
     });
