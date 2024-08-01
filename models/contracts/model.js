@@ -86,9 +86,10 @@ Contracts.createCode = async () =>{
 
 Contracts.create_or_update_contract = async (customer_id) => {
   try {
-    let total_price = 0
-    let deposit_amount = 0
-    let remaining_cost = 0
+    let total_price = 0;
+    let deposit_amount = 0;
+    let remaining_cost = 0;
+    let status = 0;
 
     // domain
     const ModelDomain = require('../../models/services/domain/model');
@@ -167,24 +168,37 @@ Contracts.create_or_update_contract = async (customer_id) => {
       }
     });
 
-    const code = await Contracts.createCode();
-    const data_contract = await Contracts.findOneAndUpdate({
-      customer_id: customer_id
-    }, {
-      $setOnInsert: {
-        customer_id: customer_id,
-        contract_code: code
-      },
-      $set: {
-        total_price: total_price,
-        deposit_amount: deposit_amount,
-        remaining_cost: remaining_cost,
+    let existingContract = await Contracts.findOne({ customer_id: customer_id });
+    if (existingContract) {
+      deposit_amount = existingContract.deposit_amount;
+      remaining_cost = total_price - deposit_amount;
+
+      if (remaining_cost <= 0) {
+        status = 2;
       }
-      
-    }, {upsert: true});
-    await logAction(req.auth._id, 'Hợp đồng', 'Thêm mới hoặc Cập nhật');
+    } else {
+      remaining_cost = total_price;
+    }
+
+    const code = await Contracts.createCode();
+    const data_contract = await Contracts.findOneAndUpdate(
+      { customer_id: customer_id },
+      {
+        $setOnInsert: {
+          customer_id: customer_id,
+          contract_code: code,
+        },
+        $set: {
+          total_price: total_price,
+          deposit_amount: deposit_amount,
+          remaining_cost: remaining_cost,
+          status: status,
+        },
+      },
+      { upsert: true, new: true }
+    );
+    // await logAction(auth._id, 'Hợp đồng', 'Thêm mới hoặc Cập nhật');
   } catch (error) {
     console.log(error);
   }
 } 
-
