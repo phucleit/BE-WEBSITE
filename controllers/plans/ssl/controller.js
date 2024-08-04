@@ -49,7 +49,7 @@ const sslPlansController = {
     try {
       const sslPlans = await SslPlans.findById(req.params.id);
       await sslPlans.updateOne({$set: req.body});
-      await logAction(req.auth._id, 'Gói DV SSL', 'Cập nhật');
+      await logAction(req.auth._id, 'Gói DV SSL', 'Cập nhật', `/dashboard/plans/update-ssl/${req.params.id}`);
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);

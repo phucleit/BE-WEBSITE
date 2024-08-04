@@ -97,7 +97,7 @@ const maintenanceServicesController = {
         await maintenanceServices.updateOne({$set: {expiredAt: expiredAt, status: 1}});
       }
       await maintenanceServices.updateOne({$set: req.body});
-      await logAction(req.auth._id, 'Dịch vụ Bảo trì', 'Cập nhật');
+      await logAction(req.auth._id, 'Dịch vụ Bảo trì', 'Cập nhật', `/dashboard/services/update-maintenance/${req.params.id}`);
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);

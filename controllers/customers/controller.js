@@ -125,7 +125,7 @@ const customerController = {
       }
 
       await Customer.findByIdAndUpdate(req.params.id, { $set: updateData }, { new: true });
-      await logAction(req.auth._id, 'Khách hàng', 'Cập nhật');
+      await logAction(req.auth._id, 'Khách hàng', 'Cập nhật', `/dashboard/customers/update-customers/${req.params.id}`);
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);

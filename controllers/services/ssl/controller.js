@@ -107,7 +107,7 @@ const sslServicesController = {
       }
       
       await sslServices.updateOne({$set: req.body});
-      await logAction(req.auth._id, 'Dịch vụ SSL', 'Cập nhật');
+      await logAction(req.auth._id, 'Dịch vụ SSL', 'Cập nhật', `/dashboard/services/update-ssl/${req.params.id}`);
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);

@@ -55,7 +55,7 @@ const userController = {
     try {
       const user = await Users.findById(req.params.id);
       await user.updateOne({$set: req.body});
-      await logAction(req.auth._id, 'Tài khoản', 'Cập nhật');
+      await logAction(req.auth._id, 'Tài khoản', 'Cập nhật', `/dashboard/users/update-users/${req.params.id}`);
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);

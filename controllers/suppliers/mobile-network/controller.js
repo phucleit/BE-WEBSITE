@@ -38,7 +38,7 @@ const mobileNetworkController = {
     try {
       const mobileNetwork = await MobileNetwork.findById(req.params.id);
       await mobileNetwork.updateOne({$set: req.body});
-      await logAction(req.auth._id, 'Nhà mạng', 'Cập nhật');
+      await logAction(req.auth._id, 'Nhà mạng', 'Cập nhật', `/dashboard/suppliers/mobile-network/update-mobile-network/${req.params.id}`);
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);

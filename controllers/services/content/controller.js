@@ -56,7 +56,7 @@ const contentServicesController = {
         const currentDate = new Date();
         const expiredAt = currentDate.setMonth(currentDate.getMonth() + req.body.periods);
         await contentServices.updateOne({$set: {expiredAt: expiredAt, periods: req.body.periods, status: 1}});
-        await logAction(req.auth._id, 'Dịch vụ Viết bài Content & PR', 'Cập nhật');
+        await logAction(req.auth._id, 'Dịch vụ Viết bài Content & PR', 'Cập nhật', `/dashboard/services/update-content/${req.params.id}`);
         return res.status(200).json("Cập nhật thành công!");
       }
     } catch(err) {

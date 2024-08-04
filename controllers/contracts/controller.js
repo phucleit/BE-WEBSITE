@@ -75,7 +75,7 @@ const contractController = {
       }
 
       await contract.updateOne({$set: req.body});
-      await logAction(req.auth._id, 'Hợp đồng', 'Cập nhật');
+      await logAction(req.auth._id, 'Hợp đồng', 'Cập nhật', `/dashboard/contracts/update-contracts/${req.params.id}`);
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);

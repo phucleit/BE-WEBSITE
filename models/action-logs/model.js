@@ -14,6 +14,9 @@ const actionLogSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  link: {
+    type: String,
+  }
 }, {timestamps: true});
 
 let ActionLogs = mongoose.model("ActionLogs", actionLogSchema);
