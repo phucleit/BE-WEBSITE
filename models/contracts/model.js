@@ -40,6 +40,10 @@ const contractSchema = new mongoose.Schema({
 let Contracts = mongoose.model("Contracts", contractSchema);
 module.exports = Contracts;
 
+function roundToNearestThousand(number) {
+  return Math.round(number / 1000) * 1000;
+}
+
 const addZero = (number) => {
 	return number < 10 ? '0' + number : number;
 }
@@ -105,7 +109,7 @@ Contracts.create_or_update_contract = async (customer_id) => {
     const data_hosting = await ModelHosting.find({customer_id:customer_id}).populate('hosting_plan_id').exec();
     data_hosting.forEach(item => {
       if (item.hosting_plan_id && item.hosting_plan_id.price) {
-        total_price += item.periods * 12 * item.hosting_plan_id.price;
+        total_price += roundToNearestThousand(item.periods * 12 * item.hosting_plan_id.price);
       }
     });
     
@@ -114,7 +118,7 @@ Contracts.create_or_update_contract = async (customer_id) => {
     const data_email = await ModelEmail.find({customer_id:customer_id}).populate('email_plan_id').exec();
     data_email.forEach(item => {
       if (item.email_plan_id && item.email_plan_id.price) {
-        total_price += item.periods * 12 * item.email_plan_id.price;
+        total_price += roundToNearestThousand(item.periods * 12 * item.email_plan_id.price);
       }
     });
     
