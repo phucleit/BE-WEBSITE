@@ -68,7 +68,7 @@ const corsOptions = {
   // methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   // credentials: true,
 	// optionsSuccessStatus: 200,
-  origin: 'https://dms.thietkewebvungtau.com',
+  origin: 'https://test.thietkewebvungtau.com',
   credentials: true,
   optionsSuccessStatus: 200,
 };
