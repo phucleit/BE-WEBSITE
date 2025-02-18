@@ -11,6 +11,20 @@ const { ObjectId } = require('mongoose').Types;
 const supplierController = {
   addSupplier: async(req, res) => {
     try {
+      const { name, company, tax_code } = req.body;
+      const existingSupplier = await Supplier.findOne({ $or: [{ name }, {company}, { tax_code }] });
+      if (existingSupplier) {
+        let errorMessage = '';
+        if (existingSupplier.name === name) {
+          errorMessage = 'Tên nhà cung cấp đã tồn tại! Vui lòng nhập tên khác!';
+        } else if (existingSupplier.company === company) {
+          errorMessage = 'Tên công ty đã tồn tại! Vui lòng nhập tên công ty khác!';
+        } else if (existingSupplier.tax_code === tax_code) {
+          errorMessage = 'MST đã tồn tại! Vui lòng nhập MST khác!';
+        }
+        return res.status(400).json({ message: errorMessage });
+      }
+      
       const newSupplier = new Supplier(req.body);
       const saveSupplier = await newSupplier.save();
       await logAction(req.auth._id, 'Nhà cung cấp', 'Thêm mới');

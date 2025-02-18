@@ -14,6 +14,20 @@ const serverController = {
 
   addServer: async(req, res) => {
     try {
+      const { name, company, tax_code } = req.body;
+      const existingServer = await Server.findOne({ $or: [{ name }, {company}, { tax_code }] });
+      if (existingServer) {
+        let errorMessage = '';
+        if (existingServer.name === name) {
+          errorMessage = 'Tên nhà cung cấp đã tồn tại! Vui lòng nhập tên khác!';
+        } else if (existingServer.company === company) {
+          errorMessage = 'Tên công ty đã tồn tại! Vui lòng nhập tên công ty khác!';
+        } else if (existingServer.tax_code === tax_code) {
+          errorMessage = 'MST đã tồn tại! Vui lòng nhập MST khác!';
+        }
+        return res.status(400).json({ message: errorMessage });
+      }
+
       const newServer = new Server(req.body);
       const saveServer = await newServer.save();
       await logAction(req.auth._id, 'Server', 'Thêm mới');

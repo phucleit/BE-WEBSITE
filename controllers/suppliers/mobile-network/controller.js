@@ -15,6 +15,13 @@ const mobileNetworkController = {
   addMobileNetwork: async(req, res) => {
     try {
       const newMobileNetwork = new MobileNetwork(req.body);
+      
+      const name = newMobileNetwork.name;
+      const existingName = await MobileNetwork.findOne({name});
+      if (existingName) {
+        return res.status(400).json({ message: 'Tên nhà mạng di động đã tồn tại! Vui lòng nhập tên khác!' });
+      }
+
       const saveMobileNetwork = await newMobileNetwork.save();
       await logAction(req.auth._id, 'Nhà mạng', 'Thêm mới');
       return res.status(200).json(saveMobileNetwork);
