@@ -49,7 +49,7 @@ const hostingPlansController = {
     try {
       const hostingPlans = await HostingPlans.findById(req.params.id);
       await hostingPlans.updateOne({$set: req.body});
-      await logAction(req.auth._id, 'Gói DV Hosting', 'Cập nhật', `/dashboard/plans/update-hosting/${req.params.id}`);
+      await logAction(req.auth._id, 'Gói DV Hosting', 'Cập nhật', `/trang-chu/goi-dich-vu/cap-nhat-hosting/${req.params.id}`);
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);

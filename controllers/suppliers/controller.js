@@ -206,7 +206,7 @@ const supplierController = {
     try {
       const supplier = await Supplier.findById(req.params.id);
       await supplier.updateOne({$set: req.body});
-      await logAction(req.auth._id, 'Nhà cung cấp', 'Cập nhật', `/dashboard/suppliers/update-suppliers/${req.params.id}`);
+      await logAction(req.auth._id, 'Nhà cung cấp', 'Cập nhật', `/trang-chu/nha-cung-cap/cap-nhat-nha-cung-cap/${req.params.id}`);
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);

@@ -49,7 +49,7 @@ const domainPlansController = {
     try {
       const domainPlans = await DomainPlans.findById(req.params.id);
       await domainPlans.updateOne({$set: req.body});
-      await logAction(req.auth._id, 'Gói DV Tên miền', 'Cập nhật', `/dashboard/plans/update-domain/${req.params.id}`);
+      await logAction(req.auth._id, 'Gói DV Tên miền', 'Cập nhật', `/trang-chu/goi-dich-vu/cap-nhat-ten-mien/${req.params.id}`);
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);

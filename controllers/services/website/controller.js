@@ -85,7 +85,7 @@ const websiteServicesController = {
     try {
       const websiteServices = await WebsiteServices.findById(req.params.id);
       await websiteServices.updateOne({$set: req.body});
-      await logAction(req.auth._id, 'Dịch vụ Website', 'Cập nhật', `/dashboard/services/update-website/${req.params.id}`);
+      await logAction(req.auth._id, 'Dịch vụ Website', 'Cập nhật', `/trang-chu/dich-vu/cap-nhat-website/${req.params.id}`);
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);

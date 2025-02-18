@@ -49,7 +49,7 @@ const contentPlansController = {
     try {
       const contentPlans = await ContentPlans.findById(req.params.id);
       await contentPlans.updateOne({$set: req.body});
-      await logAction(req.auth._id, 'Gói DV Viết bài Content & PR', 'Cập nhật', `/dashboard/plans/update-content/${req.params.id}`);
+      await logAction(req.auth._id, 'Gói DV Viết bài Content & PR', 'Cập nhật', `/trang-chu/goi-dich-vu/cap-nhat-content/${req.params.id}`);
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);

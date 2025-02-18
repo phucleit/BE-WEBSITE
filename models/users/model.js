@@ -4,7 +4,7 @@ const sha512  = require("js-sha512");
 const userchema = new mongoose.Schema({
   display_name: {
     type: String,
-    required: false,
+    required: true,
   },
   username: {
     type: String,

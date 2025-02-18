@@ -106,7 +106,7 @@ const hostingServicesController = {
       }
       
       await hostingServices.updateOne({$set: req.body});
-      await logAction(req.auth._id, 'Dịch vụ Hosting', 'Cập nhật', `/dashboard/services/update-hosting/${req.params.id}`);
+      await logAction(req.auth._id, 'Dịch vụ Hosting', 'Cập nhật', `/trang-chu/dich-vu/cap-nhat-hosting/${req.params.id}`);
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);

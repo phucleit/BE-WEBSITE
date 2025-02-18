@@ -60,7 +60,7 @@ const toplistServiceController = {
         await toplistService.updateOne({$set: {expiredAt: expiredAt, status: 1}});
       }
       await toplistService.updateOne({$set: req.body});
-      await logAction(req.auth._id, 'Dịch vụ Toplist', 'Cập nhật', `/dashboard/services/update-toplist/${req.params.id}`);
+      await logAction(req.auth._id, 'Dịch vụ Toplist', 'Cập nhật', `/trang-chu/dich-vu/cap-nhat-toplist/${req.params.id}`);
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);

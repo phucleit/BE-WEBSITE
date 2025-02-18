@@ -49,7 +49,7 @@ const emailPlansController = {
     try {
       const emailPlans = await EmailPlans.findById(req.params.id);
       await emailPlans.updateOne({$set: req.body});
-      await logAction(req.auth._id, 'Gói DV Email', 'Cập nhật', `/dashboard/plans/update-email/${req.params.id}`);
+      await logAction(req.auth._id, 'Gói DV Email', 'Cập nhật', `/trang-chu/goi-dich-vu/cap-nhat-email/${req.params.id}`);
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);

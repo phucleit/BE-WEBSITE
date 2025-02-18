@@ -93,7 +93,7 @@ const mobileNetworkServicesController = {
         await mobileNetworkServices.updateOne({$set: {expiredAt: expiredAt, status: 1}});
       }
       await mobileNetworkServices.updateOne({$set: req.body});
-      await logAction(req.auth._id, 'Dịch vụ nhà mạng', 'Cập nhật', `/dashboard/services/update-mobile-network/${req.params.id}`);
+      await logAction(req.auth._id, 'Dịch vụ nhà mạng', 'Cập nhật', `/trang-chu/dich-vu/cap-nhat-nha-mang/${req.params.id}`);
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);

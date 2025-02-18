@@ -9,11 +9,19 @@ const loginController = {
     try {
       const {username, password} = req.body;
       const validUser = await Users.findOne({username}).lean();
-      if (!validUser) throw new Error('Tài khoản không tồn tại! Vui lòng nhập lại thông tin!')
+      if (!validUser) {
+        return res.status(400).json({message: 'Tài khoản không tồn tại! Vui lòng nhập lại thông tin!'});
+      }
 
-      const validPassword = sha512(password);
-      if (validPassword != validUser.password) throw new Error(`Tên đăng nhập hoặc mật khẩu không đúng! Vui lòng nhập lại thông tin!`)
-      if (!validPassword) throw new Error('Mật khẩu không đúng! Vui lòng nhập mật khẩu!');
+      const hashedPassword = sha512(password);
+      if (hashedPassword !== validUser.password) {
+        return res.status(400).json({ message: 'Mật khẩu không đúng! Vui lòng nhập lại thông tin!' });
+      }
+
+      if (!validUser.group_user_id) {
+        return res.status(400).json({ message: 'Tài khoản của bạn chưa được phân quyền! Vui lòng đăng nhập lại sau!' });
+      }
+
       const token = jwt.sign({ ...validUser }, process.env.JWT_SECRET);
       await new ModelToken({
         user_id: validUser._id,

@@ -38,7 +38,7 @@ const groupUserController = {
     try {
       const groupUser = await GroupUsers.findById(req.params.id);
       await groupUser.updateOne({$set: req.body});
-      await logAction(req.auth._id, 'Nhóm người dùng', 'Cập nhật', `/dashboard/users/update-group-users/${req.params.id}`);
+      await logAction(req.auth._id, 'Nhóm người dùng', 'Cập nhật', `/trang-chu/tai-khoan/cap-nhat-tai-khoan/${req.params.id}`);
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);

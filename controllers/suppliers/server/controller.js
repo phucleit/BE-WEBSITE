@@ -38,7 +38,7 @@ const serverController = {
     try {
       const server = await Server.findById(req.params.id);
       await server.updateOne({$set: req.body});
-      await logAction(req.auth._id, 'Server', 'Cập nhật', `/dashboard/suppliers/server/update-server/${req.params.id}`);
+      await logAction(req.auth._id, 'Server', 'Cập nhật', `/trang-chu/nha-cung-cap/server/cap-nhat-server/${req.params.id}`);
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);

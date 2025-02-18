@@ -103,7 +103,7 @@ const domainServicesController = {
         await domainServices.updateOne({$set: {before_payment: true}});
       }
       await domainServices.updateOne({$set: req.body});
-      await logAction(req.auth._id, 'Dịch vụ Tên miền', 'Cập nhật', `/dashboard/services/update-domain/${req.params.id}`);
+      await logAction(req.auth._id, 'Dịch vụ Tên miền', 'Cập nhật', `/trang-chu/dich-vu/cap-nhat-ten-mien/${req.params.id}`);
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);

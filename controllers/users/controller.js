@@ -9,6 +9,10 @@ const userController = {
   addUser: async(req, res) => {
     try {
       const {display_name, username, email, password, group_user_id} = req.body;
+      const existingEmail = await Users.findOne({ $or: [{username}, {email}] });
+      if (existingEmail) {
+        return res.status(400).json({message: 'Tên đăng nhập hoặc email đã tồn tại!'});
+      }
       const hashedPassword = sha512(password);
       const newUser = await Users({display_name, username, email, password: hashedPassword, group_user_id });
       const saveUser = await newUser.save();
@@ -55,7 +59,7 @@ const userController = {
     try {
       const user = await Users.findById(req.params.id);
       await user.updateOne({$set: req.body});
-      await logAction(req.auth._id, 'Tài khoản', 'Cập nhật', `/dashboard/users/update-users/${req.params.id}`);
+      await logAction(req.auth._id, 'Tài khoản', 'Cập nhật', `/trang-chu/tai-khoan/cap-nhat-tai-khoan/${req.params.id}`);
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);

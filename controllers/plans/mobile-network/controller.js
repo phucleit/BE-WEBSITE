@@ -38,7 +38,7 @@ const mobileNetworkPlansController = {
     try {
       const mobileNetworkPlans = await MobileNetworkPlans.findById(req.params.id);
       await mobileNetworkPlans.updateOne({$set: req.body});
-      await logAction(req.auth._id, 'Gói DV Nhà mạng', 'Cập nhật', `/dashboard/plans/update-mobile-network/${req.params.id}`);
+      await logAction(req.auth._id, 'Gói DV Nhà mạng', 'Cập nhật', `/trang-chu/goi-dich/cap-nhat-nha-mang/${req.params.id}`);
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);

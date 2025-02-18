@@ -49,7 +49,7 @@ const ServerPlansController = {
     try {
       const serverPlans = await ServerPlans.findById(req.params.id);
       await serverPlans.updateOne({$set: req.body});
-      await logAction(req.auth._id, 'Gói DV Server', 'Cập nhật', `/dashboard/plans/update-server/${req.params.id}`);
+      await logAction(req.auth._id, 'Gói DV Server', 'Cập nhật', `/trang-chu/goi-dich-vu/cap-nhat-server/${req.params.id}`);
       return res.status(200).json("Cập nhật thành công!");
     } catch(err) {
       console.error(err);
