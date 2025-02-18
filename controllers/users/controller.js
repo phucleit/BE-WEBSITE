@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const validator = require('validator');
 
 const Users = require("../../models/users/model");
 const sha512 = require('js-sha512');
@@ -9,8 +10,13 @@ const userController = {
   addUser: async(req, res) => {
     try {
       const {display_name, username, email, password, group_user_id} = req.body;
-      const existingEmail = await Users.findOne({ $or: [{username}, {email}] });
-      if (existingEmail) {
+
+      if (!validator.isEmail(email)) {
+        return res.status(400).json({ message: 'Email không hợp lệ! Vui lòng nhập email đúng định dạng!' });
+      }
+
+      const existingUser = await Users.findOne({ $or: [{username}, {email}] });
+      if (existingUser) {
         return res.status(400).json({message: 'Tên đăng nhập hoặc email đã tồn tại!'});
       }
       const hashedPassword = sha512(password);
