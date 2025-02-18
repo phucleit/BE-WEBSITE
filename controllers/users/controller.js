@@ -17,7 +17,13 @@ const userController = {
 
       const existingUser = await Users.findOne({ $or: [{username}, {email}] });
       if (existingUser) {
-        return res.status(400).json({message: 'Tên đăng nhập hoặc email đã tồn tại!'});
+        let errorMessage = '';
+        if (existingUser.username === username) {
+          errorMessage = 'Tên đăng nhập đã tồn tại! Vui lòng nhập tên khác!';
+        } else if (existingUser.email === email) {
+          errorMessage = 'Email đã tồn tại! Vui lòng nhập email khác!';
+        }
+        return res.status(400).json({message: errorMessage});
       }
       const hashedPassword = sha512(password);
       const newUser = await Users({display_name, username, email, password: hashedPassword, group_user_id });

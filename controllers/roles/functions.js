@@ -21,7 +21,7 @@ const functionController = {
       if (!description) throw new Error(`Mô tả không được trống!`)
 
       const existingName = await GroupUsers.findOne({name: name});
-      if (existingName) throw new Error(`Tên nhóm đã tồn tại, vui lòng chọn tên khác!`);
+      if (existingName) return res.status(400).json({ message: 'Tên nhóm đã tồn tại! Vui lòng chọn tên khác!' });
 
       const data_group = await new GroupUsers({
         name: name,
