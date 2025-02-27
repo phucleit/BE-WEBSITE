@@ -21,7 +21,8 @@ const sslPlansSchema = new mongoose.Schema({
   },
   supplier_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Suppliers"
+    ref: "Suppliers",
+    required: true
   }
 }, {timestamps: true});
 

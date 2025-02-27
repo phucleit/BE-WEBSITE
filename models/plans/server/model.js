@@ -8,7 +8,8 @@ const serverPlansSchema = new mongoose.Schema({
   },
   supplier_server_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Servers"
+    ref: "Servers",
+    required: true
   }
 }, {timestamps: true});
 

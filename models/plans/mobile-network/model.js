@@ -29,7 +29,8 @@ const mobileNetworkPlansSchema = new mongoose.Schema({
   },
   supplier_mobile_network_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "MobileNetworks"
+    ref: "MobileNetworks",
+    required: true
   }
 }, {timestamps: true});
 
