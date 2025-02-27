@@ -4,6 +4,15 @@ const logAction = require("../../../middleware/action_logs");
 const domainPlansController = {
   addDomainPlans: async(req, res) => {
     try {
+      const {name} = req.body;
+      const existingName = await DomainPlans.findOne({name});
+      if (existingName) {
+        let errorMessage = '';
+        if (existingName.name === name) {
+          errorMessage = 'Tên miền đã tồn tại! Vui lòng nhập tên khác!';
+        }
+        return res.status(400).json({message: errorMessage});
+      }
       const newDomainPlans = new DomainPlans(req.body);
       const saveDomainPlans = await newDomainPlans.save();
       await logAction(req.auth._id, 'Gói DV Tên miền', 'Thêm mới');

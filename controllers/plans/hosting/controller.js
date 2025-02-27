@@ -4,6 +4,15 @@ const logAction = require("../../../middleware/action_logs");
 const hostingPlansController = {
   addHostingPlans: async(req, res) => {
     try {
+      const {name} = req.body;
+      const existingName = await HostingPlans.findOne({name});
+      if (existingName) {
+        let errorMessage = '';
+        if (existingName.name === name) {
+          errorMessage = 'Tên gói hosting đã tồn tại! Vui lòng nhập tên khác!';
+        }
+        return res.status(400).json({message: errorMessage});
+      }
       const newHostingPlans = new HostingPlans(req.body);
       const saveHostingPlans = await newHostingPlans.save();
       await logAction(req.auth._id, 'Gói DV Hosting', 'Thêm mới');

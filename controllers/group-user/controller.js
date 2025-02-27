@@ -14,6 +14,15 @@ const groupUserController = {
 
   addGroupUser: async(req, res) => {
     try {
+      const {name} = req.body;
+      const existingName = await GroupUsers.findOne({name});
+      if (existingName) {
+        let errorMessage = '';
+        if (existingName.name === name) {
+          errorMessage = 'Tên nhóm người dùng đã tồn tại! Vui lòng nhập tên khác!';
+        }
+        return res.status(400).json({message: errorMessage});
+      }
       const newGroupUser = new GroupUsers(req.body);
       const saveGroupUser = await newGroupUser.save();
       await logAction(req.auth._id, 'Nhóm người dùng', 'Thêm mới');

@@ -4,6 +4,15 @@ const logAction = require("../../../middleware/action_logs");
 const contentPlansController = {
   addContentPlans: async(req, res) => {
     try {
+      const {name} = req.body;
+      const existingName = await ContentPlans.findOne({name});
+      if (existingName) {
+        let errorMessage = '';
+        if (existingName.name === name) {
+          errorMessage = 'Tên gói đã tồn tại! Vui lòng nhập tên khác!';
+        }
+        return res.status(400).json({message: errorMessage});
+      }
       const newContentPlans = new ContentPlans(req.body);
       const saveContentPlans = await newContentPlans.save();
       await logAction(req.auth._id, 'Gói DV Viết bài Content & PR', 'Thêm mới');

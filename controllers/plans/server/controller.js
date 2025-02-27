@@ -4,6 +4,15 @@ const logAction = require("../../../middleware/action_logs");
 const ServerPlansController = {
   addServerPlans: async(req, res) => {
     try {
+      const {name} = req.body;
+      const existingName = await ServerPlans.findOne({name});
+      if (existingName) {
+        let errorMessage = '';
+        if (existingName.name === name) {
+          errorMessage = 'Tên gói server đã tồn tại! Vui lòng nhập tên khác!';
+        }
+        return res.status(400).json({message: errorMessage});
+      }
       const newServerPlans = new ServerPlans(req.body);
       const saveServerPlans = await newServerPlans.save();
       await logAction(req.auth._id, 'Gói DV Server', 'Thêm mới');

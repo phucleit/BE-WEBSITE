@@ -4,6 +4,15 @@ const logAction = require("../../../middleware/action_logs");
 const maintenancePlansController = {
   addMaintenancePlans: async(req, res) => {
     try {
+      const {name} = req.body;
+      const existingName = await MaintenancePlans.findOne({name});
+      if (existingName) {
+        let errorMessage = '';
+        if (existingName.name === name) {
+          errorMessage = 'Tên gói bảo trì đã tồn tại! Vui lòng nhập tên khác!';
+        }
+        return res.status(400).json({message: errorMessage});
+      }
       const newMaintenancePlans = new MaintenancePlans(req.body);
       const saveMaintenancePlans = await newMaintenancePlans.save();
       await logAction(req.auth._id, 'Gói DV Bảo trì', 'Thêm mới');
