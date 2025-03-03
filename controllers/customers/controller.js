@@ -1,9 +1,10 @@
 const fs = require('fs-extra');
 const path = require('path');
+const validator = require('validator');
+const { ObjectId } = require('mongoose').Types;
+
 const Customer = require("../../models/customers/model");
 const logAction = require("../../middleware/action_logs");
-
-const { ObjectId } = require('mongoose').Types;
 
 const customerController = {
   addCustomer: async(req, res) => {
@@ -24,38 +25,47 @@ const customerController = {
         type_customer,
       } = req.body;
 
-      const count = await Customer.countDocuments({
-        $or: [
-          { phone: phone },
-          { email: email }
-        ]
-      });
+      if (email && !validator.isEmail(email)) {
+        return res.status(400).json({ message: 'Email không hợp lệ! Vui lòng nhập email đúng định dạng!' });
+      }
 
-      if (count > 0 ) throw new Error(`Số điện thoại hoặc email đã được đăng ký!`)
+      const existingCustomer = await Customer.findOne({ $or: [{email}, {idNumber}, {phone}] });
+      if (existingCustomer) {
+        let errorMessage = '';
+        if (existingCustomer.email === email) {
+          errorMessage = 'Email đã tồn tại! Vui lòng nhập email khác!';
+        } else if (existingCustomer.idNumber === idNumber) {
+          errorMessage = 'CCCD đã tồn tại! Vui lòng nhập CCCD khác!';
+        } else if (existingCustomer.phone === phone) {
+          errorMessage = 'Số điện thoại đã tồn tại! Vui lòng nhập số khác!';
+        }
+        return res.status(400).json({message: errorMessage});
+      }
+
       const newCustomer = new Customer({
-        fullname: fullname,
-        email: email,
-        gender: gender,
-        idNumber: idNumber,
-        phone: phone,
-        address: address,
-        company: company,
-        tax_code: tax_code,
-        address_company: address_company,
-        representative: representative,
+        fullname,
+        email,
+        gender,
+        idNumber,
+        phone,
+        address,
+        company,
+        tax_code,
+        address_company,
+        representative,
         representative_hotline: representative_hotline,
         mail_vat: mail_vat,
         image_front_view: req.files['image_front_view'] ? req.files['image_front_view'].map(file => file.path) : [],
         image_back_view: req.files['image_back_view'] ? req.files['image_back_view'].map(file => file.path) : [],
-        type_customer: type_customer
+        type_customer
       });
 
       const saveCustomer = await newCustomer.save();
       await logAction(req.auth._id, 'Khách hàng', 'Thêm mới');
       return res.status(200).json(saveCustomer);
     } catch(err) {
-      console.error(err);
-      return res.status(500).send(err.message);
+      console.error('Lỗi máy chủ:', err);
+      return res.status(500).json({ message: 'Có lỗi xảy ra, vui lòng thử lại!' });
     }
   },
 

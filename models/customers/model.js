@@ -10,20 +10,19 @@ const customerSchema = new mongoose.Schema({
   email: {
     type: String,
     index: true,
-    unique: true
   },
   gender: {
     type: Number,
+    required: true,
   },
   idNumber: {
-    type: String,
+    type: Number,
     required: true
   },
   phone: {
-    type: String,
+    type: Number,
     required: true,
     index: true,
-    unique: true
   },
   address: {
     type: String,
@@ -41,7 +40,7 @@ const customerSchema = new mongoose.Schema({
     type: String,
   },
   representative_hotline: {
-    type: String,
+    type: Number,
   },
   mail_vat: {
     type: String,
