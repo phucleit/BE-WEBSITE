@@ -6,6 +6,12 @@ const logAction = require("../../../middleware/action_logs");
 const sslITVTController = {
   addSslITVT: async(req, res) => {
     try {
+      const {domain_itvt_id} = req.body;
+      const existingDomainName = await SslITVT.findOne({domain_itvt_id});
+      if (existingDomainName) {
+        return res.status(400).json({message: 'Tên miền đăng ký đã tồn tại! Vui lòng chọn tên miền khác!'});
+      }
+
       const newSslITVT = new SslITVT(req.body);
       newSslITVT.expiredAt = new Date(newSslITVT.registeredAt);
       newSslITVT.expiredAt.setFullYear(newSslITVT.expiredAt.getFullYear() + req.body.periods);

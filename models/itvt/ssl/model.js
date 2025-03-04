@@ -16,7 +16,8 @@ const sslITVTSchema = new mongoose.Schema({
   customer_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Customers",
-    index: true
+    index: true,
+    required: true
   },
   status: {
     type: Number,

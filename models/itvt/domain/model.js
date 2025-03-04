@@ -3,28 +3,31 @@ const mongoose = require("mongoose");
 const domainITVTSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    unique: true,
+    required: true,
+  },
+  supplier_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Suppliers",
+  },
+  domain_plan_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "DomainPlans",
   },
   periods: {
     type: Number,
     required: true
   },
-  supplier_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Suppliers"
-  },
-  domain_plan_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "DomainPlans"
-  },
-  server_plan_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "ServerPlans"
-  },
   customer_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Customers",
-    index: true
+    index: true,
+    required: true
+  },
+  server_plan_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "ServerPlans",
+    required: true
   },
   ping_cloudflare: {
     type: Boolean,

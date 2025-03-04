@@ -6,6 +6,14 @@ const logAction = require("../../../middleware/action_logs");
 const domainITVTController = {
   addDomainITVT: async(req, res) => {
     try {
+      const {name} = req.body;
+      const existingName = await DomainITVT.findOne({name});
+      if (existingName) {
+        if (existingName.name === name) {
+          return res.status(400).json({message: 'Tên miền đăng ký đã tồn tại! Vui lòng nhập tên miền khác!'});
+        }
+      }
+
       const newDomainITVT = new DomainITVT(req.body);
       newDomainITVT.expiredAt = new Date(newDomainITVT.registeredAt);
       newDomainITVT.expiredAt.setFullYear(newDomainITVT.expiredAt.getFullYear() + req.body.periods);
