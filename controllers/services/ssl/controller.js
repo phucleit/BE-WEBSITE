@@ -6,6 +6,12 @@ const logAction = require("../../../middleware/action_logs");
 const sslServicesController = {
   addSslServices: async(req, res) => {
     try {
+      const {domain_service_id} = req.body;
+      const existingDomainName = await SslServices.findOne({domain_service_id});
+      if (existingDomainName) {
+        return res.status(400).json({message: 'Tên miền đăng ký đã tồn tại! Vui lòng chọn tên miền khác!'});
+      }
+
       const newSslServices = new SslServices(req.body);
       newSslServices.expiredAt = new Date(newSslServices.registeredAt);
       newSslServices.expiredAt.setFullYear(newSslServices.expiredAt.getFullYear() + req.body.periods);

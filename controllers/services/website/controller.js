@@ -4,6 +4,12 @@ const logAction = require("../../../middleware/action_logs");
 const websiteServicesController = {
   addWebsiteServices: async(req, res) => {
     try {
+      const {domain_service_id} = req.body;
+      const existingDomainName = await WebsiteServices.findOne({domain_service_id});
+      if (existingDomainName) {
+        return res.status(400).json({message: 'Tên miền đăng ký đã tồn tại! Vui lòng chọn tên miền khác!'});
+      }
+
       const newWebsite = new WebsiteServices(req.body);
       const saveWebsiteServices = await newWebsite.save();
       await logAction(req.auth._id, 'Dịch vụ Website', 'Thêm mới');

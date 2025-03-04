@@ -6,6 +6,12 @@ const logAction = require("../../../middleware/action_logs");
 const hostingServicesController = {
   addHostingServices: async(req, res) => {
     try {
+      const {domain_service_id} = req.body;
+      const existingDomainName = await HostingServices.findOne({domain_service_id});
+      if (existingDomainName) {
+        return res.status(400).json({message: 'Tên miền đăng ký đã tồn tại! Vui lòng chọn tên miền khác!'});
+      }
+
       const newHostingServices = new HostingServices(req.body);
       newHostingServices.expiredAt = new Date(newHostingServices.registeredAt);
       newHostingServices.expiredAt.setFullYear(newHostingServices.expiredAt.getFullYear() + req.body.periods);

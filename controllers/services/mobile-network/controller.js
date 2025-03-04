@@ -53,6 +53,12 @@ const mobileNetworkServicesController = {
 
   addMobileNetworkServices: async(req, res) => {
     try {
+      const {mobile_network_plan_id} = req.body;
+      const existingName = await MobileNetworkServices.findOne({mobile_network_plan_id});
+      if (existingName) {
+        return res.status(400).json({message: 'Gói dịch vụ đã tồn tại! Vui lòng chọn gói khác!'});
+      }
+
       const newMobileNetworkServices = new MobileNetworkServices(req.body);
       newMobileNetworkServices.expiredAt = new Date(newMobileNetworkServices.registeredAt);
       newMobileNetworkServices.expiredAt.setFullYear(newMobileNetworkServices.expiredAt.getFullYear() + req.body.periods);

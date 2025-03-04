@@ -6,6 +6,12 @@ const logAction = require("../../../middleware/action_logs");
 const contentServicesController = {
   addContentServices: async(req, res) => {
     try {
+      const {content_plan_id} = req.body;
+      const existingContentName = await ContentServices.findOne({content_plan_id});
+      if (existingContentName) {
+        return res.status(400).json({message: 'Gói dịch vụ đã tồn tại! Vui lòng chọn gói dịch vụ khác!'});
+      }
+
       const newContentServices = new ContentServices(req.body);
       newContentServices.expiredAt = new Date(newContentServices.registeredAt);
       newContentServices.expiredAt.setMonth(newContentServices.expiredAt.getMonth() + req.body.periods);

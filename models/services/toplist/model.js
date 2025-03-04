@@ -10,7 +10,7 @@ const toplistServicesSchema = new mongoose.Schema({
     required: true
   },
   rental_location: {
-    type: String,
+    type: Number,
     required: true
   },
   periods: {

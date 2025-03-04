@@ -6,6 +6,14 @@ const logAction = require("../../../middleware/action_logs");
 const toplistServiceController = {
   addToplistService: async(req, res) => {
     try {
+      const {post} = req.body;
+      const existingPost = await ToplistServices.findOne({post});
+      if (existingPost) {
+        if (existingPost.post === post) {
+          return res.status(400).json({message: 'Tiêu đề bài viết đã tồn tại! Vui lòng nhập tiêu đề khác!'});
+        }
+      }
+  
       const newToplistService = new ToplistServices(req.body);
       newToplistService.expiredAt = new Date(newToplistService.registeredAt);
       newToplistService.expiredAt.setFullYear(newToplistService.expiredAt.getFullYear() + req.body.periods);

@@ -8,6 +8,14 @@ const domainServicesController = {
   addDomainServices: async(req, res) => {
     try {
       // dịch vụ
+      const {name} = req.body;
+      const existingName = await DomainServices.findOne({name});
+      if (existingName) {
+        if (existingName.name === name) {
+          return res.status(400).json({message: 'Tên miền đăng ký đã tồn tại! Vui lòng nhập tên miền khác!'});
+        }
+      }
+
       const newDomainServices = new DomainServices(req.body);
       newDomainServices.expiredAt = new Date(newDomainServices.registeredAt);
       newDomainServices.expiredAt.setFullYear(newDomainServices.expiredAt.getFullYear() + req.body.periods);

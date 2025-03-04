@@ -6,6 +6,12 @@ const logAction = require("../../../middleware/action_logs");
 const emailServicesController = {
   addEmailServices: async(req, res) => {
     try {
+      const {domain_service_id} = req.body;
+      const existingDomainName = await EmailServices.findOne({domain_service_id});
+      if (existingDomainName) {
+        return res.status(400).json({message: 'Tên miền đăng ký đã tồn tại! Vui lòng chọn tên miền khác!'});
+      }
+
       const newEmailServices = new EmailServices(req.body);
       newEmailServices.expiredAt = new Date(newEmailServices.registeredAt);
       newEmailServices.expiredAt.setFullYear(newEmailServices.expiredAt.getFullYear() + req.body.periods);
