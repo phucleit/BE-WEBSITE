@@ -24,7 +24,24 @@ const supplierController = {
         }
         return res.status(400).json({ message: errorMessage });
       }
-      
+
+      const specialCharRegex = /[!@#$%^&*()_+={}[\]:;"'<>,.?/|\\]/;
+      if (specialCharRegex.test(name)) {
+        return res.status(400).json({ message: "Tên nhà cung cấp không được chứa ký tự đặc biệt!" });
+      }
+
+      if (specialCharRegex.test(company)) {
+        return res.status(400).json({ message: "Tên công ty không được chứa ký tự đặc biệt!" });
+      }
+  
+      if (specialCharRegex.test(name_support)) {
+        return res.status(400).json({ message: "Tên hỗ trợ viên không được chứa ký tự đặc biệt!" });
+      }
+
+      if (specialCharRegex.test(address)) {
+        return res.status(400).json({ message: "Địa chỉ không được chứa ký tự đặc biệt!" });
+      }
+
       const newSupplier = new Supplier(req.body);
       const saveSupplier = await newSupplier.save();
       await logAction(req.auth._id, 'Nhà cung cấp', 'Thêm mới');
@@ -219,6 +236,42 @@ const supplierController = {
   updateSupplier: async(req, res) => {
     try {
       const supplier = await Supplier.findById(req.params.id);
+      if (!supplier) {
+        return res.status(404).json({ message: "Nhà cung cấp không tồn tại!" });
+      }
+
+      const { name, company, name_support, address } = req.body;
+      if (name && name !== supplier.name) {
+        const existingSupplierName = await Supplier.findOne({ name });
+        if (existingSupplierName) {
+          return res.status(400).json({ message: "Tên nhà cung cấp đã tồn tại! Vui lòng nhập tên khác!" });
+        }
+      }
+
+      if (company && company !== supplier.company) {
+        const existingSupplierCompany = await Supplier.findOne({ company });
+        if (existingSupplierCompany) {
+          return res.status(400).json({ message: "Tên công ty đã tồn tại! Vui lòng nhập tên khác!" });
+        }
+      }
+
+      const specialCharRegex = /[!@#$%^&*()_+={}[\]:;"'<>,.?/|\\]/;
+      if (specialCharRegex.test(name)) {
+        return res.status(400).json({ message: "Tên nhà cung cấp không được chứa ký tự đặc biệt!" });
+      }
+
+      if (specialCharRegex.test(company)) {
+        return res.status(400).json({ message: "Tên công ty không được chứa ký tự đặc biệt!" });
+      }
+  
+      if (specialCharRegex.test(name_support)) {
+        return res.status(400).json({ message: "Tên hỗ trợ viên không được chứa ký tự đặc biệt!" });
+      }
+
+      if (specialCharRegex.test(address)) {
+        return res.status(400).json({ message: "Địa chỉ không được chứa ký tự đặc biệt!" });
+      }
+
       await supplier.updateOne({$set: req.body});
       await logAction(req.auth._id, 'Nhà cung cấp', 'Cập nhật', `/trang-chu/nha-cung-cap/cap-nhat-nha-cung-cap/${req.params.id}`);
       return res.status(200).json("Cập nhật thành công!");
