@@ -40,7 +40,7 @@ const customerSchema = new mongoose.Schema({
     type: String,
   },
   representative_hotline: {
-    type: Number,
+    type: String,
   },
   mail_vat: {
     type: String,

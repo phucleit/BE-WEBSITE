@@ -152,9 +152,9 @@ const mobileNetworkServicesController = {
         )
         .sort({"createdAt": -1})
         .populate('mobile_network_plan_id')
-        .populate('customer_id ', 'fullname gender email phone')
+        .populate('customer_id', 'fullname gender email phone')
         .populate('supplier_mobile_network_id');
-      
+
       return res.status(200).json(mobileNetworkServicesExpired);
     } catch(err) {
       console.error(err);
@@ -203,7 +203,7 @@ const mobileNetworkServicesController = {
         )
         .sort({"createdAt": -1})
         .populate('mobile_network_plan_id')
-        .populate('customer_id ', 'fullname gender email phone')
+        .populate('customer_id', 'fullname gender email phone')
         .populate('supplier_mobile_network_id');
       
       return res.status(200).json(mobileNetworkServicesExpiring);
