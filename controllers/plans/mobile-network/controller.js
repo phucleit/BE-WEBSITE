@@ -46,6 +46,18 @@ const mobileNetworkPlansController = {
   updateMobileNetworkPlans: async(req, res) => {
     try {
       const mobileNetworkPlans = await MobileNetworkPlans.findById(req.params.id);
+      if (!mobileNetworkPlans) {
+        return res.status(404).json({ message: "Tên gói nhà mạng không tồn tại!" });
+      }
+
+      const { name } = req.body;
+      if (name && name !== mobileNetworkPlans.name) {
+        const existingMobileNetworkPlanName = await MobileNetworkPlans.findOne({ name });
+        if (existingMobileNetworkPlanName) {
+          return res.status(400).json({ message: "Tên gói nhà mạng đã tồn tại! Vui lòng nhập tên khác!" });
+        }
+      }
+
       await mobileNetworkPlans.updateOne({$set: req.body});
       await logAction(req.auth._id, 'Gói DV Nhà mạng', 'Cập nhật', `/trang-chu/goi-dich/cap-nhat-nha-mang/${req.params.id}`);
       return res.status(200).json("Cập nhật thành công!");

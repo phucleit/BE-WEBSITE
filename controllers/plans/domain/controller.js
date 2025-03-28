@@ -57,6 +57,18 @@ const domainPlansController = {
   updateDomainPlans: async(req, res) => {
     try {
       const domainPlans = await DomainPlans.findById(req.params.id);
+      if (!domainPlans) {
+        return res.status(404).json({ message: "Tên miền không tồn tại!" });
+      }
+
+      const { name } = req.body;
+      if (name && name !== domainPlans.name) {
+        const existingDomainPlanName = await DomainPlans.findOne({ name });
+        if (existingDomainPlanName) {
+          return res.status(400).json({ message: "Tên miền đã tồn tại! Vui lòng nhập tên khác!" });
+        }
+      }
+
       await domainPlans.updateOne({$set: req.body});
       await logAction(req.auth._id, 'Gói DV Tên miền', 'Cập nhật', `/trang-chu/goi-dich-vu/cap-nhat-ten-mien/${req.params.id}`);
       return res.status(200).json("Cập nhật thành công!");

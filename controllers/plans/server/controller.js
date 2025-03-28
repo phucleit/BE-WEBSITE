@@ -57,6 +57,18 @@ const ServerPlansController = {
   updateServerPlans: async(req, res) => {
     try {
       const serverPlans = await ServerPlans.findById(req.params.id);
+      if (!serverPlans) {
+        return res.status(404).json({ message: "Tên gói server không tồn tại!" });
+      }
+
+      const { name } = req.body;
+      if (name && name !== serverPlans.name) {
+        const existingServerPlanName = await ServerPlans.findOne({ name });
+        if (existingServerPlanName) {
+          return res.status(400).json({ message: "Tên gói server đã tồn tại! Vui lòng nhập tên khác!" });
+        }
+      }
+  
       await serverPlans.updateOne({$set: req.body});
       await logAction(req.auth._id, 'Gói DV Server', 'Cập nhật', `/trang-chu/goi-dich-vu/cap-nhat-server/${req.params.id}`);
       return res.status(200).json("Cập nhật thành công!");

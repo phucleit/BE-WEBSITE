@@ -57,6 +57,18 @@ const emailPlansController = {
   updateEmailPlans: async(req, res) => {
     try {
       const emailPlans = await EmailPlans.findById(req.params.id);
+      if (!emailPlans) {
+        return res.status(404).json({ message: "Tên gói email không tồn tại!" });
+      }
+
+      const { name } = req.body;
+      if (name && name !== emailPlans.name) {
+        const existingEmailPlanName = await EmailPlans.findOne({ name });
+        if (existingEmailPlanName) {
+          return res.status(400).json({ message: "Tên gói email đã tồn tại! Vui lòng nhập tên khác!" });
+        }
+      }
+
       await emailPlans.updateOne({$set: req.body});
       await logAction(req.auth._id, 'Gói DV Email', 'Cập nhật', `/trang-chu/goi-dich-vu/cap-nhat-email/${req.params.id}`);
       return res.status(200).json("Cập nhật thành công!");

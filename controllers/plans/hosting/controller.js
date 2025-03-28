@@ -57,6 +57,18 @@ const hostingPlansController = {
   updateHostingPlans: async(req, res) => {
     try {
       const hostingPlans = await HostingPlans.findById(req.params.id);
+      if (!hostingPlans) {
+        return res.status(404).json({ message: "Tên gói hosting không tồn tại!" });
+      }
+
+      const { name } = req.body;
+      if (name && name !== hostingPlans.name) {
+        const existingHostingPlanName = await HostingPlans.findOne({ name });
+        if (existingHostingPlanName) {
+          return res.status(400).json({ message: "Tên gói hosting đã tồn tại! Vui lòng nhập tên khác!" });
+        }
+      }
+
       await hostingPlans.updateOne({$set: req.body});
       await logAction(req.auth._id, 'Gói DV Hosting', 'Cập nhật', `/trang-chu/goi-dich-vu/cap-nhat-hosting/${req.params.id}`);
       return res.status(200).json("Cập nhật thành công!");

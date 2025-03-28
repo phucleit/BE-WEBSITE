@@ -57,6 +57,17 @@ const sslPlansController = {
   updateSslPlans: async(req, res) => {
     try {
       const sslPlans = await SslPlans.findById(req.params.id);
+      if (!sslPlans) {
+        return res.status(404).json({ message: "Tên gói SSL không tồn tại!" });
+      }
+
+      const { name } = req.body;
+      if (name && name !== sslPlans.name) {
+        const existingSslPlanName = await SslPlans.findOne({ name });
+        if (existingSslPlanName) {
+          return res.status(400).json({ message: "Tên gói SSL đã tồn tại! Vui lòng nhập tên khác!" });
+        }
+      }
       await sslPlans.updateOne({$set: req.body});
       await logAction(req.auth._id, 'Gói DV SSL', 'Cập nhật', `/trang-chu/dich-vu/cap-nhat-ssl/${req.params.id}`);
       return res.status(200).json("Cập nhật thành công!");

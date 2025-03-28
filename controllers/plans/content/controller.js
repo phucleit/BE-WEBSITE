@@ -57,6 +57,18 @@ const contentPlansController = {
   updateContentPlans: async(req, res) => {
     try {
       const contentPlans = await ContentPlans.findById(req.params.id);
+      if (!contentPlans) {
+        return res.status(404).json({ message: "Tên gói content không tồn tại!" });
+      }
+
+      const { name } = req.body;
+      if (name && name !== contentPlans.name) {
+        const existingContentPlanName = await ContentPlans.findOne({ name });
+        if (existingContentPlanName) {
+          return res.status(400).json({ message: "Tên gói content đã tồn tại! Vui lòng nhập tên khác!" });
+        }
+      }
+
       await contentPlans.updateOne({$set: req.body});
       await logAction(req.auth._id, 'Gói DV Viết bài Content & PR', 'Cập nhật', `/trang-chu/goi-dich-vu/cap-nhat-content/${req.params.id}`);
       return res.status(200).json("Cập nhật thành công!");
