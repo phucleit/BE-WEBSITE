@@ -11,7 +11,7 @@ const { ObjectId } = require('mongoose').Types;
 const supplierController = {
   addSupplier: async(req, res) => {
     try {
-      const { name, company, tax_code } = req.body;
+      const { name, company, tax_code, address } = req.body;
       const existingSupplier = await Supplier.findOne({ $or: [{ name }, {company}, { tax_code }] });
       if (existingSupplier) {
         let errorMessage = '';

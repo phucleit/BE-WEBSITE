@@ -14,7 +14,7 @@ const serverController = {
 
   addServer: async(req, res) => {
     try {
-      const { name, company, tax_code } = req.body;
+      const { name, company, tax_code, address } = req.body;
       const existingServer = await Server.findOne({ $or: [{ name }, {company}, { tax_code }] });
       if (existingServer) {
         let errorMessage = '';
@@ -26,6 +26,19 @@ const serverController = {
           errorMessage = 'MST đã tồn tại! Vui lòng nhập MST khác!';
         }
         return res.status(400).json({ message: errorMessage });
+      }
+
+      const specialCharRegex = /[!@#$%^&*()_+={}[\]:;"'<>,.?/|\\]/;
+      if (specialCharRegex.test(name)) {
+        return res.status(400).json({ message: "Tên nhà cung cấp không được chứa ký tự đặc biệt!" });
+      }
+
+      if (specialCharRegex.test(company)) {
+        return res.status(400).json({ message: "Tên công ty không được chứa ký tự đặc biệt!" });
+      }
+
+      if (specialCharRegex.test(address)) {
+        return res.status(400).json({ message: "Địa chỉ không được chứa ký tự đặc biệt!" });
       }
 
       const newServer = new Server(req.body);
@@ -51,6 +64,38 @@ const serverController = {
   updateServer: async(req, res) => {
     try {
       const server = await Server.findById(req.params.id);
+      if (!server) {
+        return res.status(404).json({ message: "Nhà cung cấp Server không tồn tại!" });
+      }
+
+      const { name, company, address } = req.body;
+      if (name && name !== server.name) {
+        const existingServerName = await Server.findOne({ name });
+        if (existingServerName) {
+          return res.status(400).json({ message: "Tên nhà cung cấp đã tồn tại! Vui lòng nhập tên khác!" });
+        }
+      }
+
+      if (company && company !== server.company) {
+        const existingServerCompany = await Server.findOne({ company });
+        if (existingServerCompany) {
+          return res.status(400).json({ message: "Tên công ty đã tồn tại! Vui lòng nhập tên khác!" });
+        }
+      }
+
+      const specialCharRegex = /[!@#$%^&*()_+={}[\]:;"'<>,.?/|\\]/;
+      if (specialCharRegex.test(name)) {
+        return res.status(400).json({ message: "Tên nhà cung cấp không được chứa ký tự đặc biệt!" });
+      }
+
+      if (specialCharRegex.test(company)) {
+        return res.status(400).json({ message: "Tên công ty không được chứa ký tự đặc biệt!" });
+      }
+
+      if (specialCharRegex.test(address)) {
+        return res.status(400).json({ message: "Địa chỉ không được chứa ký tự đặc biệt!" });
+      }
+
       await server.updateOne({$set: req.body});
       await logAction(req.auth._id, 'Server', 'Cập nhật', `/trang-chu/nha-cung-cap/server/cap-nhat-server/${req.params.id}`);
       return res.status(200).json("Cập nhật thành công!");

@@ -19,6 +19,11 @@ const mobileNetworkController = {
       if (existingName) {
         return res.status(400).json({ message: 'Tên nhà mạng di động đã tồn tại! Vui lòng nhập tên khác!' });
       }
+
+      const specialCharRegex = /[!@#$%^&*()_+={}[\]:;"'<>,.?/|\\]/;
+      if (specialCharRegex.test(name)) {
+        return res.status(400).json({ message: "Tên nhà mạng không được chứa ký tự đặc biệt!" });
+      }
       
       const newMobileNetwork = new MobileNetwork(req.body);
       const saveMobileNetwork = await newMobileNetwork.save();
@@ -43,6 +48,23 @@ const mobileNetworkController = {
   updateMobileNetwork: async(req, res) => {
     try {
       const mobileNetwork = await MobileNetwork.findById(req.params.id);
+      if (!mobileNetwork) {
+        return res.status(404).json({ message: "Nhà mạng không tồn tại!" });
+      }
+
+      const { name } = req.body;
+      if (name && name !== mobileNetwork.name) {
+        const existingMobileNetworkName = await MobileNetwork.findOne({ name });
+        if (existingMobileNetworkName) {
+          return res.status(400).json({ message: "Tên nhà mạng đã tồn tại! Vui lòng nhập tên khác!" });
+        }
+      }
+
+      const specialCharRegex = /[!@#$%^&*()_+={}[\]:;"'<>,.?/|\\]/;
+      if (specialCharRegex.test(name)) {
+        return res.status(400).json({ message: "Tên nhà mạng không được chứa ký tự đặc biệt!" });
+      }
+
       await mobileNetwork.updateOne({$set: req.body});
       await logAction(req.auth._id, 'Nhà mạng', 'Cập nhật', `/trang-chu/nha-cung-cap/nha-mang/cap-nhat-nha-mang/${req.params.id}`);
       return res.status(200).json("Cập nhật thành công!");
