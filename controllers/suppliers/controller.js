@@ -219,6 +219,16 @@ const supplierController = {
 
   deleteSupplier: async(req, res) => {
     try {
+      const supplierId = req.params.id;
+      const domainPlanExists = await DomainPlans.findOne({ supplier_id: supplierId });
+      const hostingPlansExists = await HostingPlans.findOne({ supplier_id: supplierId });
+      const emailPlansExists = await EmailPlans.findOne({ supplier_id: supplierId });
+      const sslPlansExists = await SslPlans.findOne({ supplier_id: supplierId });
+
+      if (domainPlanExists || hostingPlansExists || emailPlansExists || sslPlansExists) {
+        return res.status(400).json({ message: "Không thể xóa nhà cung cấp đang được sử dụng!" });
+      }
+
       await DomainPlans.updateMany({supplier_id: req.params.id}, {supplier_id: null});
       await EmailPlans.updateMany({supplier_id: req.params.id}, {supplier_id: null});
       await HostingPlans.updateMany({supplier_id: req.params.id}, {supplier_id: null});

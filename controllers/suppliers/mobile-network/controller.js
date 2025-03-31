@@ -1,4 +1,5 @@
 const MobileNetwork = require("../../../models/suppliers/mobile-network/model");
+const MobileNetworkPlans = require("../../../models/plans/mobile-network/model");
 const logAction = require("../../../middleware/action_logs");
 
 const mobileNetworkController = {
@@ -76,6 +77,13 @@ const mobileNetworkController = {
 
   deleteMobileNetwork: async(req, res) => {
     try {
+      const supplierId = req.params.id;
+      const mobileNetworkPlansPlanExists = await MobileNetworkPlans.findOne({ supplier_id: supplierId });
+
+      if (mobileNetworkPlansPlanExists) {
+        return res.status(400).json({ message: "Không thể xóa nhà cung cấp đang được sử dụng!" });
+      }
+
       await MobileNetwork.findByIdAndDelete(req.params.id);
       await logAction(req.auth._id, 'Nhà mạng', 'Xóa');
       return res.status(200).json("Xóa thành công!");

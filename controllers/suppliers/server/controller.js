@@ -1,4 +1,5 @@
 const Server = require("../../../models/suppliers/server/model");
+const ServerPlans = require("../../../models/plans/server/model");
 const logAction = require("../../../middleware/action_logs");
 
 const serverController = {
@@ -107,6 +108,13 @@ const serverController = {
 
   deleteServer: async(req, res) => {
     try {
+      const supplierId = req.params.id;
+      const serverPlanExists = await ServerPlans.findOne({ supplier_id: supplierId });
+
+      if (serverPlanExists) {
+        return res.status(400).json({ message: "Không thể xóa nhà cung cấp đang được sử dụng!" });
+      }
+
       await Server.findByIdAndDelete(req.params.id);
       await logAction(req.auth._id, 'Server', 'Xóa');
       return res.status(200).json("Xóa thành công!");
