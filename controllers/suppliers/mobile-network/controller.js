@@ -78,10 +78,10 @@ const mobileNetworkController = {
   deleteMobileNetwork: async(req, res) => {
     try {
       const supplierId = req.params.id;
-      const mobileNetworkPlansPlanExists = await MobileNetworkPlans.findOne({ supplier_id: supplierId });
+      const mobileNetworkPlanExists = await MobileNetworkPlans.findOne({ supplier_id: supplierId });
 
-      if (mobileNetworkPlansPlanExists) {
-        return res.status(400).json({ message: "Không thể xóa nhà cung cấp đang được sử dụng!" });
+      if (mobileNetworkPlanExists) {
+        return res.status(400).json({ message: "Không thể xóa nhà cung cấp khi đang được sử dụng!" });
       }
 
       await MobileNetwork.findByIdAndDelete(req.params.id);

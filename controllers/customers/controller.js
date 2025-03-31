@@ -6,6 +6,16 @@ const { ObjectId } = require('mongoose').Types;
 const Customer = require("../../models/customers/model");
 const logAction = require("../../middleware/action_logs");
 
+const DomainServices = require("../../models/services/domain/model");
+const HostingServices = require("../../models/services/hosting/model");
+const EmailServices = require("../../models/services/email/model");
+const SslServices = require("../../models/services/ssl/model");
+const WebsiteServices = require("../../models/services/website/model");
+const ContentServices = require("../../models/services/content/model");
+const ToplistServices = require("../../models/services/toplist/model");
+const MaintenanceServices = require("../../models/services/maintenance/model");
+const MobileNetworkServices = require("../../models/services/mobile-network/model");
+
 const customerController = {
   addCustomer: async(req, res) => {
     try {
@@ -91,10 +101,27 @@ const customerController = {
 
   deleteCustomer: async(req, res) => {
     try {
-      const customer = await Customer.findByIdAndDelete(req.params.id);
+      // const customer = await Customer.findByIdAndDelete(req.params.id);
+      const customer = await Customer.findById(req.params.id);
       if (!customer) {
         return res.status(404).send('Không tìm thấy khách hàng!');
       }
+
+      const customerId = req.params.id;
+      const domainServicesExists = await DomainServices.findOne({ customer_id: customerId });
+      const hostingServicesExists = await HostingServices.findOne({ customer_id: customerId });
+      const emailServicesExists = await EmailServices.findOne({ customer_id: customerId });
+      const sslServicesExists = await SslServices.findOne({ customer_id: customerId });
+      const websiteServicesExists = await WebsiteServices.findOne({ customer_id: customerId });
+      const contentServicesExists = await ContentServices.findOne({ customer_id: customerId });
+      const toplistServicesExists = await ToplistServices.findOne({ customer_id: customerId });
+      const maintenanceSericesExists = await MaintenanceServices.findOne({ customer_id: customerId });
+      const mobileNetworkServicesExists = await MobileNetworkServices.findOne({ customer_id: customerId });
+
+      if (domainServicesExists || hostingServicesExists || emailServicesExists || sslServicesExists || websiteServicesExists || contentServicesExists || toplistServicesExists || maintenanceSericesExists || mobileNetworkServicesExists) {
+        return res.status(400).json({ message: "Không thể xóa khách hàng khi đang được sử dụng!" });
+      }
+
       const deleteFiles = async (filePaths) => {
         for (const filePath of filePaths) {
           try {

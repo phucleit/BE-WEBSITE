@@ -112,7 +112,7 @@ const serverController = {
       const serverPlanExists = await ServerPlans.findOne({ supplier_id: supplierId });
 
       if (serverPlanExists) {
-        return res.status(400).json({ message: "Không thể xóa nhà cung cấp đang được sử dụng!" });
+        return res.status(400).json({ message: "Không thể xóa nhà cung cấp khi đang được sử dụng!" });
       }
 
       await Server.findByIdAndDelete(req.params.id);
