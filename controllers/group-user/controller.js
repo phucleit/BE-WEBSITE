@@ -1,4 +1,5 @@
 const GroupUsers = require("../../models/group-user/model");
+const Users = require("../../models/users/model");
 const logAction = require("../../middleware/action_logs");
 
 const groupUserController = {
@@ -57,6 +58,12 @@ const groupUserController = {
 
   deleteGroupUser: async(req, res) => {
     try {
+      const groupUserId = req.params.id;
+      const userExists = await Users.findOne({ group_user_id: groupUserId });
+      if (userExists) {
+        return res.status(400).json({ message: "Không thể xóa nhóm người dùng khi đang được sử dụng!" });
+      }
+
       await GroupUsers.findByIdAndDelete(req.params.id);
       await logAction(req.auth._id, 'Nhóm người dùng', 'Xóa');
       return res.status(200).json("Xóa thành công!");
