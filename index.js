@@ -69,7 +69,7 @@ const corsOptions = {
   credentials: true,
 	optionsSuccessStatus: 200,
   // origin: 'https://dmstest.thietkewebvungtau.com',
-  origin: 'https://bewebdms.itvungtau.com.vn',
+  origin: 'https://webdms.itvungtau.com.vn',
   credentials: true,
   optionsSuccessStatus: 200,
 };
