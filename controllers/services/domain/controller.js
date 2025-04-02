@@ -280,6 +280,78 @@ const domainServicesController = {
       console.error(err);
       return res.status(500).send(err.message);
     }
+  },
+
+  getStatistics: async(req, res) => {
+    try {
+      const { year, month } = req.query;
+
+      // Xây dựng điều kiện lọc theo tháng hoặc năm
+      let matchCondition = {
+        registeredAt: { $exists: true }
+      };
+
+      if (year) {
+        matchCondition.registeredAt = {
+          $gte: new Date(`${year}-01-01`),
+          $lt: new Date(`${parseInt(year) + 1}-01-01`)
+        };
+      }
+
+      if (month) {
+        matchCondition.registeredAt = {
+          $gte: new Date(`${year}-${month}-01`),
+          $lt: new Date(`${year}-${parseInt(month) + 1}-01`)
+        };
+      }
+
+      const statistics = await DomainServices.aggregate([
+        { $match: matchCondition },
+
+        // Nối với bảng DomainPlans để lấy giá bán
+        {
+          $lookup: {
+            from: "domainplans",
+            localField: "domain_plan_id",
+            foreignField: "_id",
+            as: "domain_plan"
+          }
+        },
+        { $unwind: "$domain_plan" },
+
+        // Nối với bảng Suppliers để lấy giá nhập
+        {
+          $lookup: {
+            from: "suppliers",
+            localField: "supplier_id",
+            foreignField: "_id",
+            as: "supplier"
+          }
+        },
+        { $unwind: { path: "$supplier", preserveNullAndEmptyArrays: true } },
+
+        // Nhóm theo tháng/năm
+        {
+          $group: {
+            _id: {
+              year: { $year: "$registeredAt" },
+              month: { $month: "$registeredAt" }
+            },
+            totalSales: { $sum: "$domain_plan.import_price" }, // Tổng giá bán
+            totalPurchases: { $sum: { $ifNull: ["$supplier.price", 0] } }, // Tổng giá nhập
+            count: { $sum: 1 } // Số lượng đơn hàng
+          }
+        },
+
+        // Sắp xếp theo thời gian
+        { $sort: { "_id.year": 1, "_id.month": 1 } }
+      ]);
+
+      res.json(statistics);
+    } catch(err) {
+      console.error(err);
+      return res.status(500).send(err.message);
+    }
   }
 }
 
