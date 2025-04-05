@@ -11,6 +11,5 @@ router.get("/expired/all", domainServicesController.getDomainServicesExpired);
 router.get("/expiring/all", domainServicesController.getDomainServicesExpiring);
 router.get("/before-payment/all", domainServicesController.getDomainServicesBeforePayment);
 router.get("/customer/:customer_id", domainServicesController.getDomainServicesByCustomerId);
-router.get("/statistics", domainServicesController.getStatistics);
 
 module.exports = router;
