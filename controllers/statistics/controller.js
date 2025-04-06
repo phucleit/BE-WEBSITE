@@ -36,6 +36,7 @@ const statisticsController = {
           break;
         case 5:
           model = WebsiteServices;
+          matchField = "createdAt";
           break;
         case 6:
           model = ContentServices;
@@ -81,309 +82,113 @@ const statisticsController = {
     }
   },
 
-  getStatistics: async(req, res) => {
+  getStatistics: async (req, res) => {
     const { year, service } = req.query;
-
+  
     if (!year || !service) {
       return res.status(400).json({ message: "Vui lòng chọn năm và dịch vụ!" });
     }
-
+  
     const serviceNum = parseInt(service);
-    let results = [];
-
     const start = new Date(`${year}-01-01`);
     const end = new Date(`${parseInt(year) + 1}-01-01`);
-
-    switch (serviceNum) {
-      case 1:
-        results = await DomainServices.aggregate([
-          {
-            $match: {
-              registeredAt: { $gte: start, $lt: end },
-              domain_plan_id: { $ne: null }
-            }
-          },
-          {
-            $lookup: {
-              from: "domainplans",
-              localField: "domain_plan_id",
-              foreignField: "_id",
-              as: "plan"
-            }
-          },
-          { $unwind: "$plan" },
-          {
-            $group: {
-              _id: { $month: "$registeredAt" },
-              import_price: { $sum: "$plan.import_price" },
-              price: { $sum: "$plan.price" }
-            }
-          },
-          {
-            $project: {
-              month: "$_id",
-              import_price: 1,
-              price: 1,
-              profit: { $subtract: ["$price", "$import_price"] },
-              _id: 0
-            }
-          },
-          { $sort: { month: 1 } }
-        ]);
-        break;
-      case 2:
-        model = HostingServices;
-        results = await HostingServices.aggregate([
-          {
-            $match: {
-              registeredAt: { $gte: start, $lt: end },
-              hosting_plan_id: { $ne: null }
-            }
-          },
-          {
-            $lookup: {
-              from: "hostingplans",
-              localField: "hosting_plan_id",
-              foreignField: "_id",
-              as: "plan"
-            }
-          },
-          { $unwind: "$plan" },
-          {
-            $group: {
-              _id: { $month: "$registeredAt" },
-              import_price: { $sum: "$plan.import_price" },
-              price: { $sum: "$plan.price" }
-            }
-          },
-          {
-            $project: {
-              month: "$_id",
-              import_price: 1,
-              price: 1,
-              profit: { $subtract: ["$price", "$import_price"] },
-              _id: 0
-            }
-          },
-          { $sort: { month: 1 } }
-        ]);
-        break;
-      case 3:
-        model = SslServices;
-        results = await SslServices.aggregate([
-          {
-            $match: {
-              registeredAt: { $gte: start, $lt: end },
-              ssl_plan_id: { $ne: null }
-            }
-          },
-          {
-            $lookup: {
-              from: "sslplans",
-              localField: "ssl_plan_id",
-              foreignField: "_id",
-              as: "plan"
-            }
-          },
-          { $unwind: "$plan" },
-          {
-            $group: {
-              _id: { $month: "$registeredAt" },
-              import_price: { $sum: "$plan.import_price" },
-              price: { $sum: "$plan.price" }
-            }
-          },
-          {
-            $project: {
-              month: "$_id",
-              import_price: 1,
-              price: 1,
-              profit: { $subtract: ["$price", "$import_price"] },
-              _id: 0
-            }
-          },
-          { $sort: { month: 1 } }
-        ]);
-        break;
-      case 4:
-        model = EmailServices;
-        results = await EmailServices.aggregate([
-          {
-            $match: {
-              registeredAt: { $gte: start, $lt: end },
-              email_plan_id: { $ne: null }
-            }
-          },
-          {
-            $lookup: {
-              from: "emailplans",
-              localField: "email_plan_id",
-              foreignField: "_id",
-              as: "plan"
-            }
-          },
-          { $unwind: "$plan" },
-          {
-            $group: {
-              _id: { $month: "$registeredAt" },
-              import_price: { $sum: "$plan.import_price" },
-              price: { $sum: "$plan.price" }
-            }
-          },
-          {
-            $project: {
-              month: "$_id",
-              import_price: 1,
-              price: 1,
-              profit: { $subtract: ["$price", "$import_price"] },
-              _id: 0
-            }
-          },
-          { $sort: { month: 1 } }
-        ]);
-        break;
-      case 5:
-        model = WebsiteServices;
-        break;
-      case 6:
-        model = ContentServices;
-        results = await ContentServices.aggregate([
-          {
-            $match: {
-              registeredAt: { $gte: start, $lt: end },
-              content_plan_id: { $ne: null }
-            }
-          },
-          {
-            $lookup: {
-              from: "contentplans",
-              localField: "content_plan_id",
-              foreignField: "_id",
-              as: "plan"
-            }
-          },
-          { $unwind: "$plan" },
-          {
-            $group: {
-              _id: { $month: "$registeredAt" },
-              import_price: { $sum: "$plan.import_price" },
-              price: { $sum: "$plan.price" }
-            }
-          },
-          {
-            $project: {
-              month: "$_id",
-              import_price: 1,
-              price: 1,
-              profit: { $subtract: ["$price", "$import_price"] },
-              _id: 0
-            }
-          },
-          { $sort: { month: 1 } }
-        ]);
-        break;
-      case 7:
-        model = ToplistServices;
-        break;
-      case 8:
-        model = MaintenanceServices;
-        results = await MaintenanceServices.aggregate([
-          {
-            $match: {
-              registeredAt: { $gte: start, $lt: end },
-              maintenance_plan_id: { $ne: null }
-            }
-          },
-          {
-            $lookup: {
-              from: "maintenanceplans",
-              localField: "maintenance_plan_id",
-              foreignField: "_id",
-              as: "plan"
-            }
-          },
-          { $unwind: "$plan" },
-          {
-            $group: {
-              _id: { $month: "$registeredAt" },
-              import_price: { $sum: "$plan.import_price" },
-              price: { $sum: "$plan.price" }
-            }
-          },
-          {
-            $project: {
-              month: "$_id",
-              import_price: 1,
-              price: 1,
-              profit: { $subtract: ["$price", "$import_price"] },
-              _id: 0
-            }
-          },
-          { $sort: { month: 1 } }
-        ]);
-        break;
-      case 9:
-        model = MobileNetworkServices;
-        results = await MobileNetworkServices.aggregate([
-          {
-            $match: {
-              registeredAt: { $gte: start, $lt: end },
-              mobile_network_plan_id: { $ne: null }
-            }
-          },
-          {
-            $lookup: {
-              from: "mobilenetworkplans",
-              localField: "mobile_network_plan_id",
-              foreignField: "_id",
-              as: "plan"
-            }
-          },
-          { $unwind: "$plan" },
-          {
-            $group: {
-              _id: { $month: "$registeredAt" },
-              import_price: { $sum: "$plan.import_price" },
-              price: { $sum: "$plan.price" }
-            }
-          },
-          {
-            $project: {
-              month: "$_id",
-              import_price: 1,
-              price: 1,
-              profit: { $subtract: ["$price", "$import_price"] },
-              _id: 0
-            }
-          },
-          { $sort: { month: 1 } }
-        ]);
-        break;
-      default:
-        return res.status(400).json({ message: "Dịch vụ chưa được hỗ trợ!" });
+  
+    const serviceConfigs = {
+      1: { model: DomainServices, planField: "domain_plan_id", planCollection: "domainplans", dateField: "registeredAt" },
+      2: { model: HostingServices, planField: "hosting_plan_id", planCollection: "hostingplans", dateField: "registeredAt" },
+      3: { model: SslServices, planField: "ssl_plan_id", planCollection: "sslplans", dateField: "registeredAt" },
+      4: { model: EmailServices, planField: "email_plan_id", planCollection: "emailplans", dateField: "registeredAt" },
+      5: { model: WebsiteServices, dateField: "createdAt", priceOnly: true },
+      6: { model: ContentServices, planField: "content_plan_id", planCollection: "contentplans", dateField: "registeredAt" },
+      7: { model: ToplistServices, dateField: "registeredAt", priceOnly: true },
+      8: { model: MaintenanceServices, planField: "maintenance_plan_id", planCollection: "maintenanceplans", dateField: "registeredAt" },
+      9: { model: MobileNetworkServices, planField: "mobile_network_plan_id", planCollection: "mobilenetworkplans", dateField: "registeredAt" }
+    };
+  
+    const config = serviceConfigs[serviceNum];
+  
+    if (!config) {
+      return res.status(400).json({ message: "Dịch vụ chưa được hỗ trợ!" });
     }
-
-    const formatted = results.map((item) => ({
+  
+    let results = [];
+  
+    if (config.priceOnly) {
+      results = await config.model.aggregate([
+        {
+          $match: {
+            [config.dateField]: { $gte: start, $lt: end }
+          }
+        },
+        {
+          $group: {
+            _id: { $month: `$${config.dateField}` },
+            price: { $sum: "$price" }
+          }
+        },
+        {
+          $project: {
+            month: "$_id",
+            price: 1,
+            import_price: { $literal: 0 },
+            profit: "$price",
+            _id: 0
+          }
+        },
+        { $sort: { month: 1 } }
+      ]);
+    } else {
+      results = await config.model.aggregate([
+        {
+          $match: {
+            [config.dateField]: { $gte: start, $lt: end },
+            [config.planField]: { $ne: null }
+          }
+        },
+        {
+          $lookup: {
+            from: config.planCollection,
+            localField: config.planField,
+            foreignField: "_id",
+            as: "plan"
+          }
+        },
+        { $unwind: "$plan" },
+        {
+          $group: {
+            _id: { $month: `$${config.dateField}` },
+            import_price: { $sum: "$plan.import_price" },
+            price: { $sum: "$plan.price" }
+          }
+        },
+        {
+          $project: {
+            month: "$_id",
+            import_price: 1,
+            price: 1,
+            profit: { $subtract: ["$price", "$import_price"] },
+            _id: 0
+          }
+        },
+        { $sort: { month: 1 } }
+      ]);
+    }
+  
+    const formatted = results.map(item => ({
       month: `Tháng ${item.month}`,
       import_price: item.import_price,
       price: item.price,
       profit: item.profit
     }));
-
-    const total = formatted.reduce(
-      (acc, item) => {
-        acc.import_price += item.import_price;
-        acc.price += item.price;
-        acc.profit += item.profit;
-        return acc;
-      },
-      { import_price: 0, price: 0, profit: 0 }
-    );
-
-    return res.json({
-      data: formatted,
-      total
-    });
+  
+    const total = formatted.reduce((acc, item) => {
+      acc.import_price += item.import_price;
+      acc.price += item.price;
+      acc.profit += item.profit;
+      return acc;
+    }, { import_price: 0, price: 0, profit: 0 });
+  
+    return res.json({ data: formatted, total });
   }
 }
 
