@@ -392,6 +392,12 @@ const init = async () => {
         function_id: new ObjectId("667467eb263fb998b9925d48"),
         group_user_id: new ObjectId("6684196550a34692df218d8d"),
       },
+      //backups
+      {
+        _id: new ObjectId("674153c9e55c5173ec41c9a9"),
+        function_id: new ObjectId("643263d04bede188dfb46d76"),
+        group_user_id: new ObjectId("6684196550a34692df218d8d"),
+      },
     ];
     await Roles.insertMany(array);
   }

@@ -422,6 +422,16 @@ const init = async () => {
             fuction_parent_id: new ObjectId("667467eb263fb998b9925d2d"),
             name: "Xóa dịch vụ website",
         },
+        //backups
+        {
+            _id: new ObjectId("666523d04bede188dfb46d75"),
+            name: "Sao lưu dữ liệu",
+        },
+        {
+            _id: new ObjectId("643263d04bede188dfb46d76"),
+            fuction_parent_id: new ObjectId("666523d04bede188dfb46d75"),
+            name: "Tạo sao lưu dữ liệu",
+        },
     ]
     await Functions.insertMany(array)
   }
