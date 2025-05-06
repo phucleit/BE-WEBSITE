@@ -55,7 +55,7 @@ const functionRoutes = require("./routes/roles/functions");
 const actionLogsRoutes = require("./routes/action-logs/action_logs");
 
 // itvt
-const itvtDomainRoutes = require("./routes/itvt/domain/domain");
+const itvtDomainRoutes = require("./routes/itvt/dNomain/domain");
 const itvtSSLRoutes = require("./routes/itvt/ssl/ssl");
 
 // statistics
@@ -70,14 +70,14 @@ app.use(bodyParser.json({limit: "500mb"}));
 app.use(bodyParser.urlencoded({extended:true, limit:'500mb'})); 
 
 const corsOptions = {
-	origin: 'http://localhost:3066',
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true,
-	optionsSuccessStatus: 200,
-  // origin: 'https://dmstest.thietkewebvungtau.com',
-  // origin: 'https://webdms.itvungtau.com.vn',
+	// origin: 'http://localhost:3066',
+  // methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   // credentials: true,
-  // optionsSuccessStatus: 200,
+	// optionsSuccessStatus: 200,
+  // origin: 'https://dmstest.thietkewebvungtau.com',
+  origin: 'https://webdms.itvungtau.com.vn',
+  credentials: true,
+  optionsSuccessStatus: 200,
 };
 
 app.use(cors(corsOptions));
